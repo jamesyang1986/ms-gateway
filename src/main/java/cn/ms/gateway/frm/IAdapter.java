@@ -15,7 +15,7 @@ public interface IAdapter {
 	/**
 	 * 启动
 	 */
-	void start();
+	void start() throws Exception;
 	
 	/**
 	 * 销毁
