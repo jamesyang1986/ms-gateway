@@ -1,9 +1,9 @@
 package cn.ms.gateway;
 
-public class GatewayTest {
+public class MsGatewayTest {
 
 	public static void main(String[] args) {
-		
+		MsGateway.main(args);
 	}
 	
 }
