@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSON;
  * 数据区
  * 
  * @author lry
- * @version v1.0
  */
 public class DataArea {
 	
