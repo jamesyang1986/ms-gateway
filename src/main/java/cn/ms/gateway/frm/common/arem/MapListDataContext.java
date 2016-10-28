@@ -1,4 +1,4 @@
-package cn.ms.gateway.common.area;
+package cn.ms.gateway.frm.common.arem;
 
 import java.util.ArrayList;
 import java.util.Collection;

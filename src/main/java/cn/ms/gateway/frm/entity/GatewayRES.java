@@ -1,4 +1,4 @@
-package cn.ms.gateway.entity;
+package cn.ms.gateway.frm.entity;
 
 /**
  * 网关响应对象

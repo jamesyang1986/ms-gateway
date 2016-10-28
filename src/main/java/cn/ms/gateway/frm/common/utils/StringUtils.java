@@ -1,4 +1,4 @@
-package cn.ms.gateway.common.utils;
+package cn.ms.gateway.frm.common.utils;
 
 import java.io.File;
 import java.util.Collection;

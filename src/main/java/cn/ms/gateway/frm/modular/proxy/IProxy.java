@@ -1,4 +1,4 @@
-package cn.ms.gateway.modular.proxy;
+package cn.ms.gateway.frm.modular.proxy;
 
 /**
  * 通讯代理模块

@@ -1,4 +1,4 @@
-package cn.ms.gateway.common;
+package cn.ms.gateway.frm.common;
 
 /**
  * 常数定义
