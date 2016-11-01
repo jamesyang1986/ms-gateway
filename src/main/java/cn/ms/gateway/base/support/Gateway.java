@@ -47,6 +47,7 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 					filterMap=new LinkedHashMap<String, IFilter<REQ,RES>>();
 				}
 				filterMap.put(filterName, filter);
+				
 				serviceFilterOnLineMap.put(code, filterMap);
 			}
 		}else{//离线过滤器
@@ -59,6 +60,7 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 					filterMap=new LinkedHashMap<String, IFilter<REQ,RES>>();
 				}
 				filterMap.put(filterName, filter);
+				
 				serviceFilterOffLineMap.put(code, filterMap);
 			}
 		}
@@ -114,15 +116,54 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 	}
 
 	@Override
-	public RES handler(REQ req, Object... args) throws Throwable {
-		for (Map.Entry<String, Map<String, IFilter<REQ, RES>>> entryOnLine:serviceFilterOnLineMap.entrySet()) {
-			String key = entryOnLine.getKey();
-			Map<String, IFilter<REQ, RES>> valueOnLine = entryOnLine.getValue();
-			for (Map.Entry<String, IFilter<REQ, RES>> tempEntryOnLine:valueOnLine.entrySet()) {
-				System.out.println(key+"-->"+tempEntryOnLine.getValue().getClass().getAnnotation(Filter.class).order()+"-->"+tempEntryOnLine);				
+	public RES handler(REQ req, RES res ,Object... args) throws Throwable {
+		try {
+			//$NON-NLS-前置过滤器、路由过滤过滤$
+			FilterType[] filterTypes={FilterType.PRE, FilterType.ROUTE};
+			for (FilterType filterType:filterTypes) {
+				Map<String, IFilter<REQ, RES>> filterPREMap = serviceFilterOnLineMap.get(filterType.getCode());
+				for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPRE:filterPREMap.entrySet()) {
+					IFilter<REQ, RES> filterPRE=entryFilterPRE.getValue();
+					boolean checkResult = filterPRE.check(req, res, args);
+					if(checkResult){
+						RES resResult = filterPRE.run(req, res, args);
+						if(resResult!=null){
+							return resResult;
+						}
+					}
+				}
+			}
+			
+			return null;
+		} catch (Throwable t) {
+			//$NON-NLS-错误类过滤器$
+			Map<String, IFilter<REQ, RES>> filterPOSTMap = serviceFilterOnLineMap.get(FilterType.POST.getCode());
+			for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPOST:filterPOSTMap.entrySet()) {
+				IFilter<REQ, RES> filterPOST=entryFilterPOST.getValue();
+				boolean checkResult = filterPOST.check(req, res, args);
+				if(checkResult){
+					RES resResult = filterPOST.run(req, res, args);
+					if(resResult!=null){
+						return resResult;
+					}
+				}
+			}
+			
+			return null;
+		} finally {
+			//$NON-NLS-返回前过滤器$
+			Map<String, IFilter<REQ, RES>> filterPOSTMap = serviceFilterOnLineMap.get(FilterType.POST.getCode());
+			for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPOST:filterPOSTMap.entrySet()) {
+				IFilter<REQ, RES> filterPOST=entryFilterPOST.getValue();
+				boolean checkResult = filterPOST.check(req, res, args);
+				if(checkResult){
+					RES resResult = filterPOST.run(req, res, args);
+					if(resResult!=null){
+						return resResult;
+					}
+				}
 			}
 		}
-		return null;
 	}
 
 	@Override

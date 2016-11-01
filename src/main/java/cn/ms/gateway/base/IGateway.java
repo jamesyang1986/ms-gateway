@@ -29,10 +29,11 @@ public interface IGateway<REQ, RES> extends Adaptor {
 	 * The Gateway handler center.
 	 * 
 	 * @param req
+	 * @param res
 	 * @param args
 	 * @return
 	 * @throws Throwable
 	 */
-	RES handler(REQ req, Object... args) throws Throwable;
+	RES handler(REQ req, RES res ,Object... args) throws Throwable;
 
 }

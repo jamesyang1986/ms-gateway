@@ -16,7 +16,7 @@ public interface IFilter<REQ, RES> {
 	 * @param res
 	 * @return
 	 */
-	boolean check(REQ req, RES res);
+	boolean check(REQ req, RES res, Object...args);
 
 	/**
 	 * Filtering logic processing
@@ -25,6 +25,6 @@ public interface IFilter<REQ, RES> {
 	 * @param res
 	 * @return
 	 */
-	RES run(REQ req, RES res);
+	RES run(REQ req, RES res, Object...args);
 
 }

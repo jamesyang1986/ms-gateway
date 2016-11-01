@@ -15,12 +15,12 @@ public class TestPreFilter3 implements IFilter<String, String> {
 	}
 
 	@Override
-	public boolean check(String req, String res) {
+	public boolean check(String req, String res, Object...args) {
 		return false;
 	}
 
 	@Override
-	public String run(String req, String res) {
+	public String run(String req, String res, Object...args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
