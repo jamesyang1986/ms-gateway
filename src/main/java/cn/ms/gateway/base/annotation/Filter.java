@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import cn.ms.gateway.base.type.FilterType;
 
 /**
- * 过滤器
+ * 过滤器注解
  * 
  * @author lry
  */
@@ -18,6 +18,13 @@ import cn.ms.gateway.base.type.FilterType;
 @Target({ ElementType.TYPE })
 public @interface Filter {
 
+	/**
+	 * 过滤器名称
+	 * 
+	 * @return
+	 */
+	String name() default "";
+	
 	/**
 	 * 过滤器类型,默认为#{FilterType.PRE}
 	 * 
@@ -31,12 +38,5 @@ public @interface Filter {
 	 * @return
 	 */
 	int order() default 0;
-	
-	/**
-	 * 过滤器名称
-	 * 
-	 * @return
-	 */
-	String name() default "";
 	
 }
