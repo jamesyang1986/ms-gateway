@@ -1,5 +1,7 @@
 package cn.ms.gateway.base;
 
+import java.util.List;
+
 /**
  * 微服务网关
  * 
@@ -10,6 +12,12 @@ package cn.ms.gateway.base;
  */
 public interface IGateway<REQ, RES> extends Adaptor {
 
+	//$NON-NLS-添加自定义过滤器$
+	void addFilter(IFilter<REQ, RES> filter);
+
+	void addFilters(List<IFilter<REQ, RES>> filters);
+
+	
 	/**
 	 * The Start of Gateway.
 	 * 

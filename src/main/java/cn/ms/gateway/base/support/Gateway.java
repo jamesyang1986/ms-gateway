@@ -28,8 +28,26 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 	/**在线过滤器**/
 	private Map<String, IFilter<REQ, RES>> serviceFilterOnLineMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
 
-	public void addProcessor() {
+	@Override
+	public void addFilter(IFilter<REQ, RES> filter) {
+		String filterName = filter.filterName();
+		if (filterName == null || filterName.length() < 1) {
+			filterName = filter.getClass().getName();
+		}
 		
+		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
+		if(filterEnable==null || (!filterEnable.value())){
+			serviceFilterOffLineMap.put(filterName, filter);//离线过滤器				
+		}else{
+			serviceFilterOnLineMap.put(filterName, filter);//在线过滤器
+		}
+	}
+	
+	@Override
+	public void addFilters(List<IFilter<REQ, RES>> filters) {
+		for (IFilter<REQ, RES> filter:filters) {
+			this.addFilter(filter);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -54,19 +72,7 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 		});
 
 		//$NON-NLS-收集有序服务$
-		for (IFilter<REQ, RES> filter : filterList) {
-			String filterName = filter.filterName();
-			if (filterName == null || filterName.length() < 1) {
-				filterName = filter.getClass().getName();
-			}
-			
-			FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
-			if(filterEnable==null || (!filterEnable.value())){
-				serviceFilterOffLineMap.put(filterName, filter);//离线过滤器				
-			}else{
-				serviceFilterOnLineMap.put(filterName, filter);//在线过滤器
-			}
-		}
+		this.addFilters(filterList);
 
 		System.out.println(serviceFilterOnLineMap);
 		System.out.println(serviceFilterOffLineMap);
