@@ -151,7 +151,6 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 			
 			return null;
 		} finally {
-			System.out.println("-------------");
 			//$NON-NLS-返回前过滤器$
 			Map<String, IFilter<REQ, RES>> filterPOSTMap = serviceFilterOnLineMap.get(FilterType.POST.getCode());
 			for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPOST:filterPOSTMap.entrySet()) {
