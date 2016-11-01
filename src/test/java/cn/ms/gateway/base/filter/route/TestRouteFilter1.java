@@ -16,14 +16,14 @@ public class TestRouteFilter1 implements IFilter<String, String> {
 
 	@Override
 	public boolean check(String req, String res, Object...args) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println(filterName()+" ---> check");
+		return true;
 	}
 
 	@Override
 	public String run(String req, String res, Object...args) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(filterName()+" ---> run");
+		return req;
 	}
 
 }
