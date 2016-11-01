@@ -5,13 +5,13 @@ import cn.ms.gateway.base.annotation.Filter;
 import cn.ms.gateway.base.annotation.FilterEnable;
 import cn.ms.gateway.base.type.FilterType;
 
-@FilterEnable(value=false)
-@Filter(value=FilterType.POST, order=20)
-public class TestPostFilter2 implements IFilter<String, String> {
+@FilterEnable
+@Filter(value=FilterType.POST, order=30)
+public class TestPostFilter3 implements IFilter<String, String> {
 
 	@Override
 	public String filterName() {
-		return "TestPostFilter2";
+		return "TestPostFilter3";
 	}
 
 	@Override

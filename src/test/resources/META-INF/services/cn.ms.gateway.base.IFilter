@@ -3,6 +3,7 @@ cn.ms.gateway.base.filter.error.TestErrorFilter1
 #POST类过滤器
 cn.ms.gateway.base.filter.post.TestPostFilter1
 cn.ms.gateway.base.filter.post.TestPostFilter2
+cn.ms.gateway.base.filter.post.TestPostFilter3
 #PRE类过滤器
 cn.ms.gateway.base.filter.pre.TestPreFilter1
 cn.ms.gateway.base.filter.pre.TestPreFilter2

@@ -6,7 +6,7 @@ import cn.ms.gateway.base.annotation.FilterEnable;
 import cn.ms.gateway.base.type.FilterType;
 
 @FilterEnable
-@Filter(value=FilterType.PRE, order=10)
+@Filter(value=FilterType.PRE, order=30)
 public class TestPreFilter3 implements IFilter<String, String> {
 
 	@Override

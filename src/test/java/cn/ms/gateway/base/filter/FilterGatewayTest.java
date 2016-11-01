@@ -11,7 +11,9 @@ public class FilterGatewayTest {
 		try {
 			Gateway<String, String> gateway=new Gateway<String, String>();
 			gateway.init();
-		} catch (Exception e) {
+			gateway.handler("");
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
