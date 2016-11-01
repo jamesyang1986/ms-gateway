@@ -137,12 +137,12 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 			return null;
 		} catch (Throwable t) {
 			//$NON-NLS-错误类过滤器$
-			Map<String, IFilter<REQ, RES>> filterPOSTMap = serviceFilterOnLineMap.get(FilterType.POST.getCode());
-			for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPOST:filterPOSTMap.entrySet()) {
-				IFilter<REQ, RES> filterPOST=entryFilterPOST.getValue();
-				boolean checkResult = filterPOST.check(req, res, args);
+			Map<String, IFilter<REQ, RES>> filterERRORMap = serviceFilterOnLineMap.get(FilterType.ERROR.getCode());
+			for (Map.Entry<String, IFilter<REQ, RES>> entryFilterERROR:filterERRORMap.entrySet()) {
+				IFilter<REQ, RES> filterERROR=entryFilterERROR.getValue();
+				boolean checkResult = filterERROR.check(req, res, args);
 				if(checkResult){
-					RES resResult = filterPOST.run(req, res, args);
+					RES resResult = filterERROR.run(req, res, args);
 					if(resResult!=null){
 						return resResult;
 					}
@@ -151,6 +151,7 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 			
 			return null;
 		} finally {
+			System.out.println("-------------");
 			//$NON-NLS-返回前过滤器$
 			Map<String, IFilter<REQ, RES>> filterPOSTMap = serviceFilterOnLineMap.get(FilterType.POST.getCode());
 			for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPOST:filterPOSTMap.entrySet()) {
