@@ -1,5 +1,13 @@
 package cn.ms.gateway.base;
 
+/**
+ * 微服务网关
+ * 
+ * @author lry
+ *
+ * @param <REQ>
+ * @param <RES>
+ */
 public interface IGateway<REQ, RES> extends Adaptor {
 
 	/**

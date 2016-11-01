@@ -1,5 +1,10 @@
 package cn.ms.gateway.base;
 
+/**
+ * 适配器
+ * 
+ * @author lry
+ */
 public interface Adaptor {
 
 	/**
