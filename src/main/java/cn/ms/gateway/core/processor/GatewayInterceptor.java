@@ -5,11 +5,11 @@ import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
 
-public class GatewayProcessor implements Interceptor<GatewayREQ, GatewayRES> {
+public class GatewayInterceptor implements Interceptor<GatewayREQ, GatewayRES> {
 
 	AbstractContainer<GatewayREQ, GatewayRES> container;
 
-	public GatewayProcessor(AbstractContainer<GatewayREQ, GatewayRES> container) {
+	public GatewayInterceptor(AbstractContainer<GatewayREQ, GatewayRES> container) {
 		this.container = container;
 	}
 

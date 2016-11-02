@@ -4,7 +4,7 @@ import cn.ms.gateway.base.container.support.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
-import cn.ms.gateway.core.processor.GatewayProcessor;
+import cn.ms.gateway.core.processor.GatewayInterceptor;
 
 /**
  * 基于Netty实现的网关容器
@@ -13,7 +13,7 @@ import cn.ms.gateway.core.processor.GatewayProcessor;
  */
 public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
-	Interceptor<GatewayREQ, GatewayRES> processor = new GatewayProcessor(this);
+	Interceptor<GatewayREQ, GatewayRES> interceptor = new GatewayInterceptor(this);
 	
 	@Override
 	public void init() throws Exception {
@@ -29,22 +29,22 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public GatewayRES handler(GatewayREQ req, Object... args) throws Throwable {
-		GatewayREQ processorGatewayREQ =req;
-		GatewayRES processorGatewayRES =null;
+		GatewayREQ interceptorGatewayREQ =req;
+		GatewayRES interceptorGatewayRES =null;
 		try {
-			GatewayREQ beforeGatewayREQ = processor.before(processorGatewayREQ, args);
+			GatewayREQ beforeGatewayREQ = interceptor.before(interceptorGatewayREQ, args);
 			if(beforeGatewayREQ!=null){
-				processorGatewayREQ=beforeGatewayREQ;
+				interceptorGatewayREQ=beforeGatewayREQ;
 			}
-			processorGatewayRES = processor.interceptor(processorGatewayREQ, args);
+			interceptorGatewayRES = interceptor.interceptor(interceptorGatewayREQ, args);
 		} finally {
-			GatewayRES afterGatewayRES = processor.after(processorGatewayREQ, processorGatewayRES, args);
+			GatewayRES afterGatewayRES = interceptor.after(interceptorGatewayREQ, interceptorGatewayRES, args);
 			if(afterGatewayRES!=null){
-				processorGatewayRES=afterGatewayRES;
+				interceptorGatewayRES=afterGatewayRES;
 			}
 		}
 		
-		return processorGatewayRES;
+		return interceptorGatewayRES;
 	}
 
 	@Override
