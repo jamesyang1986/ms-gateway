@@ -1,4 +1,4 @@
-package cn.ms.gateway.entity.area;
+package cn.ms.gateway.core.entity.area;
 
 import java.util.ArrayList;
 import java.util.Collection;
