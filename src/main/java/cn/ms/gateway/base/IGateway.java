@@ -2,6 +2,8 @@ package cn.ms.gateway.base;
 
 import java.util.List;
 
+import cn.ms.gateway.base.filter.IFilter;
+
 /**
  * 微服务网关
  * 

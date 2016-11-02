@@ -4,10 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.ms.gateway.base.IFilter;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.annotation.Filter;
 import cn.ms.gateway.base.annotation.FilterEnable;
+import cn.ms.gateway.base.filter.IFilter;
 
 /**
  * 微服务网关核心抽象类
