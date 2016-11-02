@@ -1,6 +1,6 @@
-package cn.ms.gateway.netty;
+package cn.ms.gateway.core;
 
-import cn.ms.gateway.frm.modular.container.IContainer;
+import cn.ms.gateway.container.IContainer;
 
 /**
  * 基于Netty实现的网关容器
@@ -11,16 +11,19 @@ public class NettyContainer implements IContainer {
 
 	@Override
 	public void init() throws Exception {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void start() throws Exception {
+		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
-	public void destroy() throws Exception {
+	public void destory() throws Exception {
+		// TODO Auto-generated method stub
 		
 	}
 

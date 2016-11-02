@@ -10,20 +10,12 @@ import java.util.List;
  * @param <REQ>
  * @param <RES>
  */
-public interface IGateway<REQ, RES> extends Adaptor {
+public interface IGateway<REQ, RES> extends IAdapter {
 
 	//$NON-NLS-添加自定义过滤器$
 	void addFilter(IFilter<REQ, RES> filter);
 
 	void addFilters(List<IFilter<REQ, RES>> filters);
-
-	
-	/**
-	 * The Start of Gateway.
-	 * 
-	 * @throws Exception
-	 */
-	void start() throws Exception;
 
 	/**
 	 * The Gateway handler center.

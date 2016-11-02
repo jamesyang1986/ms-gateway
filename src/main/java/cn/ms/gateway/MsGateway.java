@@ -1,6 +1,6 @@
 package cn.ms.gateway;
 
-import cn.ms.gateway.frm.IAdapter;
+import cn.ms.gateway.base.IAdapter;
 
 /**
  * 微服务网关
@@ -14,9 +14,9 @@ public enum MsGateway implements IAdapter {
 	@Override
 	public void init() throws Exception {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 	@Override
 	public void start() throws Exception {
 		// TODO Auto-generated method stub
@@ -24,8 +24,9 @@ public enum MsGateway implements IAdapter {
 	}
 
 	@Override
-	public void destroy() throws Exception {
+	public void destory() throws Exception {
 		// TODO Auto-generated method stub
+		
 	}
 
 	public static void main(String[] args) {
@@ -39,7 +40,7 @@ public enum MsGateway implements IAdapter {
 
 			try {
 				// 异常则销毁
-				INSTANCE.destroy();
+				INSTANCE.destory();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

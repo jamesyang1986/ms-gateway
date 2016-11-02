@@ -1,4 +1,4 @@
-package cn.ms.gateway.frm.common.arem;
+package cn.ms.gateway.entity.area;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

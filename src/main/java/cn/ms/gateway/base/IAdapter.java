@@ -5,7 +5,7 @@ package cn.ms.gateway.base;
  * 
  * @author lry
  */
-public interface Adaptor {
+public interface IAdapter {
 
 	/**
 	 * The initialization.
@@ -13,6 +13,13 @@ public interface Adaptor {
 	 * @throws Exception
 	 */
 	void init() throws Exception;
+	
+	/**
+	 * The Start of Gateway.
+	 * 
+	 * @throws Exception
+	 */
+	void start() throws Exception;
 	
 	/**
 	 * The destruction.

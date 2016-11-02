@@ -1,6 +1,7 @@
-package cn.ms.gateway.frm.modular.container;
+package cn.ms.gateway.container;
 
-import cn.ms.gateway.frm.IAdapter;
+import cn.ms.gateway.base.IAdapter;
+
 
 /**
  * 容器模块
