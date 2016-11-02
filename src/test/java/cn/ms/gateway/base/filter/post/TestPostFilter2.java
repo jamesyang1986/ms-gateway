@@ -1,8 +1,8 @@
 package cn.ms.gateway.base.filter.post;
 
-import cn.ms.gateway.base.IFilter;
 import cn.ms.gateway.base.annotation.Filter;
 import cn.ms.gateway.base.annotation.FilterEnable;
+import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.base.type.FilterType;
 
 @FilterEnable(value=false)
