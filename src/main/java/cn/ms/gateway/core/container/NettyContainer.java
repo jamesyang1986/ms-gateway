@@ -4,7 +4,7 @@ import cn.ms.gateway.base.container.support.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
-import cn.ms.gateway.core.processor.GatewayInterceptor;
+import cn.ms.gateway.core.interceptor.GatewayInterceptor;
 
 /**
  * 基于Netty实现的网关容器
