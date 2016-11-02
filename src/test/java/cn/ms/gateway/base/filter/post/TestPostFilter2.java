@@ -23,7 +23,7 @@ public class TestPostFilter2 implements IFilter<String, String> {
 	@Override
 	public String run(String req, String res, Object...args) {
 		System.out.println(filterName()+" ---> run");
-		return req;
+		return null;
 	}
 
 }

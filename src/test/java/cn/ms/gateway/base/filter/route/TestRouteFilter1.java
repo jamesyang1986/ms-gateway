@@ -24,7 +24,6 @@ public class TestRouteFilter1 implements IFilter<String, String> {
 	public String run(String req, String res, Object...args) {
 		System.out.println(filterName()+" ---> run");
 		throw new RuntimeException();
-		//return req;
 	}
 
 }
