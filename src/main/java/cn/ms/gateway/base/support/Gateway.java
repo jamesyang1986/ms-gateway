@@ -126,9 +126,9 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 					IFilter<REQ, RES> filterPRE=entryFilterPRE.getValue();
 					boolean checkResult = filterPRE.check(req, res, args);
 					if(checkResult){
-						RES resResult = filterPRE.run(req, res, args);
-						if(resResult!=null){
-							return resResult;
+						res = filterPRE.run(req, res, args);
+						if(res!=null){
+							return res;
 						}
 					}
 				}
@@ -142,9 +142,9 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 				IFilter<REQ, RES> filterERROR=entryFilterERROR.getValue();
 				boolean checkResult = filterERROR.check(req, res, args);
 				if(checkResult){
-					RES resResult = filterERROR.run(req, res, args);
-					if(resResult!=null){
-						return resResult;
+					res = filterERROR.run(req, res, args);
+					if(res!=null){
+						return res;
 					}
 				}
 			}
@@ -157,9 +157,9 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 				IFilter<REQ, RES> filterPOST=entryFilterPOST.getValue();
 				boolean checkResult = filterPOST.check(req, res, args);
 				if(checkResult){
-					RES resResult = filterPOST.run(req, res, args);
-					if(resResult!=null){
-						return resResult;
+					res = filterPOST.run(req, res, args);
+					if(res!=null){
+						return res;
 					}
 				}
 			}
