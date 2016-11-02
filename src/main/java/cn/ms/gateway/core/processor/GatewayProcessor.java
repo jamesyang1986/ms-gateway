@@ -1,11 +1,11 @@
 package cn.ms.gateway.core.processor;
 
-import cn.ms.gateway.base.IProcessor;
 import cn.ms.gateway.base.container.support.AbstractContainer;
+import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
 
-public class GatewayProcessor implements IProcessor<GatewayREQ, GatewayRES> {
+public class GatewayProcessor implements Interceptor<GatewayREQ, GatewayRES> {
 
 	AbstractContainer<GatewayREQ, GatewayRES> container;
 
@@ -20,8 +20,7 @@ public class GatewayProcessor implements IProcessor<GatewayREQ, GatewayRES> {
 	}
 
 	@Override
-	public GatewayRES processor(GatewayREQ req, Object... args)
-			throws Throwable {
+	public GatewayRES interceptor(GatewayREQ req, Object... args) throws Throwable {
 		GatewayRES res = null;
 		
 		return container.sendGatewayHandler(req, res, args);

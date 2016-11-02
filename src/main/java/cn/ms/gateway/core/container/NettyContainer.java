@@ -1,7 +1,7 @@
 package cn.ms.gateway.core.container;
 
-import cn.ms.gateway.base.IProcessor;
 import cn.ms.gateway.base.container.support.AbstractContainer;
+import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
 import cn.ms.gateway.core.processor.GatewayProcessor;
@@ -13,7 +13,7 @@ import cn.ms.gateway.core.processor.GatewayProcessor;
  */
 public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
-	IProcessor<GatewayREQ, GatewayRES> processor = new GatewayProcessor(this);
+	Interceptor<GatewayREQ, GatewayRES> processor = new GatewayProcessor(this);
 	
 	@Override
 	public void init() throws Exception {
@@ -36,7 +36,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 			if(beforeGatewayREQ!=null){
 				processorGatewayREQ=beforeGatewayREQ;
 			}
-			processorGatewayRES = processor.processor(processorGatewayREQ, args);
+			processorGatewayRES = processor.interceptor(processorGatewayREQ, args);
 		} finally {
 			GatewayRES afterGatewayRES = processor.after(processorGatewayREQ, processorGatewayRES, args);
 			if(afterGatewayRES!=null){

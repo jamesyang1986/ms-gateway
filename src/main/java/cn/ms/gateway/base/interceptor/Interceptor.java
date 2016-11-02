@@ -1,14 +1,14 @@
-package cn.ms.gateway.base;
+package cn.ms.gateway.base.interceptor;
 
 /**
- * 网关核心处理接口
+ * 拦截器
  * 
  * @author lry
  */
-public interface IProcessor<REQ, RES> {
+public interface Interceptor<REQ, RES> {
 
 	/**
-	 * 网关前处理
+	 * 拦截前处理
 	 * 
 	 * @param req
 	 * @param args
@@ -18,17 +18,17 @@ public interface IProcessor<REQ, RES> {
 	REQ before(REQ req, Object... args) throws Throwable;
 
 	/**
-	 * 网关处理
+	 * 拦截处理
 	 * 
 	 * @param req
 	 * @param args
 	 * @return
 	 * @throws Throwable
 	 */
-	RES processor(REQ req, Object... args) throws Throwable;
+	RES interceptor(REQ req, Object... args) throws Throwable;
 
 	/**
-	 * 网关后处理
+	 * 拦截后处理
 	 * 
 	 * @param req
 	 * @param args
