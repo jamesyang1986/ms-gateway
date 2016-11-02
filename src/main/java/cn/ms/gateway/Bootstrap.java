@@ -1,29 +1,25 @@
 package cn.ms.gateway;
 
-import cn.ms.gateway.base.IAdapter;
 
 /**
  * 微服务网关
  * 
  * @author lry
  */
-public enum MsGateway implements IAdapter {
+public enum Bootstrap {
 
 	INSTANCE;
 
-	@Override
 	public void init() throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
 	public void start() throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void destory() throws Exception {
 		// TODO Auto-generated method stub
 		

@@ -15,7 +15,7 @@ public interface IProcessor<REQ, RES> {
 	 * @return
 	 * @throws Throwable
 	 */
-	RES before(REQ req, Object... args) throws Throwable;
+	REQ before(REQ req, Object... args) throws Throwable;
 
 	/**
 	 * 网关处理
@@ -35,6 +35,6 @@ public interface IProcessor<REQ, RES> {
 	 * @return
 	 * @throws Throwable
 	 */
-	RES after(REQ req, Object... args) throws Throwable;
+	RES after(REQ req, RES res, Object... args) throws Throwable;
 
 }
