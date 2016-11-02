@@ -1,4 +1,4 @@
-package cn.ms.gateway.core;
+package cn.ms.gateway.core.interceptor;
 
 import cn.ms.gateway.base.container.support.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
