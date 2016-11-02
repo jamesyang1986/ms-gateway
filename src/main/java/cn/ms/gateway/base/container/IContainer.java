@@ -1,4 +1,4 @@
-package cn.ms.gateway.container;
+package cn.ms.gateway.base.container;
 
 import cn.ms.gateway.base.IAdapter;
 

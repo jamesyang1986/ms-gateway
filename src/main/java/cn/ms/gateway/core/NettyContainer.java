@@ -1,6 +1,6 @@
 package cn.ms.gateway.core;
 
-import cn.ms.gateway.container.IContainer;
+import cn.ms.gateway.base.container.IContainer;
 
 /**
  * 基于Netty实现的网关容器
