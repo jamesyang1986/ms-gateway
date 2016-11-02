@@ -1,5 +1,11 @@
 package cn.ms.gateway;
 
+import cn.ms.gateway.base.container.IContainer;
+import cn.ms.gateway.core.container.NettyContainer;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
+
+
 
 /**
  * 微服务网关
@@ -9,20 +15,19 @@ package cn.ms.gateway;
 public enum Bootstrap {
 
 	INSTANCE;
+	
+	IContainer<GatewayREQ, GatewayRES> container = new NettyContainer();
 
 	public void init() throws Exception {
-		// TODO Auto-generated method stub
-		
+		container.init();
 	}
 	
 	public void start() throws Exception {
-		// TODO Auto-generated method stub
-		
+		container.start();
 	}
 
 	public void destory() throws Exception {
-		// TODO Auto-generated method stub
-		
+		container.destory();
 	}
 
 	public static void main(String[] args) {
