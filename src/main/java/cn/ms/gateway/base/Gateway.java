@@ -1,4 +1,4 @@
-package cn.ms.gateway.base.support;
+package cn.ms.gateway.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import cn.ms.gateway.base.IFilter;
-import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.annotation.Filter;
-import cn.ms.gateway.base.annotation.FilterEnable;
+import cn.ms.gateway.base.support.AbstractGateway;
 import cn.ms.gateway.base.type.FilterType;
 
 /**
@@ -22,56 +20,7 @@ import cn.ms.gateway.base.type.FilterType;
  * @param <REQ>
  * @param <RES>
  */
-public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
-
-	/** 在线过滤器 **/
-	private Map<String, Map<String, IFilter<REQ, RES>>> serviceFilterOnLineMap = new LinkedHashMap<String, Map<String, IFilter<REQ, RES>>>();
-	/** 离线过滤器 **/
-	private Map<String, Map<String, IFilter<REQ, RES>>> serviceFilterOffLineMap = new LinkedHashMap<String, Map<String, IFilter<REQ, RES>>>();
-
-	@Override
-	public void addFilter(IFilter<REQ, RES> filter) {
-		String filterName = filter.filterName();
-		if (filterName == null || filterName.length() < 1) {
-			filterName = filter.getClass().getName();
-		}
-
-		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
-		if (filterEnable == null || filterEnable.value()) {// 在线过滤器
-			// 过滤器注解
-			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
-			if (filterAnnotation != null) {
-				String code = filterAnnotation.value().getCode();
-				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(code);
-				if (filterMap == null) {
-					filterMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
-				}
-				filterMap.put(filterName, filter);
-
-				serviceFilterOnLineMap.put(code, filterMap);
-			}
-		} else {// 离线过滤器
-				// 过滤器注解
-			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
-			if (filterAnnotation != null) {
-				String code = filterAnnotation.value().getCode();
-				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(code);
-				if (filterMap == null) {
-					filterMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
-				}
-				filterMap.put(filterName, filter);
-
-				serviceFilterOffLineMap.put(code, filterMap);
-			}
-		}
-	}
-
-	@Override
-	public void addFilters(List<IFilter<REQ, RES>> filters) {
-		for (IFilter<REQ, RES> filter : filters) {
-			this.addFilter(filter);
-		}
-	}
+public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -176,7 +125,7 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 
 	@Override
 	public void destory() throws Exception {
-
+		
 	}
 
 }

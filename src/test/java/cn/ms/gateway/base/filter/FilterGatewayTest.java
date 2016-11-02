@@ -2,7 +2,7 @@ package cn.ms.gateway.base.filter;
 
 import org.junit.Test;
 
-import cn.ms.gateway.base.support.Gateway;
+import cn.ms.gateway.base.Gateway;
 
 public class FilterGatewayTest {
 
