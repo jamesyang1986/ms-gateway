@@ -15,8 +15,8 @@ public interface IDisruptor extends IAdapter {
 	 * 
 	 * @param req
 	 * @param args
-	 * @throws Exception
+	 * @throws Throwable
 	 */
-	void publish(GatewayREQ req, Object...args) throws Exception;
+	void publish(GatewayREQ req, Object...args) throws Throwable;
 	
 }

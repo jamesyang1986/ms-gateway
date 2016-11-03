@@ -18,7 +18,7 @@ public class GatewayDisruptorTest {
 				req.setContent("这是第"+(i+1)+"个请求");
 				disruptor.publish(req);
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
 			try {

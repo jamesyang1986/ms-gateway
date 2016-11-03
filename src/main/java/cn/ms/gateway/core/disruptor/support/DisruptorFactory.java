@@ -66,9 +66,10 @@ public class DisruptorFactory implements IDisruptor {
 	 * 
 	 * @param req
 	 * @param args
+	 * @throws Throwable
 	 */
 	@Override
-	public void publish(GatewayREQ req, Object...args) throws Exception {
+	public void publish(GatewayREQ req, Object...args) throws Throwable {
 		RingBuffer<GatewayREQ> ringBuffer = disruptor.getRingBuffer();
 		long sequence = ringBuffer.next();
 
