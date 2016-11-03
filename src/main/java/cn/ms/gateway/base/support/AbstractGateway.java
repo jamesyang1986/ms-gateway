@@ -30,6 +30,8 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 		if (filterName == null || filterName.length() < 1) {
 			filterName = filter.getClass().getName();
 		}
+		
+		System.out.println("The filter is: "+filterName);
 
 		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
 		if (filterEnable == null || filterEnable.value()) {// 在线过滤器

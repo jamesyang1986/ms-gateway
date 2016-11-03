@@ -47,6 +47,10 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 		//$NON-NLS-排序$
 		for (FilterType filterType : FilterType.values()) {
 			List<IFilter<REQ, RES>> filterList = filterMap.get(filterType.getCode());
+			if(filterList==null||filterList.isEmpty()){
+				continue;
+			}
+			
 			// 分组进行组内排序过滤器
 			Collections.sort(filterList, new Comparator<IFilter<REQ, RES>>() {
 				@Override
@@ -56,7 +60,7 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 			});
 
 			//$NON-NLS-收集有序服务$
-			this.addFilters(filterList);
+			super.addFilters(filterList);
 		}
 	}
 

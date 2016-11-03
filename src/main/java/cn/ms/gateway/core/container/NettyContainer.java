@@ -2,7 +2,6 @@ package cn.ms.gateway.core.container;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -12,17 +11,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpHeaders.Names;
-import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.container.support.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
@@ -49,6 +41,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void init() throws Exception {
+		super.gateway.init();
+		
 		this.bossGroup = new NioEventLoopGroup(nettyConf.getBossGroupThread());
 		this.workerGroup = new NioEventLoopGroup(nettyConf.getWorkerGroupThread());
 
@@ -69,6 +63,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void start() throws Exception {
+		super.gateway.start();
+		
 		ChannelFuture channelFuture = serverBootstrap.bind(nettyConf.getPort()).sync();
 		channelFuture.addListener(new GenericFutureListener<ChannelFuture>() {
 			@Override
@@ -100,6 +96,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void destory() throws Exception {
+		super.gateway.destory();
+		
 		if (serverBootstrap != null) {
 			serverBootstrap.clone();
 		}
@@ -133,17 +131,6 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	            String content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
 	            buf.release();
 
-//	            String res = "I am OK";
-//	            FullHttpResponse response = new DefaultFullHttpResponse(
-//	            		HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(res.getBytes("UTF-8")));
-//	            response.headers().set(Names.CONTENT_TYPE, "text/plain");
-//	            response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
-//	            if (HttpHeaders.isKeepAlive(request)) {
-//	                response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
-//	            }
-//	            ctx.write(response);
-//	            ctx.flush();
-	            
 	            GatewayREQ req=new GatewayREQ();
 	            req.setContent(content);
 	            req.setRequest(request);

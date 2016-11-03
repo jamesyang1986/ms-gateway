@@ -30,7 +30,6 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES>{
 
 	@Override
 	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) {
-		System.out.println("-----------");
 		 try {
 			 String resContent = "I am OK";
 	         FullHttpResponse response = new DefaultFullHttpResponse(
