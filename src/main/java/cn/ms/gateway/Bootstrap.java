@@ -1,6 +1,7 @@
 package cn.ms.gateway;
 
 import cn.ms.gateway.base.container.IContainer;
+import cn.ms.gateway.core.container.NettyConf;
 import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
@@ -16,9 +17,12 @@ public enum Bootstrap {
 
 	INSTANCE;
 	
-	IContainer<GatewayREQ, GatewayRES> container = new NettyContainer();
+	IContainer<GatewayREQ, GatewayRES> container = null;
 
 	public void init() throws Exception {
+		NettyConf nettyConf = new NettyConf();
+		container = new NettyContainer(nettyConf);
+		
 		container.init();
 	}
 	

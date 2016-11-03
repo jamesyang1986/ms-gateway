@@ -109,6 +109,10 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 	 */
 	private RES doHandler(FilterType filterType, REQ req, RES res, Object... args)  throws Throwable {
 		Map<String, IFilter<REQ, RES>> filterPREMap = serviceFilterOnLineMap.get(filterType.getCode());
+		if(filterPREMap==null){
+			return null;
+		}
+		
 		for (Map.Entry<String, IFilter<REQ, RES>> entryFilterPRE : filterPREMap.entrySet()) {
 			IFilter<REQ, RES> filterPRE = entryFilterPRE.getValue();
 			boolean checkResult = filterPRE.check(req, res, args);

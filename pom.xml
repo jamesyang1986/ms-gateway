@@ -7,35 +7,49 @@
 	<name>微服务网关</name>
 	<description>服务网关、接口网关</description>
 
+	<properties>
+		<netty-all>4.1.6.Final</netty-all>
+		<disruptor>3.3.6</disruptor>
+		<fastjson>1.2.20</fastjson>
+		<log4j-api>2.6.2</log4j-api>
+		<junit>4.12</junit>
+	</properties>
+
 	<dependencies>
 		<!-- 核心 -->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
-			<version>4.1.6.Final</version>
+			<version>${netty-all}</version>
+		</dependency>
+		<!-- 异步事件分发 -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${disruptor}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.20</version>
+			<version>${fastjson}</version>
 		</dependency>
 
 		<!-- 日志 -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.6.2</version>
+			<version>${log4j-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.6.2</version>
+			<version>${log4j-api}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
