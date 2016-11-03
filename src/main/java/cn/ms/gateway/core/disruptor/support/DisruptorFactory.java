@@ -1,32 +1,49 @@
 package cn.ms.gateway.core.disruptor.support;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
+import cn.ms.gateway.common.thread.NamedThreadFactory;
+import cn.ms.gateway.core.disruptor.DisruptorConf;
 import cn.ms.gateway.core.disruptor.IDisruptor;
-import cn.ms.gateway.core.disruptor.event.GatewayEventHandler;
 import cn.ms.gateway.core.disruptor.event.GatewayEventFactory;
+import cn.ms.gateway.core.disruptor.event.GatewayEventHandler;
 import cn.ms.gateway.core.entity.GatewayREQ;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
-import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
 
 public class DisruptorFactory implements IDisruptor {
 
+	DisruptorConf conf;
 	Disruptor<GatewayREQ> disruptor;
-	EventFactory<GatewayREQ> eventFactory = new GatewayEventFactory();
-	ExecutorService executor = Executors.newSingleThreadExecutor();
+	ExecutorService executorService;
+	EventFactory<GatewayREQ> eventFactory;
 
+	public DisruptorFactory(DisruptorConf conf) {
+		this.conf=conf;
+	}
+	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public void init() throws Exception {
-		int ringBufferSize = 1024 * 1024; // RingBuffer 大小，必须是 2 的 N 次方
-		disruptor = new Disruptor<GatewayREQ>(eventFactory, ringBufferSize,
-				executor, ProducerType.SINGLE, new YieldingWaitStrategy());
+		eventFactory = new GatewayEventFactory();
+		executorService=new FixedThreadPoolExecutor(conf.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
+			@Override
+			protected void beforeExecute(Thread t, Runnable r) {
+			
+			}
+			
+			@Override
+			protected void afterExecute(Runnable r, Throwable t) {
+			
+			}
+		};
+		
+		disruptor = new Disruptor<GatewayREQ>(eventFactory, conf.getRingBufferSize(),
+				executorService, conf.getProducerType(), conf.getWaitStrategy());
 
 		EventHandler<GatewayREQ> eventHandler = new GatewayEventHandler();
 		disruptor.handleEventsWith(eventHandler);
@@ -74,8 +91,8 @@ public class DisruptorFactory implements IDisruptor {
 			disruptor.shutdown();
 		}
 
-		if (executor != null) {
-			executor.shutdown();
+		if (executorService != null) {
+			executorService.shutdown();
 		}
 	}
 

@@ -8,7 +8,12 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 	
 	@Override
 	public void onEvent(GatewayREQ event, long sequence, boolean endOfBatch) {
-		System.out.println("Event: " + event);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Event: " + event.getContent());
 	}
 	
 }
