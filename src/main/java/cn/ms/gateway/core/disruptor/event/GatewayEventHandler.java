@@ -14,6 +14,11 @@ import cn.ms.gateway.core.entity.GatewayREQ;
 
 import com.lmax.disruptor.EventHandler;
 
+/**
+ * 网关事件处理器
+ * 
+ * @author lry
+ */
 @SuppressWarnings("deprecation")
 public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 
@@ -24,28 +29,34 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 	}
 
 	@Override
-	public void onEvent(final GatewayREQ event, long sequence, boolean endOfBatch) {
+	public void onEvent(final GatewayREQ event, long sequence, boolean endOfBatch) throws Exception {
 		try {
 			connector.connect(event, new IConnectorCallback() {
-				/**
-				 * 远程通讯回调
-				 */
+				
 				@Override
-				public void onReturn(String content) throws Throwable {
+				public void before() throws Exception {
+				}
+
+				@Override
+				public void callback(String content) throws Exception {
 					try {
 						//$NON-NLS-通道响应$
-				         FullHttpResponse response = new DefaultFullHttpResponse(
-				         		HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(content.getBytes()));
-				         response.headers().set(Names.CONTENT_TYPE, "text/plain");
-				         response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
-				         if (HttpHeaders.isKeepAlive(event.getRequest())) {
-				             response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
-				         }
-				         event.getCtx().write(response);
-				         event.getCtx().flush();
+						FullHttpResponse response = new DefaultFullHttpResponse(
+								HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(content.getBytes()));
+						response.headers().set(Names.CONTENT_TYPE, "text/plain");
+						response.headers().set(Names.CONTENT_LENGTH,response.content().readableBytes());
+						if (HttpHeaders.isKeepAlive(event.getRequest())) {
+							response.headers().set(Names.CONNECTION,Values.KEEP_ALIVE);
+						}
+						event.getCtx().write(response);
+						event.getCtx().flush();
 					} catch (Throwable t) {
 						t.printStackTrace();
 					}
+				}
+
+				@Override
+				public void after() throws Exception {
 				}
 			});
 		} catch (Throwable t) {

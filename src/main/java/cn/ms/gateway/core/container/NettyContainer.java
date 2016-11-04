@@ -12,6 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
@@ -56,6 +57,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 						ch.pipeline().addLast(new HttpResponseEncoder());
 						ch.pipeline().addLast(new HttpRequestDecoder());
 						ch.pipeline().addLast(new HttpServerInboundHandler());
+						ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
 					}
 				}).option(ChannelOption.SO_BACKLOG, 1024)
 				.childOption(ChannelOption.SO_KEEPALIVE, true);
