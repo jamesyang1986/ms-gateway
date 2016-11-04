@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 
 import java.net.URI;
 import java.util.Map;
@@ -57,6 +59,9 @@ public class NettyHttpClientConnector implements IConnector {
 			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
+				    ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
+				    		conf.getReaderIdleTimeSeconds(), conf.getWriterIdleTimeSeconds(),conf.getAllIdleTimeSeconds()));
+	                ch.pipeline().addLast(new WriteTimeoutHandler(1));  
 					ch.pipeline().addLast(new HttpResponseDecoder());
 					ch.pipeline().addLast(new HttpRequestEncoder());
 					ch.pipeline().addLast(new NettyHttpClientInboundHandler(callback));
