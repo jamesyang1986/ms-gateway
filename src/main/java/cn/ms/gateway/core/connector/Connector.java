@@ -12,6 +12,11 @@ import org.zbus.net.http.MessageClient;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 
+/**
+ * 基于Zbus(Netty)实现异步HTTP客户端
+ * 
+ * @author lry
+ */
 public class Connector implements IConnector {
 
 	private IoDriver driver = null;
