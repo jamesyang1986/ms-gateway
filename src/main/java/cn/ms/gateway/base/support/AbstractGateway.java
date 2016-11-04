@@ -28,6 +28,9 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 	@Override
 	public void addFilter(IFilter<REQ, RES> filter) {
 		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
+		
+		System.out.println("The scanner filter is: "+ filter.getClass().getName());
+		
 		if (filterEnable == null || filterEnable.value()) {// 在线过滤器
 			// 过滤器注解
 			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
@@ -78,16 +81,20 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 		IFilter<REQ, RES> filter = null;
 		if (!serviceFilterOnLineMap.isEmpty()) {
 			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(filterType);
-			if (!filterMap.isEmpty()) {
-				filter = filterMap.get(id);
+			if(filterMap!=null){
+				if (!filterMap.isEmpty()) {
+					filter = filterMap.get(id);
+				}				
 			}
 		}
 
 		if (filter == null) {
 			if (!serviceFilterOffLineMap.isEmpty()) {
 				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(filterType);
-				if (!filterMap.isEmpty()) {
-					filter = filterMap.get(id);
+				if(filterMap!=null){
+					if (!filterMap.isEmpty()) {
+						filter = filterMap.get(id);
+					}
 				}
 			}
 		}

@@ -11,8 +11,8 @@ public class FilterGatewayTest {
 		try {
 			Gateway<String, String> gateway=new Gateway<String, String>();
 			gateway.init();
-			String res=gateway.handler(null, null);
-			System.out.println("返回结果:"+res);
+//			String res=gateway.handler(null, null);
+//			System.out.println("返回结果:"+res);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

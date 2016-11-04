@@ -22,32 +22,38 @@ import cn.ms.gateway.core.interceptor.GatewayInterceptor;
 public enum Bootstrap {
 
 	INSTANCE;
-	
-	/**网关容器**/
+
+	/** 网关容器 **/
 	IContainer<GatewayREQ, GatewayRES> container = null;
-	/**网关拦截器**/
+	/** 网关拦截器 **/
 	Interceptor<GatewayREQ, GatewayRES> interceptor = null;
-	/**网关核心**/
+	/** 网关核心 **/
 	IGateway<GatewayREQ, GatewayRES> gateway = null;
 	IDisruptor disruptor = null;
-	
+
 	Bootstrap() {
 		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
-		
-		DisruptorConf conf=new DisruptorConf();
+
+		DisruptorConf conf = new DisruptorConf();
 		conf.setExecutorThread(10);
-		ConnectorConf connectorConf=new ConnectorConf();
+		ConnectorConf connectorConf = new ConnectorConf();
 		disruptor = new DisruptorFactory(conf, connectorConf);
-		
+
 		NettyConf nettyConf = new NettyConf();
 		container = new NettyContainer(gateway, nettyConf, interceptor);
 	}
-	
+
 	public void init() throws Exception {
+		gateway.init();
+		disruptor.init();
 		container.init();
+
+		//$NON-NLS-注入Disruptor$
+//		HttpProxyRouteFilter httpProxyRouteFilter = gateway.getFilter(HttpProxyRouteFilter.class);
+//		httpProxyRouteFilter.setDisruptor(disruptor);
 	}
-	
+
 	public void start() throws Exception {
 		container.start();
 	}

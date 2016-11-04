@@ -10,10 +10,10 @@ import cn.ms.gateway.core.entity.GatewayRES;
 @Filter(value = FilterType.ROUTE, order = 300)
 public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 
-	IDisruptor disruptor = null;
+	IDisruptor disruptor;
 
-	public HttpProxyRouteFilter() {
-		
+	public void setDisruptor(IDisruptor disruptor) {
+		this.disruptor=disruptor;
 	}
 
 	@Override
