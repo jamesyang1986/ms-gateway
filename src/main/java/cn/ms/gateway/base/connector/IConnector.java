@@ -1,11 +1,11 @@
 package cn.ms.gateway.base.connector;
 
-import org.zbus.net.http.MessageClient;
-
 import cn.ms.gateway.base.IAdapter;
+import cn.ms.gateway.core.connector.IConnectorCallback;
+import cn.ms.gateway.core.entity.GatewayREQ;
 
 public interface IConnector extends IAdapter {
 
-	MessageClient connect(String address) throws Throwable;
+	void connect(GatewayREQ req, IConnectorCallback callback, Object... args) throws Throwable;
 
 }

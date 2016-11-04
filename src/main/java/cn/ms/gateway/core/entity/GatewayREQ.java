@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpRequest;
 public class GatewayREQ {
 
 	String content;
-	String address="127.0.0.1:8080";
+	String originURI="http://10.24.1.66:29001/serviceId";
 	HttpRequest request;
 	ChannelHandlerContext ctx;
 	
@@ -21,11 +21,11 @@ public class GatewayREQ {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getAddress() {
-		return address;
+	public String getOriginURI() {
+		return originURI;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setOriginURI(String originURI) {
+		this.originURI = originURI;
 	}
 	public HttpRequest getRequest() {
 		return request;
