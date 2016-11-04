@@ -44,8 +44,6 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void init() throws Exception {
-		super.gateway.init();
-		
 		this.bossGroup = new NioEventLoopGroup(nettyConf.getBossGroupThread());
 		this.workerGroup = new NioEventLoopGroup(nettyConf.getWorkerGroupThread());
 
@@ -66,14 +64,12 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void start() throws Exception {
-		super.gateway.start();
-		
 		ChannelFuture channelFuture = serverBootstrap.bind(nettyConf.getPort()).sync();
 		channelFuture.addListener(new GenericFutureListener<ChannelFuture>() {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
 				if(future.isSuccess()){
-					System.out.println("启动成功");					
+					System.out.println("启动成功: http://127.0.0.1:"+nettyConf.getPort());					
 				}else{
 					System.out.println("启动失败");
 				}
@@ -104,8 +100,6 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void destory() throws Exception {
-		super.gateway.destory();
-		
 		if (serverBootstrap != null) {
 			serverBootstrap.clone();
 		}

@@ -80,7 +80,7 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 	public <T> T getFilter(FilterType filterType, String id) {
 		IFilter<REQ, RES> filter = null;
 		if (!serviceFilterOnLineMap.isEmpty()) {
-			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(filterType);
+			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(filterType.getCode());
 			if(filterMap!=null){
 				if (!filterMap.isEmpty()) {
 					filter = filterMap.get(id);
@@ -90,7 +90,7 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 
 		if (filter == null) {
 			if (!serviceFilterOffLineMap.isEmpty()) {
-				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(filterType);
+				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(filterType.getCode());
 				if(filterMap!=null){
 					if (!filterMap.isEmpty()) {
 						filter = filterMap.get(id);
