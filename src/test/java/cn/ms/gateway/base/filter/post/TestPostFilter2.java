@@ -10,19 +10,14 @@ import cn.ms.gateway.base.type.FilterType;
 public class TestPostFilter2 implements IFilter<String, String> {
 
 	@Override
-	public String filterName() {
-		return "TestPostFilter2";
-	}
-
-	@Override
 	public boolean check(String req, String res, Object...args) {
-		System.out.println(filterName()+" ---> check");
+		System.out.println(this.getClass().getName()+" ---> check");
 		return true;
 	}
 
 	@Override
 	public String run(String req, String res, Object...args) {
-		System.out.println(filterName()+" ---> run");
+		System.out.println(this.getClass().getName()+" ---> run");
 		return null;
 	}
 

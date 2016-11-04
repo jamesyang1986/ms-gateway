@@ -8,6 +8,7 @@ import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.annotation.Filter;
 import cn.ms.gateway.base.annotation.FilterEnable;
 import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.base.type.FilterType;
 
 /**
  * 微服务网关核心抽象类
@@ -26,37 +27,38 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 
 	@Override
 	public void addFilter(IFilter<REQ, RES> filter) {
-		String filterName = filter.filterName();
-		if (filterName == null || filterName.length() < 1) {
-			filterName = filter.getClass().getName();
-		}
-		
-		System.out.println("The filter is: "+filterName);
-
 		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
 		if (filterEnable == null || filterEnable.value()) {// 在线过滤器
 			// 过滤器注解
 			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
 			if (filterAnnotation != null) {
+				String filterId = filterAnnotation.id();
+				if (filterId == null || filterId.length() < 1) {
+					filterId = filter.getClass().getName();
+				}
 				String code = filterAnnotation.value().getCode();
 				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(code);
 				if (filterMap == null) {
 					filterMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
 				}
-				filterMap.put(filterName, filter);
+				filterMap.put(filterId, filter);
 
 				serviceFilterOnLineMap.put(code, filterMap);
 			}
 		} else {// 离线过滤器
-				// 过滤器注解
+			// 过滤器注解
 			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
 			if (filterAnnotation != null) {
+				String filterId = filterAnnotation.id();
+				if (filterId == null || filterId.length() < 1) {
+					filterId = filter.getClass().getName();
+				}
 				String code = filterAnnotation.value().getCode();
 				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(code);
 				if (filterMap == null) {
 					filterMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
 				}
-				filterMap.put(filterName, filter);
+				filterMap.put(filterId, filter);
 
 				serviceFilterOffLineMap.put(code, filterMap);
 			}
@@ -68,6 +70,43 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 		for (IFilter<REQ, RES> filter : filters) {
 			this.addFilter(filter);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getFilter(FilterType filterType, String id) {
+		IFilter<REQ, RES> filter = null;
+		if (!serviceFilterOnLineMap.isEmpty()) {
+			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(filterType);
+			if (!filterMap.isEmpty()) {
+				filter = filterMap.get(id);
+			}
+		}
+
+		if (filter == null) {
+			if (!serviceFilterOffLineMap.isEmpty()) {
+				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(filterType);
+				if (!filterMap.isEmpty()) {
+					filter = filterMap.get(id);
+				}
+			}
+		}
+
+		return (T) filter;
+	}
+
+	@Override
+	public <T> T getFilter(Class<T> t) {
+		Filter filterAnnotation = t.getAnnotation(Filter.class);
+		if (filterAnnotation != null) {
+			String filterId = filterAnnotation.id();
+			if (filterId == null || filterId.length() < 1) {
+				filterId = t.getName();
+			}
+			return this.getFilter(filterAnnotation.value(), filterId);
+		}
+
+		return null;
 	}
 
 }

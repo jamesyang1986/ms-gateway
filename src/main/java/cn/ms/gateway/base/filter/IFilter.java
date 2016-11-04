@@ -3,13 +3,6 @@ package cn.ms.gateway.base.filter;
 public interface IFilter<REQ, RES> {
 
 	/**
-	 * Filter Name
-	 * 
-	 * @return
-	 */
-	String filterName();
-	
-	/**
 	 * Whether to perform filtering
 	 * 
 	 * @param req

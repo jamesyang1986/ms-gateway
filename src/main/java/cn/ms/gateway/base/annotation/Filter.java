@@ -26,6 +26,13 @@ public @interface Filter {
 	String name() default "";
 	
 	/**
+	 * 过滤器ID
+	 * 
+	 * @return
+	 */
+	String id() default "";
+	
+	/**
 	 * 过滤器类型,默认为#{FilterType.PRE}
 	 * 
 	 * @return
