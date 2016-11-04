@@ -12,12 +12,12 @@ import io.netty.util.CharsetUtil;
  * 
  * @author lry
  */
-public class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
+public class NettyHttpClientInboundHandler extends ChannelInboundHandlerAdapter {
 
 	HttpResponse response;
 	IConnectorCallback callback;
 
-	public HttpClientInboundHandler(IConnectorCallback callback) {
+	public NettyHttpClientInboundHandler(IConnectorCallback callback) {
 		this.callback = callback;
 	}
 
