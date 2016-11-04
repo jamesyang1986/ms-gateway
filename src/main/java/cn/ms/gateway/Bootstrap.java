@@ -40,24 +40,16 @@ public enum Bootstrap {
 	Bootstrap() {
 		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
-
-		ConnectorConf connectorConf = new ConnectorConf();
-		connector=new ZbusNettyConnector(connectorConf);
-		
-		DisruptorConf conf = new DisruptorConf();
-		conf.setExecutorThread(10);
-		disruptor = new DisruptorFactory(conf, connector);
-
-		NettyConf nettyConf = new NettyConf();
-		container = new NettyContainer(gateway, nettyConf, interceptor);
+		connector=new ZbusNettyConnector(new ConnectorConf());
+		disruptor = new DisruptorFactory(new DisruptorConf(), connector);
+		container = new NettyContainer(gateway, new NettyConf(), interceptor);
 	}
 
 	public void init() throws Exception {
 		gateway.init();
-		
 		connector.init();
-		disruptor.init();
 		container.init();
+		disruptor.init();
 		
 		//$NON-NLS-注入Disruptor$
 		HttpProxyRouteFilter httpProxyRouteFilter = gateway.getFilter(HttpProxyRouteFilter.class);

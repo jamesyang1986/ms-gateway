@@ -52,6 +52,7 @@ public class DisruptorFactory implements IDisruptor {
 
 	@Override
 	public void start() throws Exception {
+		disruptor.start();
 	}
 
 	/**

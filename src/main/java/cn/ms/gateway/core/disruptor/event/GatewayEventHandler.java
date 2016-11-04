@@ -32,8 +32,6 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 		Message msg=new Message();
 		msg.setBody(event.getContent());
 		try {
-			System.out.println("==================");
-			
 			MessageClient messageClient=connector.connect(event.getAddress());
 			messageClient.invokeAsync(msg, new ResultCallback<Message>() {
 				/**
@@ -41,7 +39,6 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 				 */
 				@Override
 				public void onReturn(Message result) {
-					System.out.println("=+++++++++++++++++");
 					try {
 						//$NON-NLS-通道响应$
 				         FullHttpResponse response = new DefaultFullHttpResponse(
