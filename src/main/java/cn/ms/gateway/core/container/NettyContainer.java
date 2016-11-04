@@ -69,7 +69,11 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 		channelFuture.addListener(new GenericFutureListener<ChannelFuture>() {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
-				System.out.println("GenericFutureListener--->" + future);
+				if(future.isSuccess()){
+					System.out.println("启动成功");					
+				}else{
+					System.out.println("启动失败");
+				}
 			}
 		});
 	}
@@ -151,7 +155,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	    @Override
 	    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-	        System.out.println(cause.getMessage());
+	    	cause.printStackTrace();
 	        ctx.close();
 	    }
 	}

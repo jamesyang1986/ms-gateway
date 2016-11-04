@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpRequest;
 public class GatewayREQ {
 
 	String content;
-	String address;
+	String address="127.0.0.1:8080";
 	HttpRequest request;
 	ChannelHandlerContext ctx;
 	

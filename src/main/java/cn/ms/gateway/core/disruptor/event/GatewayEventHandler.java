@@ -56,8 +56,8 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 					}
 				}
 			});
-		} catch (Throwable e1) {
-			e1.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 

@@ -35,6 +35,7 @@ public class DisruptorFactory implements IDisruptor {
 	@Override
 	public void init() throws Exception {
 		eventFactory = new GatewayEventFactory();
+		connector.init();
 		executorService=new FixedThreadPoolExecutor(conf.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
 			@Override
 			protected void beforeExecute(Thread t, Runnable r) {
@@ -55,6 +56,7 @@ public class DisruptorFactory implements IDisruptor {
 	@Override
 	public void start() throws Exception {
 		disruptor.start();
+		connector.start();
 	}
 
 	/**
@@ -79,6 +81,7 @@ public class DisruptorFactory implements IDisruptor {
 		try {
 			// 获取该序号对应的事件对象
 			GatewayREQ event = ringBuffer.get(sequence);
+			event.setAddress(event.getAddress());
 			event.setContent(req.getContent());
 			event.setRequest(event.getRequest());
 			event.setCtx(req.getCtx());
@@ -90,6 +93,10 @@ public class DisruptorFactory implements IDisruptor {
 
 	@Override
 	public void destory() throws Exception {
+		if(connector!=null){
+			connector.destory();
+		}
+		
 		if (disruptor != null) {
 			// 关闭 disruptor，方法会堵塞，直至所有的事件都得到处理
 			disruptor.shutdown();
