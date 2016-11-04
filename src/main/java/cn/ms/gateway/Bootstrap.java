@@ -54,8 +54,9 @@ public enum Bootstrap {
 
 	public void init() throws Exception {
 		gateway.init();
-		disruptor.init();
+		
 		connector.init();
+		disruptor.init();
 		container.init();
 		
 		//$NON-NLS-注入Disruptor$
@@ -65,15 +66,15 @@ public enum Bootstrap {
 
 	public void start() throws Exception {
 		gateway.start();
-		disruptor.start();
 		connector.start();
+		disruptor.start();
 		container.start();
 	}
 
 	public void destory() throws Exception {
 		gateway.destory();
-		disruptor.destory();
 		connector.destory();
+		disruptor.destory();
 		container.destory();
 	}
 

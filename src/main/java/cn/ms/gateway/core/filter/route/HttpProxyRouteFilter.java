@@ -24,6 +24,7 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 	@Override
 	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) {
 		try {
+			System.out.println("000000000000000000=");
 			disruptor.publish(req);
 		} catch (Throwable e) {
 			e.printStackTrace();
