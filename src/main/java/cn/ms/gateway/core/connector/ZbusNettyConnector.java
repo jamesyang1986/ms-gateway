@@ -17,7 +17,7 @@ import cn.ms.gateway.common.thread.NamedThreadFactory;
  * 
  * @author lry
  */
-public class Connector implements IConnector {
+public class ZbusNettyConnector implements IConnector {
 
 	private IoDriver driver = null;
 	private ConnectorConf conf = null;
@@ -25,7 +25,7 @@ public class Connector implements IConnector {
 	private EventLoopGroup connectorWorkerGroup = null;
 	private ConcurrentHashMap<String, MessageClient> messageClientMap = new ConcurrentHashMap<String, MessageClient>();
 
-	public Connector(ConnectorConf conf) {
+	public ZbusNettyConnector(ConnectorConf conf) {
 		this.conf = conf;
 	}
 

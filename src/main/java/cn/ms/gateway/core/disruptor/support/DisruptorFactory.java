@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
-import cn.ms.gateway.core.connector.Connector;
+import cn.ms.gateway.core.connector.ZbusNettyConnector;
 import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.disruptor.DisruptorConf;
 import cn.ms.gateway.core.disruptor.IDisruptor;
@@ -28,7 +28,7 @@ public class DisruptorFactory implements IDisruptor {
 
 	public DisruptorFactory(DisruptorConf conf, ConnectorConf connectorConf) {
 		this.conf=conf;
-		this.connector=new Connector(connectorConf);
+		this.connector=new ZbusNettyConnector(connectorConf);
 	}
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
