@@ -5,11 +5,11 @@ import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
 
 /**
- * 网关拦截器
+ * Netty拦截器
  * 
  * @author lry
  */
-public class GatewayInterceptor implements Interceptor<GatewayREQ, GatewayRES> {
+public class NettyInterceptor implements Interceptor<GatewayREQ, GatewayRES> {
 
 	@Override
 	public GatewayREQ before(GatewayREQ req, Object... args) throws Throwable {

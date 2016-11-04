@@ -16,11 +16,11 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
+import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.support.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
-import cn.ms.gateway.core.interceptor.GatewayInterceptor;
 
 /**
  * 基于Netty实现的网关容器
@@ -33,10 +33,13 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
-	Interceptor<GatewayREQ, GatewayRES> interceptor = new GatewayInterceptor(this);
-
-	public NettyContainer(NettyConf nettyConf) {
+	Interceptor<GatewayREQ, GatewayRES> interceptor=null;
+	
+	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway, NettyConf nettyConf, Interceptor<GatewayREQ, GatewayRES> interceptor) {
+		super(gateway);
+		
 		this.nettyConf = nettyConf;
+		this.interceptor=interceptor;
 	}
 
 	@Override
@@ -87,7 +90,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 			if (beforeGatewayREQ != null) {
 				interceptorGatewayREQ = beforeGatewayREQ;
 			}
-			interceptorGatewayRES = interceptor.interceptor(interceptorGatewayREQ, args);
+			GatewayRES res = null;
+			interceptorGatewayRES = super.sendGatewayHandler(interceptorGatewayREQ, res, args);
 		} finally {
 			GatewayRES afterGatewayRES = interceptor.after(interceptorGatewayREQ, interceptorGatewayRES, args);
 			if (afterGatewayRES != null) {

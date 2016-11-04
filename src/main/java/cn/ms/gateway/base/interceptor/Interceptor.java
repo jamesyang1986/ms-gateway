@@ -18,16 +18,6 @@ public interface Interceptor<REQ, RES> {
 	REQ before(REQ req, Object... args) throws Throwable;
 
 	/**
-	 * 拦截处理
-	 * 
-	 * @param req
-	 * @param args
-	 * @return
-	 * @throws Throwable
-	 */
-	RES interceptor(REQ req, Object... args) throws Throwable;
-
-	/**
 	 * 拦截后处理
 	 * 
 	 * @param req

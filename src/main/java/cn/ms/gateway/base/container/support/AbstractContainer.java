@@ -1,6 +1,5 @@
 package cn.ms.gateway.base.container.support;
 
-import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.IContainer;
 
@@ -11,7 +10,11 @@ import cn.ms.gateway.base.container.IContainer;
  */
 public abstract class AbstractContainer<REQ, RES> implements IContainer<REQ, RES> {
 
-	protected IGateway<REQ, RES> gateway = new Gateway<REQ, RES>();
+	protected IGateway<REQ, RES> gateway = null;
+	
+	public AbstractContainer(IGateway<REQ, RES> gateway) {
+		this.gateway=gateway;
+	}
 	
 	public RES sendGatewayHandler(REQ req, RES res, Object... args) throws Throwable {
 		return gateway.handler(req, res, args);
