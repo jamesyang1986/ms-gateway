@@ -9,6 +9,7 @@
 
 	<properties>
 		<netty-all>4.1.6.Final</netty-all>
+		<zbus>7.2.0</zbus>
 		<disruptor>3.3.6</disruptor>
 		<fastjson>1.2.20</fastjson>
 		<log4j-api>2.6.2</log4j-api>
@@ -21,6 +22,11 @@
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>${netty-all}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.zbus</groupId>
+			<artifactId>zbus</artifactId>
+			<version>${zbus}</version>
 		</dependency>
 		<!-- 异步事件分发 -->
 		<dependency>

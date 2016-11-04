@@ -1,5 +1,6 @@
 package cn.ms.gateway.core.disruptor;
 
+import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.disruptor.support.DisruptorFactory;
 import cn.ms.gateway.core.entity.GatewayREQ;
 
@@ -8,7 +9,8 @@ public class GatewayDisruptorTest {
 	public static void main(String[] args) {
 		DisruptorConf conf=new DisruptorConf();
 		conf.setExecutorThread(10);
-		IDisruptor disruptor=new DisruptorFactory(conf);
+		ConnectorConf connectorConf=new ConnectorConf();
+		IDisruptor disruptor=new DisruptorFactory(conf, connectorConf);
 		try {
 			disruptor.init();//初始化
 			disruptor.start();//启动

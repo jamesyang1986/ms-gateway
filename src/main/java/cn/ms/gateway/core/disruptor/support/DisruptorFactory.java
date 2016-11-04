@@ -2,8 +2,11 @@ package cn.ms.gateway.core.disruptor.support;
 
 import java.util.concurrent.ExecutorService;
 
+import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
+import cn.ms.gateway.core.connector.Connector;
+import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.disruptor.DisruptorConf;
 import cn.ms.gateway.core.disruptor.IDisruptor;
 import cn.ms.gateway.core.disruptor.event.GatewayEventFactory;
@@ -21,9 +24,11 @@ public class DisruptorFactory implements IDisruptor {
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
+	IConnector connector=null;
 
-	public DisruptorFactory(DisruptorConf conf) {
+	public DisruptorFactory(DisruptorConf conf, ConnectorConf connectorConf) {
 		this.conf=conf;
+		this.connector=new Connector(connectorConf);
 	}
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
@@ -33,19 +38,17 @@ public class DisruptorFactory implements IDisruptor {
 		executorService=new FixedThreadPoolExecutor(conf.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
 			@Override
 			protected void beforeExecute(Thread t, Runnable r) {
-			
 			}
 			
 			@Override
 			protected void afterExecute(Runnable r, Throwable t) {
-			
 			}
 		};
 		
 		disruptor = new Disruptor<GatewayREQ>(eventFactory, conf.getRingBufferSize(),
 				executorService, conf.getProducerType(), conf.getWaitStrategy());
 
-		EventHandler<GatewayREQ> eventHandler = new GatewayEventHandler();
+		EventHandler<GatewayREQ> eventHandler = new GatewayEventHandler(connector);
 		disruptor.handleEventsWith(eventHandler);
 	}
 

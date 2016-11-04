@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpRequest;
 public class GatewayREQ {
 
 	String content;
+	String address;
 	HttpRequest request;
 	ChannelHandlerContext ctx;
 	
@@ -19,6 +20,12 @@ public class GatewayREQ {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public HttpRequest getRequest() {
 		return request;
