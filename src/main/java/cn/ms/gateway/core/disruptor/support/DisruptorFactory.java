@@ -81,9 +81,9 @@ public class DisruptorFactory implements IDisruptor {
 		try {
 			// 获取该序号对应的事件对象
 			GatewayREQ event = ringBuffer.get(sequence);
-			event.setAddress(event.getAddress());
+			event.setAddress(req.getAddress());
 			event.setContent(req.getContent());
-			event.setRequest(event.getRequest());
+			event.setRequest(req.getRequest());
 			event.setCtx(req.getCtx());
 		} finally {
 			// 发布事件
