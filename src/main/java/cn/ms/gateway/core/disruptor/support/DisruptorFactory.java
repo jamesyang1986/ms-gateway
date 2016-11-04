@@ -5,8 +5,6 @@ import java.util.concurrent.ExecutorService;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
-import cn.ms.gateway.core.connector.ZbusNettyConnector;
-import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.disruptor.DisruptorConf;
 import cn.ms.gateway.core.disruptor.IDisruptor;
 import cn.ms.gateway.core.disruptor.event.GatewayEventFactory;
@@ -26,16 +24,15 @@ public class DisruptorFactory implements IDisruptor {
 	EventFactory<GatewayREQ> eventFactory;
 	IConnector connector=null;
 
-	public DisruptorFactory(DisruptorConf conf, ConnectorConf connectorConf) {
+	public DisruptorFactory(DisruptorConf conf, IConnector connector) {
 		this.conf=conf;
-		this.connector=new ZbusNettyConnector(connectorConf);
+		this.connector=connector;
 	}
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public void init() throws Exception {
 		eventFactory = new GatewayEventFactory();
-		connector.init();
 		executorService=new FixedThreadPoolExecutor(conf.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
 			@Override
 			protected void beforeExecute(Thread t, Runnable r) {
@@ -55,8 +52,6 @@ public class DisruptorFactory implements IDisruptor {
 
 	@Override
 	public void start() throws Exception {
-		disruptor.start();
-		connector.start();
 	}
 
 	/**
@@ -93,10 +88,6 @@ public class DisruptorFactory implements IDisruptor {
 
 	@Override
 	public void destory() throws Exception {
-		if(connector!=null){
-			connector.destory();
-		}
-		
 		if (disruptor != null) {
 			// 关闭 disruptor，方法会堵塞，直至所有的事件都得到处理
 			disruptor.shutdown();

@@ -2,9 +2,11 @@ package cn.ms.gateway;
 
 import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.IGateway;
+import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.connector.ConnectorConf;
+import cn.ms.gateway.core.connector.ZbusNettyConnector;
 import cn.ms.gateway.core.container.NettyConf;
 import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.disruptor.DisruptorConf;
@@ -24,22 +26,27 @@ public enum Bootstrap {
 
 	INSTANCE;
 
-	/** 网关容器 **/
-	IContainer<GatewayREQ, GatewayRES> container = null;
-	/** 网关拦截器 **/
-	Interceptor<GatewayREQ, GatewayRES> interceptor = null;
 	/** 网关核心 **/
 	IGateway<GatewayREQ, GatewayRES> gateway = null;
+	/** 拦截器 **/
+	Interceptor<GatewayREQ, GatewayRES> interceptor = null;
+	/** 事件处理器 **/
 	IDisruptor disruptor = null;
-
+	/** 连接器 **/
+	IConnector connector=null;
+	/** 网关容器 **/
+	IContainer<GatewayREQ, GatewayRES> container = null;
+	
 	Bootstrap() {
 		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
 
+		ConnectorConf connectorConf = new ConnectorConf();
+		connector=new ZbusNettyConnector(connectorConf);
+		
 		DisruptorConf conf = new DisruptorConf();
 		conf.setExecutorThread(10);
-		ConnectorConf connectorConf = new ConnectorConf();
-		disruptor = new DisruptorFactory(conf, connectorConf);
+		disruptor = new DisruptorFactory(conf, connector);
 
 		NettyConf nettyConf = new NettyConf();
 		container = new NettyContainer(gateway, nettyConf, interceptor);
@@ -48,6 +55,7 @@ public enum Bootstrap {
 	public void init() throws Exception {
 		gateway.init();
 		disruptor.init();
+		connector.init();
 		container.init();
 		
 		//$NON-NLS-注入Disruptor$
@@ -56,11 +64,16 @@ public enum Bootstrap {
 	}
 
 	public void start() throws Exception {
+		gateway.start();
+		disruptor.start();
+		connector.start();
 		container.start();
-
 	}
 
 	public void destory() throws Exception {
+		gateway.destory();
+		disruptor.destory();
+		connector.destory();
 		container.destory();
 	}
 

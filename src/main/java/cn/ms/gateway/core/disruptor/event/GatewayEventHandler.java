@@ -31,7 +31,6 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 	public void onEvent(final GatewayREQ event, long sequence, boolean endOfBatch) {
 		Message msg=new Message();
 		msg.setBody(event.getContent());
-		
 		try {
 			MessageClient messageClient=connector.connect(event.getAddress());
 			messageClient.invokeAsync(msg, new ResultCallback<Message>() {
