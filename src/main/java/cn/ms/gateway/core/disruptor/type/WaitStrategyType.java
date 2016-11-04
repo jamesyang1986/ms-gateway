@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.disruptor;
+package cn.ms.gateway.core.disruptor.type;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.SleepingWaitStrategy;

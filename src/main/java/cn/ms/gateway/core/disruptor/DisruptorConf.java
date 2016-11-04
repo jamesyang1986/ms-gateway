@@ -1,5 +1,7 @@
 package cn.ms.gateway.core.disruptor;
 
+import cn.ms.gateway.core.disruptor.type.WaitStrategyType;
+
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 
