@@ -5,8 +5,6 @@ import java.util.concurrent.ExecutorService;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
-import cn.ms.gateway.core.disruptor.DisruptorConf;
-import cn.ms.gateway.core.disruptor.IDisruptor;
 import cn.ms.gateway.core.disruptor.event.GatewayEventFactory;
 import cn.ms.gateway.core.disruptor.event.GatewayEventHandler;
 import cn.ms.gateway.core.entity.GatewayREQ;

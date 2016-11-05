@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ms.gateway.base.IGateway;
-import cn.ms.gateway.base.annotation.Filter;
-import cn.ms.gateway.base.annotation.FilterEnable;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.base.type.FilterType;
+import cn.ms.gateway.common.annotation.Filter;
+import cn.ms.gateway.common.annotation.FilterEnable;
 
 /**
  * 微服务网关核心抽象类

@@ -1,8 +1,8 @@
 package cn.ms.gateway.core.filter.route;
 
-import cn.ms.gateway.base.annotation.Filter;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.base.type.FilterType;
+import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.core.disruptor.IDisruptor;
 import cn.ms.gateway.core.entity.GatewayREQ;
 import cn.ms.gateway.core.entity.GatewayRES;
