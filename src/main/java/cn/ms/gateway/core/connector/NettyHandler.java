@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.util.CharsetUtil;
 import cn.ms.gateway.base.connector.IProxyCallback;
+import cn.ms.gateway.entity.GatewayRES;
 
 /**
  * 网关
@@ -35,7 +36,10 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
 				buf = content.content();
 				String resContent = buf.toString(CharsetUtil.UTF_8);
 
-				callback.callback(resContent);
+				GatewayRES gatewayRES=new GatewayRES();
+				gatewayRES.setContent(resContent);
+				
+				callback.callback(gatewayRES);
 			} finally {
 				buf.release();
 			}

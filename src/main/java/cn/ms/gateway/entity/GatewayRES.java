@@ -7,4 +7,14 @@ package cn.ms.gateway.entity;
  */
 public class GatewayRES {
 
+	private String content;
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 }

@@ -8,10 +8,13 @@ import io.netty.handler.codec.http.HttpRequest;
 
 import org.apache.logging.log4j.ThreadContext;
 
+import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
+import cn.ms.gateway.core.AssemblySupport;
 import cn.ms.gateway.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayRES;
 
 public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
     
@@ -33,7 +36,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof HttpContent) {
         	long tradeStartTime=System.currentTimeMillis();
         	String tradeId=String.valueOf(tradeIdWorker.nextId());
-        	ThreadContext.put("tradeId", tradeId);
+        	ThreadContext.put(Constants.TRADEID_KEY, tradeId);
         	logger.info("=====交易开始=====");
         	
             HttpContent httpContent = (HttpContent) msg;
@@ -41,17 +44,22 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
             String content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
             buf.release();
 
-            GatewayREQ req=new GatewayREQ();
-            req.setTradeId(String.valueOf(tradeId));
-            req.setTradeStartTime(tradeStartTime);
-            req.setContent(content);
-            req.setRequest(request);
-            req.setCtx(ctx);
+            GatewayREQ gatewayREQ=new GatewayREQ();
+            gatewayREQ.setTradeId(String.valueOf(tradeId));
+            gatewayREQ.setTradeStartTime(tradeStartTime);
+            gatewayREQ.setContent(content);
+            gatewayREQ.setRequest(request);
+            gatewayREQ.setCtx(ctx);
             
             try {
-            	callback.callback(req, request);
-			} catch (Throwable e) {
-				e.printStackTrace();
+            	GatewayRES gatewayRES = callback.callback(gatewayREQ, request);
+            	
+            	if(gatewayRES!=null){
+            		//$NON-NLS-组装响应结果$
+            		AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
+            	}
+			} catch (Throwable t) {
+				t.printStackTrace();
 			}
         }
     }
