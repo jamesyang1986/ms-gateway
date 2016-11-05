@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.disruptor.support;
+package cn.ms.gateway.core.disruptor;
 
 import java.util.concurrent.ExecutorService;
 

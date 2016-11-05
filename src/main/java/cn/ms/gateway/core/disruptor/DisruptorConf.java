@@ -1,14 +1,17 @@
 package cn.ms.gateway.core.disruptor;
 
-import cn.ms.gateway.core.disruptor.type.WaitStrategyType;
-
+import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
-
-
 
 public class DisruptorConf {
 
+	public static final WaitStrategy BLOCKING_WAIT=new BlockingWaitStrategy();
+	public static final WaitStrategy SLEEPING_WAIT=new SleepingWaitStrategy();
+	public static final WaitStrategy YIELDING_WAIT=new YieldingWaitStrategy();
+	
 	/**
 	 * The size of the ring buffer, must be power of 2.
 	 */
@@ -24,7 +27,7 @@ public class DisruptorConf {
 	/**
 	 * The wait strategy to use for the ring buffer.
 	 */
-	WaitStrategy waitStrategy=WaitStrategyType.YIELDING_WAIT;
+	WaitStrategy waitStrategy=YIELDING_WAIT;
 	
 	public int getRingBufferSize() {
 		return ringBufferSize;
