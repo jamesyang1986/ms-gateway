@@ -1,7 +1,7 @@
 package cn.ms.gateway.core.filter.route;
 
-import cn.ms.gateway.base.FilterType;
 import cn.ms.gateway.base.event.IEvent;
+import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.entity.GatewayREQ;

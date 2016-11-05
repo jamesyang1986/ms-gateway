@@ -2,6 +2,7 @@ package cn.ms.gateway.base;
 
 import java.util.List;
 
+import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
 
 /**
