@@ -1,6 +1,6 @@
 package cn.ms.gateway.base.event;
 
-import cn.ms.gateway.base.IAdapter;
+import cn.ms.gateway.IAdapter;
 import cn.ms.gateway.entity.GatewayREQ;
 
 /**

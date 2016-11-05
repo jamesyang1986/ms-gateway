@@ -1,6 +1,6 @@
 package cn.ms.gateway.base.container;
 
-import cn.ms.gateway.base.IAdapter;
+import cn.ms.gateway.IAdapter;
 
 /**
  * 容器模块

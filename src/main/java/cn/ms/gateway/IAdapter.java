@@ -1,4 +1,4 @@
-package cn.ms.gateway.base;
+package cn.ms.gateway;
 
 /**
  * 适配器
