@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cn.ms.gateway.base.connector.IConnector;
+import cn.ms.gateway.base.connector.IProxyCallback;
 import cn.ms.gateway.core.entity.GatewayREQ;
 
 @SuppressWarnings("deprecation")
@@ -51,7 +52,7 @@ public class NettyConnector implements IConnector {
 	}
 
 	@Override
-	public void connect(GatewayREQ req, final IConnectorCallback callback, Object... args) throws Throwable {
+	public void connect(GatewayREQ req, final IProxyCallback callback, Object... args) throws Throwable {
 		URI tempURI = new URI(req.getOriginURI());
 		String address=tempURI.getHost()+":"+(tempURI.getPort()<=0?80:tempURI.getPort());
 		ChannelFuture channelFuture = channelFutureMap.get(address);

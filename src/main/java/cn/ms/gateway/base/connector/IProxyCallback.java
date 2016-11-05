@@ -1,8 +1,8 @@
-package cn.ms.gateway.core.connector;
+package cn.ms.gateway.base.connector;
 
 import io.netty.handler.codec.http.HttpResponse;
 
-public interface IConnectorCallback {
+public interface IProxyCallback {
 
 	void before(HttpResponse response) throws Exception;
 

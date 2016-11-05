@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import cn.ms.gateway.base.connector.IConnector;
-import cn.ms.gateway.core.connector.IConnectorCallback;
+import cn.ms.gateway.base.connector.IProxyCallback;
 import cn.ms.gateway.core.entity.GatewayREQ;
 
 import com.lmax.disruptor.EventHandler;
@@ -32,7 +32,7 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 	@Override
 	public void onEvent(final GatewayREQ event, long sequence, boolean endOfBatch) throws Exception {
 		try {
-			connector.connect(event, new IConnectorCallback() {
+			connector.connect(event, new IProxyCallback() {
 				
 				@Override
 				public void before(HttpResponse response) throws Exception {

@@ -6,6 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.util.CharsetUtil;
+import cn.ms.gateway.base.connector.IProxyCallback;
 
 /**
  * 网关
@@ -14,9 +15,9 @@ import io.netty.util.CharsetUtil;
  */
 public class NettyHandler extends ChannelInboundHandlerAdapter {
 
-	IConnectorCallback callback;
+	IProxyCallback callback;
 
-	public NettyHandler(IConnectorCallback callback) {
+	public NettyHandler(IProxyCallback callback) {
 		this.callback = callback;
 	}
 
