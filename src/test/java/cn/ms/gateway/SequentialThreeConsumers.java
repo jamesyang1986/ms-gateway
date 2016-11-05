@@ -2,6 +2,7 @@ package cn.ms.gateway;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
+import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
@@ -53,7 +54,17 @@ public class SequentialThreeConsumers {
 		disruptor.handleEventsWith(handler1).then(handler2).then(handler3);
 		disruptor.start();
 		while (true) {
-			
+			disruptor.publishEvent(new EventTranslator<MyEvent>() {
+				@Override
+				public void translateTo(MyEvent event, long sequence) {
+					System.out.println("--------");
+				}
+			});
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
