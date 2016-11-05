@@ -3,6 +3,7 @@ package cn.ms.gateway.core.disruptor;
 import java.util.concurrent.ExecutorService;
 
 import cn.ms.gateway.base.connector.IConnector;
+import cn.ms.gateway.base.disruptor.IDisruptor;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.core.disruptor.event.GatewayEventFactory;
