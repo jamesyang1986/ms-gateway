@@ -16,6 +16,7 @@ import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.AbstractContainer;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
+import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.common.utils.NetUtils;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -41,8 +42,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void init() throws Exception {
-		this.bossGroup = new NioEventLoopGroup(nettyConf.getBossGroupThread());
-		this.workerGroup = new NioEventLoopGroup(nettyConf.getWorkerGroupThread());
+		this.bossGroup = new NioEventLoopGroup(nettyConf.getBossGroupThread(), new NamedThreadFactory("NettyContainerBoss"));
+		this.workerGroup = new NioEventLoopGroup(nettyConf.getWorkerGroupThread(), new NamedThreadFactory("NettyContainerWorker"));
 
 		serverBootstrap = new ServerBootstrap();
 		serverBootstrap.group(bossGroup, workerGroup)

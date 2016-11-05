@@ -42,7 +42,7 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 			final long routeStartTime = System.currentTimeMillis();
 			
 			ThreadContext.put("tradeId", event.getTradeId());// 线程参数继续
-			logger.info("=====路由开始=====");
+			logger.info("=====路由开始====="+routeStartTime);
 			
 			connector.connect(event, new IProxyCallback() {
 				@Override
@@ -68,7 +68,7 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 						t.printStackTrace();
 					} finally {
 						logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - routeStartTime));
-						logger.info("[交易总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - event.getTradeStartTime()));
+						logger.info("[网关总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - event.getTradeStartTime()));
 					}
 				}
 			});

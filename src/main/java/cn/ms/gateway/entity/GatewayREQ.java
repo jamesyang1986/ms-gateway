@@ -19,6 +19,10 @@ public class GatewayREQ {
 	 */
 	long tradeStartTime;
 	/**
+	 * 路由开始时间
+	 */
+	long routeStartTime;
+	/**
 	 * 请求报文
 	 */
 	String content;
@@ -40,6 +44,12 @@ public class GatewayREQ {
 	}
 	public void setTradeStartTime(long tradeStartTime) {
 		this.tradeStartTime = tradeStartTime;
+	}
+	public long getRouteStartTime() {
+		return routeStartTime;
+	}
+	public void setRouteStartTime(long routeStartTime) {
+		this.routeStartTime = routeStartTime;
 	}
 	public String getContent() {
 		return content;

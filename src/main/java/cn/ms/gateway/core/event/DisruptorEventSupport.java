@@ -83,6 +83,7 @@ public class DisruptorEventSupport implements IEvent {
 			event.setRequest(req.getRequest());
 			event.setCtx(req.getCtx());
 		} finally {
+			//TODO MDC问题需要处理?
 			ringBuffer.publish(sequence);// 发布事件
 		}
 	}
