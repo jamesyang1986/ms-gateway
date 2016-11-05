@@ -75,6 +75,9 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 			try {
 				//$NON-NLS-PRE过滤器过滤$
 				res = doHandler(FilterType.PRE, req, res, args);
+				if(res!=null){
+					return res;
+				}
 			} catch (Throwable e) {
 				res = doHandler(FilterType.ERROR, req, res, args);
 				return doHandler(FilterType.POST, req, res, args);
@@ -83,14 +86,9 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 			try {
 				//$NON-NLS-ROUTE过滤器过滤$
 				res = doHandler(FilterType.ROUTE, req, res, args);
-			} catch (Throwable e) {
-				res = doHandler(FilterType.ERROR, req, res, args);
-				return doHandler(FilterType.POST, req, res, args);
-			}
-
-			try {
-				//$NON-NLS-PRE过滤器过滤$
-				return doHandler(FilterType.POST, req, res, args);
+				if(res!=null){
+					return res;
+				}
 			} catch (Throwable e) {
 				res = doHandler(FilterType.ERROR, req, res, args);
 				return doHandler(FilterType.POST, req, res, args);
@@ -98,7 +96,16 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 		} catch (Throwable t) {
 			//$NON-NLS-ERROR过滤器过滤$
 			return doHandler(FilterType.ERROR, req, res, args);
+		} finally {
+			try {
+				//$NON-NLS-PRE过滤器过滤$
+				doHandler(FilterType.POST, req, res, args);
+			} catch (Throwable e) {
+				res = doHandler(FilterType.ERROR, req, res, args);
+			}
 		}
+		
+		return res;
 	}
 	
 	/**
