@@ -8,6 +8,8 @@ import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.common.annotation.FilterEnable;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
 
 /**
  * 微服务网关核心抽象类
@@ -19,6 +21,8 @@ import cn.ms.gateway.common.annotation.FilterEnable;
  */
 public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 
+	private static final Logger logger=LoggerFactory.getLogger(AbstractGateway.class);
+	
 	/** 在线过滤器 **/
 	protected Map<String, Map<String, IFilter<REQ, RES>>> serviceFilterOnLineMap = new LinkedHashMap<String, Map<String, IFilter<REQ, RES>>>();
 	/** 离线过滤器 **/
@@ -28,7 +32,7 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 	public void addFilter(IFilter<REQ, RES> filter) {
 		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
 		
-		System.out.println("The scanner filter is: "+ filter.getClass().getName());
+		logger.info("The scanner filter is: %s", filter.getClass().getName());
 		
 		if (filterEnable == null || filterEnable.value()) {// 在线过滤器
 			// 过滤器注解

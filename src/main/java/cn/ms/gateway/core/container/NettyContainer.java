@@ -20,6 +20,9 @@ import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
+import cn.ms.gateway.common.utils.NetUtils;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -30,6 +33,8 @@ import cn.ms.gateway.entity.GatewayRES;
  */
 public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
+	private static final Logger logger=LoggerFactory.getLogger(NettyContainer.class);
+	
 	NettyConf nettyConf;
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
@@ -71,9 +76,9 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
 				if(future.isSuccess()){
-					System.out.println("启动成功: http://127.0.0.1:"+nettyConf.getPort());					
+					logger.info("启动成功: http://%s:%s", NetUtils.getLocalIp(), nettyConf.getPort());
 				}else{
-					System.out.println("启动失败");
+					logger.error("启动失败");
 				}
 			}
 		});
