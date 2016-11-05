@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpRequest;
 public class GatewayREQ {
 
 	String content;
-	String originURI="http://10.24.1.66:29001/serviceId";
+	String originURI="http://localhost:8844/serviceId";
 	HttpRequest request;
 	ChannelHandlerContext ctx;
 	
