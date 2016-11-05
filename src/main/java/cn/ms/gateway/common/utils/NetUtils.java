@@ -103,7 +103,7 @@ public class NetUtils {
 			} 
 			if(matchedIp != null) return matchedIp;
 			return "127.0.0.1";
-		} catch (Throwable e) { 
+		} catch (Exception e) { 
 			return "127.0.0.1";
 		}
 	}
