@@ -20,8 +20,8 @@ import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.support.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
-import cn.ms.gateway.core.entity.GatewayREQ;
-import cn.ms.gateway.core.entity.GatewayRES;
+import cn.ms.gateway.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayRES;
 
 /**
  * 基于Netty实现的网关容器

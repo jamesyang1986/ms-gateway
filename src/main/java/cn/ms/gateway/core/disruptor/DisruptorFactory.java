@@ -8,7 +8,7 @@ import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.core.disruptor.event.GatewayEventFactory;
 import cn.ms.gateway.core.disruptor.event.GatewayEventHandler;
-import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayREQ;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;

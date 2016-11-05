@@ -1,8 +1,8 @@
 package cn.ms.gateway.core.interceptor;
 
 import cn.ms.gateway.base.interceptor.Interceptor;
-import cn.ms.gateway.core.entity.GatewayREQ;
-import cn.ms.gateway.core.entity.GatewayRES;
+import cn.ms.gateway.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayRES;
 
 /**
  * 网关拦截器

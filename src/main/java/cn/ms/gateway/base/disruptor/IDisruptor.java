@@ -1,7 +1,7 @@
 package cn.ms.gateway.base.disruptor;
 
 import cn.ms.gateway.base.IAdapter;
-import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayREQ;
 
 /**
  * 事件处理

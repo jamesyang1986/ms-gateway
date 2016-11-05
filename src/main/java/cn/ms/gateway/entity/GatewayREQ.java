@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.entity;
+package cn.ms.gateway.entity;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;

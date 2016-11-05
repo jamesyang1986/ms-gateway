@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.connector.IProxyCallback;
-import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayREQ;
 
 @SuppressWarnings("deprecation")
 public class NettyConnector implements IConnector {

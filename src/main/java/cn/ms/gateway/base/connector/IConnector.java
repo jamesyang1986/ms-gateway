@@ -1,7 +1,7 @@
 package cn.ms.gateway.base.connector;
 
 import cn.ms.gateway.base.IAdapter;
-import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayREQ;
 
 public interface IConnector extends IAdapter {
 

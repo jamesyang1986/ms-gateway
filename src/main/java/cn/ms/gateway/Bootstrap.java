@@ -12,10 +12,10 @@ import cn.ms.gateway.core.container.NettyConf;
 import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.disruptor.DisruptorConf;
 import cn.ms.gateway.core.disruptor.DisruptorFactory;
-import cn.ms.gateway.core.entity.GatewayREQ;
-import cn.ms.gateway.core.entity.GatewayRES;
 import cn.ms.gateway.core.filter.route.HttpProxyRouteFilter;
 import cn.ms.gateway.core.interceptor.GatewayInterceptor;
+import cn.ms.gateway.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayRES;
 
 /**
  * 微服务网关
