@@ -84,17 +84,14 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 		GatewayREQ interceptorGatewayREQ = req;
 		GatewayRES interceptorGatewayRES = null;
 		try {
-			GatewayREQ beforeGatewayREQ = interceptor.before(interceptorGatewayREQ, args);
-			if (beforeGatewayREQ != null) {
-				interceptorGatewayREQ = beforeGatewayREQ;
+			boolean interceptorResult = interceptor.before(interceptorGatewayREQ, args);
+			if (interceptorResult) {
+				
 			}
 			GatewayRES res = null;
 			interceptorGatewayRES = super.sendGatewayHandler(interceptorGatewayREQ, res, args);
 		} finally {
-			GatewayRES afterGatewayRES = interceptor.after(interceptorGatewayREQ, interceptorGatewayRES, args);
-			if (afterGatewayRES != null) {
-				interceptorGatewayRES = afterGatewayRES;
-			}
+			interceptor.after(interceptorGatewayREQ, interceptorGatewayRES, args);
 		}
 
 		return interceptorGatewayRES;
@@ -102,16 +99,16 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void destory() throws Exception {
-		if (serverBootstrap != null) {
-			serverBootstrap.clone();
-		}
-
 		if (workerGroup != null) {
 			workerGroup.shutdownGracefully();
 		}
 
 		if (bossGroup != null) {
 			bossGroup.shutdownGracefully();
+		}
+		
+		if (serverBootstrap != null) {
+			serverBootstrap.clone();
 		}
 	}
 	

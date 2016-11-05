@@ -69,7 +69,8 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 	}
 
 	@Override
-	public RES handler(REQ req, RES res, Object... args) throws Throwable {
+	public RES handler(REQ req, Object... args) throws Throwable {
+		RES res = null;
 		try {
 			try {
 				//$NON-NLS-PRE过滤器过滤$

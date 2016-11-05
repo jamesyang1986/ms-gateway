@@ -12,14 +12,14 @@ import cn.ms.gateway.entity.GatewayRES;
 public class NettyInterceptor implements Interceptor<GatewayREQ, GatewayRES> {
 
 	@Override
-	public GatewayREQ before(GatewayREQ req, Object... args) throws Throwable {
-		return null;
+	public boolean before(GatewayREQ req, Object... args) throws Throwable {
+		return true;
 	}
 
 	@Override
-	public GatewayRES after(GatewayREQ req, GatewayRES res, Object... args)
+	public void after(GatewayREQ req, GatewayRES res, Object... args)
 			throws Throwable {
-		return null;
+
 	}
 
 }
