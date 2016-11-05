@@ -25,13 +25,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.connector.IProxyCallback;
+import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 
 @SuppressWarnings("deprecation")
 public class NettyConnector implements IConnector {
 
-	ConnectorConf conf;
-	Bootstrap bootstrap = new Bootstrap();
+	private ConnectorConf conf = null;
+	private Bootstrap bootstrap = null;
+	private ConcurrentHashMap<String, NettyHandler> nettyHandlerMap = new ConcurrentHashMap<String, NettyHandler>();
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
 
 	public NettyConnector(ConnectorConf conf) {
@@ -40,7 +42,8 @@ public class NettyConnector implements IConnector {
 	
 	@Override
 	public void init() throws Exception {
-		EventLoopGroup workerGroup = new NioEventLoopGroup(conf.getConnectorWorkerThreadNum());
+		EventLoopGroup workerGroup = new NioEventLoopGroup(conf.getConnectorWorkerThreadNum(), new NamedThreadFactory("NettyConnectorWorker"));
+		bootstrap = new Bootstrap();
 		bootstrap.group(workerGroup);
 		bootstrap.channel(NioSocketChannel.class);
 		bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
@@ -55,8 +58,12 @@ public class NettyConnector implements IConnector {
 	public void connect(GatewayREQ req, final IProxyCallback callback, Object... args) throws Throwable {
 		URI tempURI = new URI(req.getOriginURI());
 		String address=tempURI.getHost()+":"+(tempURI.getPort()<=0?80:tempURI.getPort());
+		
+		//$NON-NLS-处理器和通道回收利用,一次创建N次使用$
+		NettyHandler nettyHandler = nettyHandlerMap.get(address);
 		ChannelFuture channelFuture = channelFutureMap.get(address);
-		if (channelFuture == null) {
+		if (nettyHandler==null || channelFuture == null) {
+			final NettyHandler tempNettyHandler = new NettyHandler();
 			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
@@ -65,14 +72,18 @@ public class NettyConnector implements IConnector {
 	                ch.pipeline().addLast(new WriteTimeoutHandler(1));  
 					ch.pipeline().addLast(new HttpResponseDecoder());
 					ch.pipeline().addLast(new HttpRequestEncoder());
-					ch.pipeline().addLast(new NettyHandler(callback));
+					ch.pipeline().addLast(tempNettyHandler);
 				}
 			});
 
 			channelFuture = bootstrap.connect(tempURI.getHost(), tempURI.getPort()).sync();
+			nettyHandler = tempNettyHandler;
+			nettyHandlerMap.put(address, nettyHandler);
 			channelFutureMap.put(address, channelFuture);
 		}
-
+		
+		nettyHandler.setProxyCallback(callback);//每次都设置回调函数
+		
 		DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, 
 				HttpMethod.GET, tempURI.toASCIIString(),Unpooled.wrappedBuffer(req.getContent().getBytes("UTF-8")));
 

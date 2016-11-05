@@ -37,21 +37,20 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 	}
 
 	@Override
-	public void onEvent(final GatewayREQ event, long sequence, boolean endOfBatch) throws Exception {
+	public void onEvent(final GatewayREQ gatewayREQ, long sequence, boolean endOfBatch) throws Exception {
 		try {
-			final long routeStartTime = System.currentTimeMillis();
+			gatewayREQ.setRouteStartTime(System.currentTimeMillis());
+			ThreadContext.put("tradeId", gatewayREQ.getTradeId());// 线程参数继续
+			logger.info("=====路由开始=====");
 			
-			ThreadContext.put("tradeId", event.getTradeId());// 线程参数继续
-			logger.info("=====路由开始====="+routeStartTime);
-			
-			connector.connect(event, new IProxyCallback() {
+			connector.connect(gatewayREQ, new IProxyCallback() {
 				@Override
 				public void before(HttpResponse response) throws Exception {
 				}
-
+				
 				@Override
 				public void callback(String content) throws Exception {
-					ThreadContext.put("tradeId", event.getTradeId());// 线程参数继续
+					ThreadContext.put("tradeId", gatewayREQ.getTradeId());// 线程参数继续
 					
 					try {
 						//$NON-NLS-通道响应$
@@ -59,16 +58,17 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 								HttpResponseStatus.OK, Unpooled.wrappedBuffer(content.getBytes()));
 						response.headers().set(Names.CONTENT_TYPE, "text/plain");
 						response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
-						if (HttpHeaders.isKeepAlive(event.getRequest())) {
+						if (HttpHeaders.isKeepAlive(gatewayREQ.getRequest())) {
 							response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
 						}
 						
-						event.getCtx().writeAndFlush(response);
+						gatewayREQ.getCtx().writeAndFlush(response);
 					} catch (Throwable t) {
 						t.printStackTrace();
 					} finally {
-						logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - routeStartTime));
-						logger.info("[网关总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - event.getTradeStartTime()));
+						//TODO req对象的对象引用问题?
+						logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - gatewayREQ.getRouteStartTime()));
+						logger.info("[网关总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - gatewayREQ.getTradeStartTime()));
 					}
 				}
 			});
@@ -77,4 +77,8 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 		}
 	}
 
+	public void before(HttpResponse response) throws Exception {
+		
+	}
+	
 }

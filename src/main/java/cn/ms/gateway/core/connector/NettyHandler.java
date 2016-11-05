@@ -17,7 +17,7 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
 
 	IProxyCallback callback;
 
-	public NettyHandler(IProxyCallback callback) {
+	public void setProxyCallback(IProxyCallback callback) {
 		this.callback = callback;
 	}
 
