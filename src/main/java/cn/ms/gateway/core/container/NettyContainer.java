@@ -88,8 +88,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 			if (interceptorResult) {
 				
 			}
-			GatewayRES res = null;
-			interceptorGatewayRES = super.sendGatewayHandler(interceptorGatewayREQ, res, args);
+			interceptorGatewayRES = super.sendGatewayHandler(interceptorGatewayREQ, args);
 		} finally {
 			interceptor.after(interceptorGatewayREQ, interceptorGatewayRES, args);
 		}

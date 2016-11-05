@@ -15,8 +15,8 @@ public abstract class AbstractContainer<REQ, RES> implements IContainer<REQ, RES
 		this.gateway=gateway;
 	}
 	
-	public RES sendGatewayHandler(REQ req, RES res, Object... args) throws Throwable {
-		return gateway.handler(req, res, args);
+	public RES sendGatewayHandler(REQ req, Object... args) throws Throwable {
+		return gateway.handler(req, args);
 	}
 	
 }
