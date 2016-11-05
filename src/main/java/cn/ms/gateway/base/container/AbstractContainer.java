@@ -1,7 +1,6 @@
-package cn.ms.gateway.base.container.support;
+package cn.ms.gateway.base.container;
 
 import cn.ms.gateway.base.IGateway;
-import cn.ms.gateway.base.container.IContainer;
 
 /**
  * 容器抽象模块

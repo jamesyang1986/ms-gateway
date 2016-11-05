@@ -18,7 +18,7 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.IGateway;
-import cn.ms.gateway.base.container.support.AbstractContainer;
+import cn.ms.gateway.base.container.AbstractContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
