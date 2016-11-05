@@ -10,8 +10,8 @@ import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.connector.NettyConnector;
 import cn.ms.gateway.core.container.NettyConf;
 import cn.ms.gateway.core.container.NettyContainer;
-import cn.ms.gateway.core.event.EventConf;
-import cn.ms.gateway.core.event.EventSupport;
+import cn.ms.gateway.core.event.DisruptorEventConf;
+import cn.ms.gateway.core.event.DisruptorEventSupport;
 import cn.ms.gateway.core.filter.route.HttpProxyRouteFilter;
 import cn.ms.gateway.core.interceptor.GatewayInterceptor;
 import cn.ms.gateway.entity.GatewayREQ;
@@ -41,7 +41,7 @@ public enum Bootstrap {
 		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
 		connector=new NettyConnector(new ConnectorConf());
-		event = new EventSupport(new EventConf(), connector);
+		event = new DisruptorEventSupport(new DisruptorEventConf(), connector);
 		container = new NettyContainer(gateway, new NettyConf(), interceptor);
 	}
 

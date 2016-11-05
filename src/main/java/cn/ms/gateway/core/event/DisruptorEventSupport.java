@@ -15,15 +15,15 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 
-public class EventSupport implements IEvent {
+public class DisruptorEventSupport implements IEvent {
 
-	EventConf conf;
+	DisruptorEventConf conf;
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
 	IConnector connector=null;
 
-	public EventSupport(EventConf conf, IConnector connector) {
+	public DisruptorEventSupport(DisruptorEventConf conf, IConnector connector) {
 		this.conf=conf;
 		this.connector=connector;
 	}
