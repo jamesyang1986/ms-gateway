@@ -3,7 +3,6 @@ package cn.ms.gateway.base;
 import java.util.List;
 
 import cn.ms.gateway.base.filter.IFilter;
-import cn.ms.gateway.base.type.FilterType;
 
 /**
  * 微服务网关

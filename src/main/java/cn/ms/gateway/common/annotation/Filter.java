@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import cn.ms.gateway.base.type.FilterType;
+import cn.ms.gateway.base.FilterType;
 
 /**
  * 过滤器注解

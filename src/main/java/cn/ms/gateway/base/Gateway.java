@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 import cn.ms.gateway.base.filter.IFilter;
-import cn.ms.gateway.base.support.AbstractGateway;
-import cn.ms.gateway.base.type.FilterType;
 import cn.ms.gateway.common.annotation.Filter;
 
 /**

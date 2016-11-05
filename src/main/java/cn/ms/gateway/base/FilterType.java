@@ -1,4 +1,4 @@
-package cn.ms.gateway.base.type;
+package cn.ms.gateway.base;
 
 /**
  * 过滤器类型
