@@ -1,2 +1,15 @@
+#PRE类过滤器
+cn.ms.gateway.core.filter.pre.IpWhiteListPreFilter
+cn.ms.gateway.core.filter.pre.PathPreFilter
+cn.ms.gateway.core.filter.pre.HeaderPreFilter
+cn.ms.gateway.core.filter.pre.CctFlowCtrlPreFilter
+cn.ms.gateway.core.filter.pre.QpsFlowCtrlPreFilter
+
 #ROUTE类过滤器
 cn.ms.gateway.core.filter.route.HttpProxyRouteFilter
+
+#POST类过滤器
+
+#ERROR类过滤器
+
+
