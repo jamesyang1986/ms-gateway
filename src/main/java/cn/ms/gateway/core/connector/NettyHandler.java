@@ -35,7 +35,7 @@ public class NettyHandler extends ChannelInboundHandlerAdapter {
 				content = (HttpContent) msg;
 				buf = content.content();
 				String resContent = buf.toString(CharsetUtil.UTF_8);
-				System.out.println("--->"+new String(buf.array()));
+
 				callback.callback(resContent);
 			} finally {
 				buf.release();
