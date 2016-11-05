@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders.Names;
 import io.netty.handler.codec.http.HttpHeaders.Values;
+import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import cn.ms.gateway.base.connector.IConnector;
@@ -34,9 +35,9 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 			connector.connect(event, new IConnectorCallback() {
 				
 				@Override
-				public void before() throws Exception {
+				public void before(HttpResponse response) throws Exception {
 				}
-
+				
 				@Override
 				public void callback(String content) throws Exception {
 					try {
@@ -55,9 +56,6 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 					}
 				}
 
-				@Override
-				public void after() throws Exception {
-				}
 			});
 		} catch (Throwable t) {
 			t.printStackTrace();

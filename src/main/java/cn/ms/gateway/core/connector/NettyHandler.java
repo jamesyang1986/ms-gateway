@@ -12,12 +12,11 @@ import io.netty.util.CharsetUtil;
  * 
  * @author lry
  */
-public class NettyHttpClientInboundHandler extends ChannelInboundHandlerAdapter {
+public class NettyHandler extends ChannelInboundHandlerAdapter {
 
-	HttpResponse response;
 	IConnectorCallback callback;
 
-	public NettyHttpClientInboundHandler(IConnectorCallback callback) {
+	public NettyHandler(IConnectorCallback callback) {
 		this.callback = callback;
 	}
 
@@ -25,7 +24,7 @@ public class NettyHttpClientInboundHandler extends ChannelInboundHandlerAdapter 
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		if (msg instanceof HttpResponse) {
-			response = (HttpResponse) msg;
+			callback.before((HttpResponse) msg);
 		}
 		if (msg instanceof HttpContent) {
 			ByteBuf buf = null;
@@ -35,7 +34,7 @@ public class NettyHttpClientInboundHandler extends ChannelInboundHandlerAdapter 
 				content = (HttpContent) msg;
 				buf = content.content();
 				String resContent = buf.toString(CharsetUtil.UTF_8);
-
+				System.out.println("--->"+new String(buf.array()));
 				callback.callback(resContent);
 			} finally {
 				buf.release();

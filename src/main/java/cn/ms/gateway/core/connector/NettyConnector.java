@@ -27,13 +27,13 @@ import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.core.entity.GatewayREQ;
 
 @SuppressWarnings("deprecation")
-public class NettyHttpClientConnector implements IConnector {
+public class NettyConnector implements IConnector {
 
 	ConnectorConf conf;
 	Bootstrap bootstrap = new Bootstrap();
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
 
-	public NettyHttpClientConnector(ConnectorConf conf) {
+	public NettyConnector(ConnectorConf conf) {
 		this.conf=conf;
 	}
 	
@@ -64,7 +64,7 @@ public class NettyHttpClientConnector implements IConnector {
 	                ch.pipeline().addLast(new WriteTimeoutHandler(1));  
 					ch.pipeline().addLast(new HttpResponseDecoder());
 					ch.pipeline().addLast(new HttpRequestEncoder());
-					ch.pipeline().addLast(new NettyHttpClientInboundHandler(callback));
+					ch.pipeline().addLast(new NettyHandler(callback));
 				}
 			});
 

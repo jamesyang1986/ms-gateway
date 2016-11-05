@@ -6,7 +6,7 @@ import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.connector.ConnectorConf;
-import cn.ms.gateway.core.connector.NettyHttpClientConnector;
+import cn.ms.gateway.core.connector.NettyConnector;
 import cn.ms.gateway.core.container.NettyConf;
 import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.disruptor.DisruptorConf;
@@ -40,7 +40,7 @@ public enum Bootstrap {
 	Bootstrap() {
 		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
-		connector=new NettyHttpClientConnector(new ConnectorConf());
+		connector=new NettyConnector(new ConnectorConf());
 		disruptor = new DisruptorFactory(new DisruptorConf(), connector);
 		container = new NettyContainer(gateway, new NettyConf(), interceptor);
 	}
