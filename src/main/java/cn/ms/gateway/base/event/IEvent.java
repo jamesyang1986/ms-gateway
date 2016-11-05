@@ -1,4 +1,4 @@
-package cn.ms.gateway.base.disruptor;
+package cn.ms.gateway.base.event;
 
 import cn.ms.gateway.base.IAdapter;
 import cn.ms.gateway.entity.GatewayREQ;
@@ -8,7 +8,7 @@ import cn.ms.gateway.entity.GatewayREQ;
  * 
  * @author lry
  */
-public interface IDisruptor extends IAdapter {
+public interface IEvent extends IAdapter {
 
 	/**
 	 * 发布事件

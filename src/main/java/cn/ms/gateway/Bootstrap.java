@@ -4,7 +4,7 @@ import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
-import cn.ms.gateway.base.disruptor.IDisruptor;
+import cn.ms.gateway.base.event.IEvent;
 import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.connector.NettyConnector;
@@ -31,7 +31,7 @@ public enum Bootstrap {
 	/** 拦截器 **/
 	Interceptor<GatewayREQ, GatewayRES> interceptor = null;
 	/** 事件处理器 **/
-	IDisruptor disruptor = null;
+	IEvent event = null;
 	/** 连接器 **/
 	IConnector connector=null;
 	/** 网关容器 **/
@@ -41,7 +41,7 @@ public enum Bootstrap {
 		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
 		connector=new NettyConnector(new ConnectorConf());
-		disruptor = new DisruptorFactory(new DisruptorConf(), connector);
+		event = new DisruptorFactory(new DisruptorConf(), connector);
 		container = new NettyContainer(gateway, new NettyConf(), interceptor);
 	}
 
@@ -49,24 +49,24 @@ public enum Bootstrap {
 		gateway.init();
 		connector.init();
 		container.init();
-		disruptor.init();
+		event.init();
 		
 		//$NON-NLS-注入Disruptor$
 		HttpProxyRouteFilter httpProxyRouteFilter = gateway.getFilter(HttpProxyRouteFilter.class);
-		httpProxyRouteFilter.setDisruptor(disruptor);
+		httpProxyRouteFilter.setEvent(event);
 	}
 
 	public void start() throws Exception {
 		gateway.start();
 		connector.start();
-		disruptor.start();
+		event.start();
 		container.start();
 	}
 
 	public void destory() throws Exception {
 		gateway.destory();
 		connector.destory();
-		disruptor.destory();
+		event.destory();
 		container.destory();
 	}
 

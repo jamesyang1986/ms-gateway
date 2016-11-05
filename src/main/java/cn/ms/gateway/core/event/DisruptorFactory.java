@@ -3,7 +3,7 @@ package cn.ms.gateway.core.event;
 import java.util.concurrent.ExecutorService;
 
 import cn.ms.gateway.base.connector.IConnector;
-import cn.ms.gateway.base.disruptor.IDisruptor;
+import cn.ms.gateway.base.event.IEvent;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.core.event.support.GatewayEventFactory;
@@ -15,7 +15,7 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 
-public class DisruptorFactory implements IDisruptor {
+public class DisruptorFactory implements IEvent {
 
 	DisruptorConf conf;
 	Disruptor<GatewayREQ> disruptor;
