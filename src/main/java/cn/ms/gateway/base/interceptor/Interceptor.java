@@ -12,10 +12,9 @@ public interface Interceptor<REQ, RES> {
 	 * 
 	 * @param req
 	 * @param args
-	 * @return
 	 * @throws Throwable
 	 */
-	boolean before(REQ req, Object... args) throws Throwable;
+	void before(REQ req, Object... args) throws Throwable;
 
 	/**
 	 * 拦截后处理

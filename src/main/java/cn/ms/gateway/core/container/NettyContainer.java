@@ -81,19 +81,15 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public GatewayRES handler(GatewayREQ req, Object... args) throws Throwable {
-		GatewayREQ interceptorGatewayREQ = req;
-		GatewayRES interceptorGatewayRES = null;
+		GatewayRES res = null;
 		try {
-			boolean interceptorResult = interceptor.before(interceptorGatewayREQ, args);
-			if (interceptorResult) {
-				
-			}
-			interceptorGatewayRES = super.sendGatewayHandler(interceptorGatewayREQ, args);
+			interceptor.before(req, args);
+			res = super.sendGatewayHandler(req, args);
 		} finally {
-			interceptor.after(interceptorGatewayREQ, interceptorGatewayRES, args);
+			interceptor.after(req, res, args);
 		}
 
-		return interceptorGatewayRES;
+		return res;
 	}
 
 	@Override
@@ -137,7 +133,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	            req.setCtx(ctx);
 	            
 	            try {
-					handler(req);
+					handler(req, request);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}

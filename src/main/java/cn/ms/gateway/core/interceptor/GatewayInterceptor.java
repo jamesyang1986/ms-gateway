@@ -12,8 +12,8 @@ import cn.ms.gateway.entity.GatewayRES;
 public class GatewayInterceptor implements Interceptor<GatewayREQ, GatewayRES> {
 
 	@Override
-	public boolean before(GatewayREQ req, Object... args) throws Throwable {
-		return true;
+	public void before(GatewayREQ req, Object... args) throws Throwable {
+		
 	}
 
 	@Override
