@@ -1,6 +1,7 @@
 package cn.ms.gateway.core.interceptor;
 
-import cn.ms.gateway.base.interceptor.Interceptor;
+import cn.ms.gateway.base.interceptor.IInterceptor;
+import cn.ms.gateway.common.annotation.Interceptor;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -9,7 +10,8 @@ import cn.ms.gateway.entity.GatewayRES;
  * 
  * @author lry
  */
-public class GatewayInterceptor implements Interceptor<GatewayREQ, GatewayRES> {
+@Interceptor
+public class GatewayInterceptor implements IInterceptor<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void before(GatewayREQ req, Object... args) throws Throwable {

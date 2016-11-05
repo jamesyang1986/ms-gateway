@@ -5,7 +5,7 @@ package cn.ms.gateway.base.interceptor;
  * 
  * @author lry
  */
-public interface Interceptor<REQ, RES> {
+public interface IInterceptor<REQ, RES> {
 
 	/**
 	 * 拦截前处理

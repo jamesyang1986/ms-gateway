@@ -17,9 +17,12 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
+
+import org.apache.logging.log4j.ThreadContext;
+
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.AbstractContainer;
-import cn.ms.gateway.base.interceptor.Interceptor;
+import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.common.utils.NetUtils;
@@ -39,13 +42,10 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
-	Interceptor<GatewayREQ, GatewayRES> interceptor=null;
 	
-	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway, NettyConf nettyConf, Interceptor<GatewayREQ, GatewayRES> interceptor) {
+	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway, NettyConf nettyConf) {
 		super(gateway);
-		
 		this.nettyConf = nettyConf;
-		this.interceptor=interceptor;
 	}
 
 	@Override
@@ -88,10 +88,10 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	public GatewayRES handler(GatewayREQ req, Object... args) throws Throwable {
 		GatewayRES res = null;
 		try {
-			interceptor.before(req, args);
+			super.beforeInterceptor(req, args);
 			res = super.sendGatewayHandler(req, args);
 		} finally {
-			interceptor.after(req, res, args);
+			super.afterInterceptor(req, res, args);
 		}
 
 		return res;
@@ -120,6 +120,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {
 	    
 		private HttpRequest request;
+		private TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
 	    
 		@Override
 	    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -127,6 +128,9 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	            request = (HttpRequest) msg;
 	        }
 	        if (msg instanceof HttpContent) {
+	        	String tradeId=String.valueOf(tradeIdWorker.nextId());
+	        	ThreadContext.put("tradeId", tradeId);
+	        	
 	            HttpContent httpContent = (HttpContent) msg;
 	            ByteBuf buf = httpContent.content();
 	            String content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
@@ -136,6 +140,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	            req.setContent(content);
 	            req.setRequest(request);
 	            req.setCtx(ctx);
+	            req.setTradeId(String.valueOf(tradeId));
 	            
 	            try {
 					handler(req, request);

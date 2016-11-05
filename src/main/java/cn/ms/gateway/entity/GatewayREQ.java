@@ -10,22 +10,32 @@ import io.netty.handler.codec.http.HttpRequest;
  */
 public class GatewayREQ {
 
+	/**
+	 * 交易ID
+	 */
+	String tradeId;
+	/**
+	 * 请求报文
+	 */
 	String content;
-	String originURI="http://localhost:8844/serviceId";
 	HttpRequest request;
 	ChannelHandlerContext ctx;
+	/**
+	 * 远程通讯地址
+	 */
+	String originURI="http://localhost:8844/serviceId";
 	
+	public String getTradeId() {
+		return tradeId;
+	}
+	public void setTradeId(String tradeId) {
+		this.tradeId = tradeId;
+	}
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public String getOriginURI() {
-		return originURI;
-	}
-	public void setOriginURI(String originURI) {
-		this.originURI = originURI;
 	}
 	public HttpRequest getRequest() {
 		return request;
@@ -38,6 +48,12 @@ public class GatewayREQ {
 	}
 	public void setCtx(ChannelHandlerContext ctx) {
 		this.ctx = ctx;
+	}
+	public String getOriginURI() {
+		return originURI;
+	}
+	public void setOriginURI(String originURI) {
+		this.originURI = originURI;
 	}
 	
 }

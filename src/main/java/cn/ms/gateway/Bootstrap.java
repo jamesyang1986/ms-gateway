@@ -5,7 +5,6 @@ import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.event.IEvent;
-import cn.ms.gateway.base.interceptor.Interceptor;
 import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.connector.NettyConnector;
 import cn.ms.gateway.core.container.NettyConf;
@@ -13,7 +12,6 @@ import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.event.DisruptorEventConf;
 import cn.ms.gateway.core.event.DisruptorEventSupport;
 import cn.ms.gateway.core.filter.route.HttpProxyRouteFilter;
-import cn.ms.gateway.core.interceptor.GatewayInterceptor;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -28,8 +26,6 @@ public enum Bootstrap {
 
 	/** 网关核心 **/
 	IGateway<GatewayREQ, GatewayRES> gateway = null;
-	/** 拦截器 **/
-	Interceptor<GatewayREQ, GatewayRES> interceptor = null;
 	/** 事件处理器 **/
 	IEvent event = null;
 	/** 连接器 **/
@@ -38,11 +34,10 @@ public enum Bootstrap {
 	IContainer<GatewayREQ, GatewayRES> container = null;
 	
 	Bootstrap() {
-		interceptor = new GatewayInterceptor();
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
 		connector=new NettyConnector(new ConnectorConf());
 		event = new DisruptorEventSupport(new DisruptorEventConf(), connector);
-		container = new NettyContainer(gateway, new NettyConf(), interceptor);
+		container = new NettyContainer(gateway, new NettyConf());
 	}
 
 	public void init() throws Exception {
