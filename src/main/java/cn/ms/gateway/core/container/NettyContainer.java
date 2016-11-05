@@ -1,28 +1,19 @@
 package cn.ms.gateway.core.container;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
-
-import org.apache.logging.log4j.ThreadContext;
-
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.container.AbstractContainer;
-import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.common.utils.NetUtils;
@@ -61,8 +52,14 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 					public void initChannel(SocketChannel ch) throws Exception {
 						ch.pipeline().addLast(new HttpResponseEncoder());
 						ch.pipeline().addLast(new HttpRequestDecoder());
-						ch.pipeline().addLast(new HttpServerInboundHandler());
 						ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
+						
+						ch.pipeline().addLast(new NettyContainerHandler(new IContainerCallback() {
+							@Override
+							public GatewayRES callback(GatewayREQ req, Object... args) throws Throwable {
+								return handler(req, args);
+							}
+						}));
 					}
 				}).option(ChannelOption.SO_BACKLOG, 1024)
 				.childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -104,61 +101,6 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 		if (serverBootstrap != null) {
 			serverBootstrap.clone();
 		}
-	}
-	
-	/**
-	 * Netty 业务处理器
-	 * 
-	 * @author lry
-	 */
-	class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {
-	    
-		private Logger logger=LoggerFactory.getLogger(HttpServerInboundHandler.class);
-		
-		private HttpRequest request;
-		private TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
-	    
-		@Override
-	    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-	        if (msg instanceof HttpRequest) {
-	            request = (HttpRequest) msg;
-	        }
-	        if (msg instanceof HttpContent) {
-	        	long tradeStartTime=System.currentTimeMillis();
-	        	String tradeId=String.valueOf(tradeIdWorker.nextId());
-	        	ThreadContext.put("tradeId", tradeId);
-	        	logger.info("=====交易开始=====");
-	        	
-	            HttpContent httpContent = (HttpContent) msg;
-	            ByteBuf buf = httpContent.content();
-	            String content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
-	            buf.release();
-
-	            GatewayREQ req=new GatewayREQ();
-	            req.setTradeId(String.valueOf(tradeId));
-	            req.setTradeStartTime(tradeStartTime);
-	            req.setContent(content);
-	            req.setRequest(request);
-	            req.setCtx(ctx);
-	            
-	            try {
-					handler(req, request);
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-	        }
-	    }
-
-	    @Override
-	    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-	        ctx.flush();
-	    }
-
-	    @Override
-	    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-	    	cause.printStackTrace();
-	        ctx.close();
-	    }
 	}
 
 }
