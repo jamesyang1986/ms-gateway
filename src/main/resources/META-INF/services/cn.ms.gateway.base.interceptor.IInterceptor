@@ -1,3 +1,0 @@
-#过滤器实现类
-cn.ms.gateway.core.interceptor.GatewayInterceptor
-cn.ms.gateway.core.interceptor.NettyInterceptor

@@ -76,13 +76,14 @@ public class DisruptorEventSupport implements IEvent {
 		try {
 			// 获取该序号对应的事件对象
 			GatewayREQ event = ringBuffer.get(sequence);
+			event.setTradeId(req.getTradeId());
+			event.setTradeStartTime(req.getTradeStartTime());
 			event.setOriginURI(req.getOriginURI());
 			event.setContent(req.getContent());
 			event.setRequest(req.getRequest());
 			event.setCtx(req.getCtx());
 		} finally {
-			// 发布事件
-			ringBuffer.publish(sequence);
+			ringBuffer.publish(sequence);// 发布事件
 		}
 	}
 

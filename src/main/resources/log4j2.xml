@@ -3,7 +3,7 @@
 
 	<properties>
 		<property name="LOG_BIZ_FORMAT">
-			%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%t] %c[%L] [%X{tradeId}] %msg%n
+			%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%t] [%c{1}:%L] [%X{tradeId}] %msg%n
 		</property>
 	</properties>
     <!--先定义所有的appender-->

@@ -15,6 +15,10 @@ public class GatewayREQ {
 	 */
 	String tradeId;
 	/**
+	 * 交易开始时间
+	 */
+	long tradeStartTime;
+	/**
 	 * 请求报文
 	 */
 	String content;
@@ -30,6 +34,12 @@ public class GatewayREQ {
 	}
 	public void setTradeId(String tradeId) {
 		this.tradeId = tradeId;
+	}
+	public long getTradeStartTime() {
+		return tradeStartTime;
+	}
+	public void setTradeStartTime(long tradeStartTime) {
+		this.tradeStartTime = tradeStartTime;
 	}
 	public String getContent() {
 		return content;

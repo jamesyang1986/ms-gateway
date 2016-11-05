@@ -86,14 +86,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public GatewayRES handler(GatewayREQ req, Object... args) throws Throwable {
-		GatewayRES res = null;
-		try {
-			super.beforeInterceptor(req, args);
-			res = super.sendGatewayHandler(req, args);
-		} finally {
-			super.afterInterceptor(req, res, args);
-		}
-
+		GatewayRES res = super.sendGatewayHandler(req, args);
+		
 		return res;
 	}
 
@@ -119,6 +113,8 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	 */
 	class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {
 	    
+		private Logger logger=LoggerFactory.getLogger(HttpServerInboundHandler.class);
+		
 		private HttpRequest request;
 		private TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
 	    
@@ -128,8 +124,10 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	            request = (HttpRequest) msg;
 	        }
 	        if (msg instanceof HttpContent) {
+	        	long tradeStartTime=System.currentTimeMillis();
 	        	String tradeId=String.valueOf(tradeIdWorker.nextId());
 	        	ThreadContext.put("tradeId", tradeId);
+	        	logger.info("=====交易开始=====");
 	        	
 	            HttpContent httpContent = (HttpContent) msg;
 	            ByteBuf buf = httpContent.content();
@@ -137,10 +135,11 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	            buf.release();
 
 	            GatewayREQ req=new GatewayREQ();
+	            req.setTradeId(String.valueOf(tradeId));
+	            req.setTradeStartTime(tradeStartTime);
 	            req.setContent(content);
 	            req.setRequest(request);
 	            req.setCtx(ctx);
-	            req.setTradeId(String.valueOf(tradeId));
 	            
 	            try {
 					handler(req, request);
