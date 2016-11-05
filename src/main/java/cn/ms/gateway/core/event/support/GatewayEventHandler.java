@@ -51,12 +51,8 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 				}
 			});
 		} catch (Throwable t) {
-			t.printStackTrace();
+			logger.error(t, "微服务网关远程路由异常: %s", t.getMessage());
 		}
 	}
 
-	public void before(HttpResponse response) throws Exception {
-		
-	}
-	
 }

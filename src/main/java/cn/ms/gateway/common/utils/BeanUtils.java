@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
+
 /**
  * 属性复制
  * 
@@ -13,6 +16,8 @@ import java.util.Map;
  */
 public class BeanUtils {
 
+	private static final Logger logger=LoggerFactory.getLogger(BeanUtils.class);
+	
 	/** 
      * 利用反射实现对象之间属性复制 
      * @param from 数据源
@@ -143,7 +148,7 @@ public class BeanUtils {
                     }
                 }
             } catch (Exception e) {
-            	e.printStackTrace();
+            	logger.error(e, "The copyMapToObj is exception: %s", e.getMessage());
             }
         }
         return obj;

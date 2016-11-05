@@ -59,7 +59,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
             		AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
             	}
 			} catch (Throwable t) {
-				t.printStackTrace();
+				logger.error(t, "微服务网关处理异常: %s", t.getMessage());
 			}
         }
     }
@@ -71,7 +71,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-    	cause.printStackTrace();
+    	logger.error(cause, "微服务网关Netty接入异常: %s", cause.getMessage());
         ctx.close();
     }
 
