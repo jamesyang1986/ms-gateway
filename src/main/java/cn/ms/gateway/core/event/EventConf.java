@@ -6,7 +6,7 @@ import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 
-public class DisruptorConf {
+public class EventConf {
 
 	public static final WaitStrategy BLOCKING_WAIT=new BlockingWaitStrategy();
 	public static final WaitStrategy SLEEPING_WAIT=new SleepingWaitStrategy();
