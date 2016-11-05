@@ -43,7 +43,7 @@ public class AssemblySupport {
 			
 			gatewayREQ.getCtx().writeAndFlush(response);
 		} catch (Throwable t) {
-			t.printStackTrace();
+			logger.error(t, "网关响应装配异常:%s", t.getMessage());
 		} finally {
 			//TODO req对象的对象引用问题?
 			logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - gatewayREQ.getRouteStartTime()));

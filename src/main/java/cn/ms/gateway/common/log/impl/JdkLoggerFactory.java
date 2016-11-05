@@ -106,4 +106,34 @@ class JdkLogger extends Logger {
 	public void trace(String message, Throwable t) { 
 		log.logp(Level.FINEST, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), message, t);
 	}
+
+	@Override
+	public void debug(Throwable t, String format, Object... args) {
+		this.debug(String.format(format, args), t);
+	}
+
+	@Override
+	public void info(Throwable t, String format, Object... args) {
+		this.info(String.format(format, args), t);
+	}
+
+	@Override
+	public void warn(Throwable t, String format, Object... args) {
+		this.warn(String.format(format, args), t);
+	}
+
+	@Override
+	public void error(Throwable t, String format, Object... args) {
+		this.error(String.format(format, args), t);
+	}
+
+	@Override
+	public void fatal(Throwable t, String format, Object... args) {
+		this.fatal(String.format(format, args), t);
+	}
+
+	@Override
+	public void trace(Throwable t, String format, Object... args) {
+		this.trace(String.format(format, args), t);
+	}
 }

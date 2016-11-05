@@ -23,17 +23,23 @@ public abstract class Logger {
 	} 
 	
 	public abstract void debug(String message);
-	public abstract void debug(String message, Throwable t); 
+	public abstract void debug(String message, Throwable t);
+	public abstract void debug(Throwable t, String format, Object... args);
 	public abstract void info(String message);
 	public abstract void info(String message, Throwable t);
+	public abstract void info(Throwable t, String format, Object... args);
 	public abstract void warn(String message);
 	public abstract void warn(String message, Throwable t);
+	public abstract void warn(Throwable t, String format, Object... args);
 	public abstract void error(String message);
 	public abstract void error(String message, Throwable t);
+	public abstract void error(Throwable t, String format, Object... args);
 	public abstract void fatal(String message);
 	public abstract void fatal(String message, Throwable t);
+	public abstract void fatal(Throwable t, String format, Object... args);
 	public abstract void trace(String message);
 	public abstract void trace(String message, Throwable t);
+	public abstract void trace(Throwable t, String format, Object... args);
 	public abstract boolean isDebugEnabled();
 	public abstract boolean isInfoEnabled();
 	public abstract boolean isWarnEnabled();

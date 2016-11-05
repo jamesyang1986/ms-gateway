@@ -124,4 +124,35 @@ class Log4jLogger extends Logger {
 	public boolean isTraceEnabled() { 
 		return log.isTraceEnabled();
 	}
+
+	@Override
+	public void debug(Throwable t, String format, Object... args) {
+		this.debug(String.format(format, args), t);
+	}
+
+	@Override
+	public void info(Throwable t, String format, Object... args) {
+		this.info(String.format(format, args), t);
+	}
+
+	@Override
+	public void warn(Throwable t, String format, Object... args) {
+		this.warn(String.format(format, args), t);
+	}
+
+	@Override
+	public void error(Throwable t, String format, Object... args) {
+		this.error(String.format(format, args), t);
+	}
+
+	@Override
+	public void fatal(Throwable t, String format, Object... args) {
+		this.fatal(String.format(format, args), t);
+	}
+
+	@Override
+	public void trace(Throwable t, String format, Object... args) {
+		this.trace(String.format(format, args), t);
+	}
+	
 }
