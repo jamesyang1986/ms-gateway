@@ -13,7 +13,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
-import cn.ms.gateway.base.connector.ICallback;
+import cn.ms.gateway.base.ICallback;
 import cn.ms.gateway.base.container.AbstractContainer;
 import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.log.Logger;

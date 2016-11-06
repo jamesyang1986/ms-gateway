@@ -1,4 +1,4 @@
-package cn.ms.gateway.base.connector;
+package cn.ms.gateway.base;
 
 /**
  * 回调接口

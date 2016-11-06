@@ -24,7 +24,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.ms.gateway.base.connector.ICallback;
+import cn.ms.gateway.base.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.thread.NamedThreadFactory;

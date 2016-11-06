@@ -1,6 +1,7 @@
 package cn.ms.gateway.base.connector;
 
 import cn.ms.gateway.IAdapter;
+import cn.ms.gateway.base.ICallback;
 import cn.ms.gateway.entity.GatewayREQ;
 
 /**

@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.util.CharsetUtil;
-import cn.ms.gateway.base.connector.ICallback;
+import cn.ms.gateway.base.ICallback;
 import cn.ms.gateway.entity.GatewayRES;
 
 /**

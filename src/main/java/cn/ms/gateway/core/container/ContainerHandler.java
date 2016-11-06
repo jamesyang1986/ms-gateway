@@ -8,7 +8,7 @@ import io.netty.handler.codec.http.HttpRequest;
 
 import org.apache.logging.log4j.ThreadContext;
 
-import cn.ms.gateway.base.connector.ICallback;
+import cn.ms.gateway.base.ICallback;
 import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
