@@ -1,8 +1,8 @@
 package cn.ms.gateway.core.filter.route;
 
-import cn.ms.gateway.base.event.IEvent;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.base.processer.IProcesser;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
@@ -14,10 +14,10 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 
 	private static final Logger logger=LoggerFactory.getLogger(HttpProxyRouteFilter.class);
 	
-	IEvent event;
+	IProcesser processer;
 
-	public void setEvent(IEvent event) {
-		this.event=event;
+	public void setEvent(IProcesser processer) {
+		this.processer=processer;
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 	@Override
 	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		try {
-			event.publish(req);
+			processer.publish(req);
 		} catch (Throwable t) {
 			logger.error(t, "发布事件异常: %s",t.getMessage());
 		}

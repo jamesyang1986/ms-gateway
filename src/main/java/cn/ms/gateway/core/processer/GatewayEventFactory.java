@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.event;
+package cn.ms.gateway.core.processer;
 
 import cn.ms.gateway.entity.GatewayREQ;
 

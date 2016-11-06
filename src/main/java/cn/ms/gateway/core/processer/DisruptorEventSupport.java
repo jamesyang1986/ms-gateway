@@ -1,11 +1,11 @@
-package cn.ms.gateway.core.event;
+package cn.ms.gateway.core.processer;
 
 import io.netty.handler.codec.http.HttpResponse;
 
 import java.util.concurrent.ExecutorService;
 
 import cn.ms.gateway.base.connector.IConnector;
-import cn.ms.gateway.base.event.IEvent;
+import cn.ms.gateway.base.processer.IProcesser;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
@@ -16,7 +16,7 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 
-public class DisruptorEventSupport implements IEvent {
+public class DisruptorEventSupport implements IProcesser {
 
 	DisruptorEventConf conf;
 	Disruptor<GatewayREQ> disruptor;

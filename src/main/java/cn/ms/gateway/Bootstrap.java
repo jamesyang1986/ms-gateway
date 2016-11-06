@@ -5,16 +5,16 @@ import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
-import cn.ms.gateway.base.event.IEvent;
+import cn.ms.gateway.base.processer.IProcesser;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.connector.NettyConnector;
 import cn.ms.gateway.core.container.ContainerConf;
 import cn.ms.gateway.core.container.NettyContainer;
-import cn.ms.gateway.core.event.DisruptorEventConf;
-import cn.ms.gateway.core.event.DisruptorEventSupport;
 import cn.ms.gateway.core.filter.route.HttpProxyRouteFilter;
+import cn.ms.gateway.core.processer.DisruptorEventConf;
+import cn.ms.gateway.core.processer.DisruptorEventSupport;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -32,7 +32,7 @@ public enum Bootstrap {
 	/** 网关核心 **/
 	IGateway<GatewayREQ, GatewayRES> gateway = null;
 	/** 事件处理器 **/
-	IEvent event = null;
+	IProcesser processer = null;
 	/** 连接器 **/
 	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
 	/** 网关容器 **/
@@ -41,7 +41,7 @@ public enum Bootstrap {
 	Bootstrap() {
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
 		connector=new NettyConnector(new ConnectorConf());
-		event = new DisruptorEventSupport(new DisruptorEventConf(), connector);
+		processer = new DisruptorEventSupport(new DisruptorEventConf(), connector);
 		container = new NettyContainer(gateway, new ContainerConf());
 	}
 
@@ -49,24 +49,24 @@ public enum Bootstrap {
 		gateway.init();
 		connector.init();
 		container.init();
-		event.init();
+		processer.init();
 		
 		//$NON-NLS-注入Disruptor$
 		HttpProxyRouteFilter httpProxyRouteFilter = gateway.getFilter(HttpProxyRouteFilter.class);
-		httpProxyRouteFilter.setEvent(event);
+		httpProxyRouteFilter.setEvent(processer);
 	}
 
 	public void start() throws Exception {
 		gateway.start();
 		connector.start();
-		event.start();
+		processer.start();
 		container.start();
 	}
 
 	public void destory() throws Exception {
 		gateway.destory();
 		connector.destory();
-		event.destory();
+		processer.destory();
 		container.destory();
 	}
 
