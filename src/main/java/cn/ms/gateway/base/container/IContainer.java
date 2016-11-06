@@ -1,6 +1,7 @@
 package cn.ms.gateway.base.container;
 
 import cn.ms.gateway.IAdapter;
+import cn.ms.gateway.base.IGateway;
 
 /**
  * 容器模块
@@ -9,6 +10,8 @@ import cn.ms.gateway.IAdapter;
  */
 public interface IContainer<REQ, RES> extends IAdapter {
 
+	void setGateway(IGateway<REQ, RES> gateway);
+	
 	/**
 	 * 容器的请求入口
 	 * 

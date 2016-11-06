@@ -23,14 +23,15 @@ import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
-public class DisruptorProcesser implements IProcesser {
+public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, HttpResponse> {
 
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
 	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
 
-	public DisruptorProcesser(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
+	@Override
+	public void setConnector(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
 		this.connector=connector;
 	}
 	

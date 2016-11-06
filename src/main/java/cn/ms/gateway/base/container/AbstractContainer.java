@@ -11,8 +11,9 @@ public abstract class AbstractContainer<REQ, RES> implements IContainer<REQ, RES
 
 	protected IGateway<REQ, RES> gateway = null;
 
-	public AbstractContainer(IGateway<REQ, RES> gateway) {
-		this.gateway = gateway;
+	@Override
+	public void setGateway(IGateway<REQ, RES> gateway) {
+		this.gateway = gateway;		
 	}
 
 	public RES sendGatewayHandler(REQ req, Object... args) throws Exception {

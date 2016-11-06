@@ -13,7 +13,6 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
-import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.base.container.AbstractContainer;
 import cn.ms.gateway.common.Conf;
@@ -37,10 +36,6 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
 	
-	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway) {
-		super(gateway);
-	}
-
 	@Override
 	public void init() throws Exception {
 		this.bossGroup = new NioEventLoopGroup(Conf.CONF.getBossGroupThread(), new NamedThreadFactory("NettyContainerBoss"));

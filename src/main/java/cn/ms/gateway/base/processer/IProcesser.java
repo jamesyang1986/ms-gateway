@@ -1,6 +1,7 @@
 package cn.ms.gateway.base.processer;
 
 import cn.ms.gateway.IAdapter;
+import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.entity.GatewayREQ;
 
 /**
@@ -8,7 +9,9 @@ import cn.ms.gateway.entity.GatewayREQ;
  * 
  * @author lry
  */
-public interface IProcesser extends IAdapter {
+public interface IProcesser<REQ, RES, BEF> extends IAdapter {
+
+	void setConnector(IConnector<REQ, RES, BEF> connector);
 
 	/**
 	 * 发布事件
@@ -17,6 +20,6 @@ public interface IProcesser extends IAdapter {
 	 * @param args
 	 * @throws Throwable
 	 */
-	void publish(GatewayREQ req, Object...args) throws Throwable;
-	
+	void publish(GatewayREQ req, Object... args) throws Throwable;
+
 }

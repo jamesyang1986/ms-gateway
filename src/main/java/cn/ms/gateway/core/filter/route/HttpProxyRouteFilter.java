@@ -1,5 +1,6 @@
 package cn.ms.gateway.core.filter.route;
 
+import io.netty.handler.codec.http.HttpResponse;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.base.processer.IProcesser;
@@ -14,9 +15,9 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 
 	private static final Logger logger=LoggerFactory.getLogger(HttpProxyRouteFilter.class);
 	
-	IProcesser processer;
+	IProcesser<GatewayRES, GatewayRES, HttpResponse> processer;
 
-	public void setEvent(IProcesser processer) {
+	public void setEvent(IProcesser<GatewayRES, GatewayRES, HttpResponse> processer) {
 		this.processer=processer;
 	}
 	

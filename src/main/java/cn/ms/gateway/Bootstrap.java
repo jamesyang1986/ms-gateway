@@ -33,15 +33,19 @@ public enum Bootstrap {
 	/** 连接器 **/
 	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
 	/** 事件处理器 **/
-	IProcesser processer = null;
+	IProcesser<GatewayRES, GatewayRES, HttpResponse> processer = null;
 	/** 网关容器 **/
 	IContainer<GatewayREQ, GatewayRES> container = null;
 	
 	Bootstrap() {
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
+		
 		connector=new NettyConnector();
-		processer = new DisruptorProcesser(connector);
-		container = new NettyContainer(gateway);
+		processer = new DisruptorProcesser();
+		container = new NettyContainer();
+		
+		processer.setConnector(connector);
+		container.setGateway(gateway);
 	}
 
 	public void init() throws Exception {
