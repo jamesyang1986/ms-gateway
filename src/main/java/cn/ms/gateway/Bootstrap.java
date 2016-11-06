@@ -20,7 +20,8 @@ import cn.ms.gateway.entity.GatewayRES;
 
 /**
  * 微服务网关
- * 
+ * <p>
+ * 启动顺序:连接器 --> 处理器 --> 网关容器
  * @author lry
  */
 public enum Bootstrap {
@@ -31,10 +32,11 @@ public enum Bootstrap {
 
 	/** 网关核心 **/
 	IGateway<GatewayREQ, GatewayRES> gateway = null;
-	/** 事件处理器 **/
-	IProcesser processer = null;
+	
 	/** 连接器 **/
 	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
+	/** 事件处理器 **/
+	IProcesser processer = null;
 	/** 网关容器 **/
 	IContainer<GatewayREQ, GatewayRES> container = null;
 	
@@ -47,9 +49,10 @@ public enum Bootstrap {
 
 	public void init() throws Exception {
 		gateway.init();
+		
 		connector.init();
-		container.init();
 		processer.init();
+		container.init();
 		
 		//$NON-NLS-注入Disruptor$
 		HttpProxyRouteFilter httpProxyRouteFilter = gateway.getFilter(HttpProxyRouteFilter.class);
@@ -58,6 +61,7 @@ public enum Bootstrap {
 
 	public void start() throws Exception {
 		gateway.start();
+		
 		connector.start();
 		processer.start();
 		container.start();
@@ -65,6 +69,7 @@ public enum Bootstrap {
 
 	public void destory() throws Exception {
 		gateway.destory();
+		
 		connector.destory();
 		processer.destory();
 		container.destory();
