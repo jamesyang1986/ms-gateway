@@ -1,5 +1,6 @@
 package cn.ms.gateway.common;
 
+
 /**
  * 常数定义
  * 
@@ -23,5 +24,12 @@ public class Constants {
 	 * 渠道ID KEY
 	 */
 	public static final String CHANNELID_KEY="channelId";
+	
+	public static final String PRODUCER_TYPE_SINGLE="SINGLE";
+	public static final String PRODUCER_TYPE_MULTI="MULTI";
+	
+	public static final String WS_BLOCKING_WAIT="BLOCKING_WAIT";
+	public static final String WS_SLEEPING_WAIT="SLEEPING_WAIT";
+	public static final String WS_YIELDING_WAIT="YIELDING_WAIT";
 	
 }

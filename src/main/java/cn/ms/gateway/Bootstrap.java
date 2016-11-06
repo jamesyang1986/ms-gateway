@@ -8,12 +8,9 @@ import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.processer.IProcesser;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
-import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.connector.NettyConnector;
-import cn.ms.gateway.core.container.ContainerConf;
 import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.filter.route.HttpProxyRouteFilter;
-import cn.ms.gateway.core.processer.ProcesserConf;
 import cn.ms.gateway.core.processer.DisruptorProcesser;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -42,9 +39,9 @@ public enum Bootstrap {
 	
 	Bootstrap() {
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
-		connector=new NettyConnector(new ConnectorConf());
-		processer = new DisruptorProcesser(new ProcesserConf(), connector);
-		container = new NettyContainer(gateway, new ContainerConf());
+		connector=new NettyConnector();
+		processer = new DisruptorProcesser(connector);
+		container = new NettyContainer(gateway);
 	}
 
 	public void init() throws Exception {

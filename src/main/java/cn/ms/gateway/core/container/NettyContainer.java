@@ -16,6 +16,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.base.container.AbstractContainer;
+import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
@@ -32,20 +33,18 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	private static final Logger logger=LoggerFactory.getLogger(NettyContainer.class);
 	
-	ContainerConf nettyConf;
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
 	
-	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway, ContainerConf nettyConf) {
+	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway) {
 		super(gateway);
-		this.nettyConf = nettyConf;
 	}
 
 	@Override
 	public void init() throws Exception {
-		this.bossGroup = new NioEventLoopGroup(nettyConf.getBossGroupThread(), new NamedThreadFactory("NettyContainerBoss"));
-		this.workerGroup = new NioEventLoopGroup(nettyConf.getWorkerGroupThread(), new NamedThreadFactory("NettyContainerWorker"));
+		this.bossGroup = new NioEventLoopGroup(Conf.CONF.getBossGroupThread(), new NamedThreadFactory("NettyContainerBoss"));
+		this.workerGroup = new NioEventLoopGroup(Conf.CONF.getWorkerGroupThread(), new NamedThreadFactory("NettyContainerWorker"));
 
 		serverBootstrap = new ServerBootstrap();
 		serverBootstrap.group(bossGroup, workerGroup)
@@ -77,12 +76,12 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void start() throws Exception {
-		ChannelFuture channelFuture = serverBootstrap.bind(nettyConf.getPort()).sync();
+		ChannelFuture channelFuture = serverBootstrap.bind(Conf.CONF.getPort()).sync();
 		channelFuture.addListener(new GenericFutureListener<ChannelFuture>() {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
 				if(future.isSuccess()){
-					logger.info("启动成功: http://%s:%s", NetUtils.getLocalIp(), nettyConf.getPort());
+					logger.info("启动成功: http://%s:%s", NetUtils.getLocalIp(), Conf.CONF.getPort());
 				}else{
 					logger.error("启动失败");
 				}

@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
+import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -33,18 +34,13 @@ import cn.ms.gateway.entity.GatewayRES;
 @SuppressWarnings("deprecation")
 public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpResponse> {
 
-	private ConnectorConf conf = null;
 	private Bootstrap bootstrap = null;
 	private ConcurrentHashMap<String, ConnectorHandler> nettyHandlerMap = new ConcurrentHashMap<String, ConnectorHandler>();
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
 
-	public NettyConnector(ConnectorConf conf) {
-		this.conf=conf;
-	}
-	
 	@Override
 	public void init() throws Exception {
-		EventLoopGroup workerGroup = new NioEventLoopGroup(conf.getConnectorWorkerThreadNum(), new NamedThreadFactory("NettyConnectorWorker"));
+		EventLoopGroup workerGroup = new NioEventLoopGroup(Conf.CONF.getConnectorWorkerThreadNum(), new NamedThreadFactory("NettyConnectorWorker"));
 		bootstrap = new Bootstrap();
 		bootstrap.group(workerGroup);
 		bootstrap.channel(NioSocketChannel.class);
@@ -70,7 +66,7 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 				    ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-				    		conf.getReaderIdleTimeSeconds(), conf.getWriterIdleTimeSeconds(),conf.getAllIdleTimeSeconds()));
+				    		Conf.CONF.getReaderIdleTimeSeconds(), Conf.CONF.getWriterIdleTimeSeconds(),Conf.CONF.getAllIdleTimeSeconds()));
 	                ch.pipeline().addLast(new WriteTimeoutHandler(1));  
 					ch.pipeline().addLast(new HttpResponseDecoder());
 					ch.pipeline().addLast(new HttpRequestEncoder());

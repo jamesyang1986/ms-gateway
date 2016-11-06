@@ -6,26 +6,31 @@ import java.util.concurrent.ExecutorService;
 
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.processer.IProcesser;
+import cn.ms.gateway.common.Conf;
+import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
+import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.SleepingWaitStrategy;
+import com.lmax.disruptor.WaitStrategy;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.ProducerType;
 
 public class DisruptorProcesser implements IProcesser {
 
-	ProcesserConf conf;
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
 	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
 
-	public DisruptorProcesser(ProcesserConf conf, IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
-		this.conf=conf;
+	public DisruptorProcesser(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
 		this.connector=connector;
 	}
 	
@@ -33,7 +38,7 @@ public class DisruptorProcesser implements IProcesser {
 	@Override
 	public void init() throws Exception {
 		eventFactory = new ProcesserEventFactory();
-		executorService=new FixedThreadPoolExecutor(conf.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
+		executorService=new FixedThreadPoolExecutor(Conf.CONF.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
 			@Override
 			protected void beforeExecute(Thread t, Runnable r) {
 			}
@@ -43,9 +48,23 @@ public class DisruptorProcesser implements IProcesser {
 			}
 		};
 		
-		disruptor = new Disruptor<GatewayREQ>(eventFactory, conf.getRingBufferSize(),
-				executorService, conf.getProducerType(), conf.getWaitStrategy());
+		ProducerType producerType = null;
+		if (Constants.PRODUCER_TYPE_SINGLE.equals(Conf.CONF.getProducerType())) {
+			producerType = ProducerType.SINGLE;
+		} else if (Constants.PRODUCER_TYPE_MULTI.equals(Conf.CONF.getProducerType())) {
+			producerType = ProducerType.MULTI;
+		}
 
+		WaitStrategy waitStrategy = null;
+		if (Constants.WS_BLOCKING_WAIT.equals(Conf.CONF.getWaitStrategy())) {
+			waitStrategy = new BlockingWaitStrategy();
+		} else if (Constants.WS_SLEEPING_WAIT.equals(Conf.CONF.getWaitStrategy())) {
+			waitStrategy = new SleepingWaitStrategy();
+		} else if (Constants.WS_YIELDING_WAIT.equals(Conf.CONF.getWaitStrategy())) {
+			waitStrategy = new YieldingWaitStrategy();
+		}
+		
+		disruptor = new Disruptor<GatewayREQ>(eventFactory, Conf.CONF.getRingBufferSize(), executorService, producerType, waitStrategy);
 		EventHandler<GatewayREQ> eventHandler = new ProcesserHandler(connector);
 		disruptor.handleEventsWith(eventHandler);
 	}
