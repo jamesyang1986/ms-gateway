@@ -69,7 +69,7 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 	}
 
 	@Override
-	public RES handler(REQ req, Object... args) throws Throwable {
+	public RES handler(REQ req, Object... args) throws Exception {
 		RES res = null;
 		try {
 			try {
@@ -118,7 +118,7 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 	 * @return
 	 * @throws Throwable
 	 */
-	private RES doHandler(FilterType filterType, REQ req, RES res, Object... args)  throws Throwable {
+	private RES doHandler(FilterType filterType, REQ req, RES res, Object... args)  throws Exception {
 		Map<String, IFilter<REQ, RES>> filterPREMap = serviceFilterOnLineMap.get(filterType.getCode());
 		if(filterPREMap==null){
 			return null;

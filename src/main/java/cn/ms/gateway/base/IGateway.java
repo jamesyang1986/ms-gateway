@@ -30,8 +30,8 @@ public interface IGateway<REQ, RES> extends IAdapter {
 	 * @param req
 	 * @param args
 	 * @return
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	RES handler(REQ req, Object... args) throws Throwable;
+	RES handler(REQ req, Object... args) throws Exception;
 
 }

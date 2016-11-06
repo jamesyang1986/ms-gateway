@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.util.CharsetUtil;
-import cn.ms.gateway.base.connector.IConnectorCallback;
+import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.entity.GatewayRES;
 
 /**
@@ -16,9 +16,9 @@ import cn.ms.gateway.entity.GatewayRES;
  */
 public class NettyHandler extends ChannelInboundHandlerAdapter {
 
-	IConnectorCallback callback;
+	ICallback<GatewayRES, GatewayRES, HttpResponse> callback;
 
-	public void setProxyCallback(IConnectorCallback callback) {
+	public void setProxyCallback(ICallback<GatewayRES, GatewayRES, HttpResponse> callback) {
 		this.callback = callback;
 	}
 

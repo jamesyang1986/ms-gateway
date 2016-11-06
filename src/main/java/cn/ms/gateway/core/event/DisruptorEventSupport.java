@@ -1,5 +1,7 @@
 package cn.ms.gateway.core.event;
 
+import io.netty.handler.codec.http.HttpResponse;
+
 import java.util.concurrent.ExecutorService;
 
 import cn.ms.gateway.base.connector.IConnector;
@@ -7,6 +9,7 @@ import cn.ms.gateway.base.event.IEvent;
 import cn.ms.gateway.common.thread.FixedThreadPoolExecutor;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayRES;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
@@ -19,9 +22,9 @@ public class DisruptorEventSupport implements IEvent {
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
-	IConnector connector=null;
+	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
 
-	public DisruptorEventSupport(DisruptorEventConf conf, IConnector connector) {
+	public DisruptorEventSupport(DisruptorEventConf conf, IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
 		this.conf=conf;
 		this.connector=connector;
 	}

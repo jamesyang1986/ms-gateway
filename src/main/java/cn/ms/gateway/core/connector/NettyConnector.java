@@ -14,6 +14,7 @@ import io.netty.handler.codec.http.HttpHeaders.Names;
 import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequestEncoder;
+import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -23,13 +24,14 @@ import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
-import cn.ms.gateway.base.connector.IConnectorCallback;
 import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
+import cn.ms.gateway.entity.GatewayRES;
 
 @SuppressWarnings("deprecation")
-public class NettyConnector implements IConnector {
+public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpResponse> {
 
 	private ConnectorConf conf = null;
 	private Bootstrap bootstrap = null;
@@ -55,7 +57,7 @@ public class NettyConnector implements IConnector {
 	}
 
 	@Override
-	public void connect(GatewayREQ req, final IConnectorCallback callback, Object... args) throws Throwable {
+	public void connect(GatewayREQ req, final ICallback<GatewayRES, GatewayRES, HttpResponse> callback, Object... args) throws Throwable {
 		URI tempURI = new URI(req.getOriginURI());
 		String address=tempURI.getHost()+":"+(tempURI.getPort()<=0?80:tempURI.getPort());
 		

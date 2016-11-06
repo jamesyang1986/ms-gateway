@@ -9,10 +9,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.IGateway;
+import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.base.container.AbstractContainer;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
@@ -55,9 +57,15 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 						ch.pipeline().addLast(new HttpRequestDecoder());
 						ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
 						
-						ch.pipeline().addLast(new NettyContainerHandler(new IContainerCallback() {
+						ch.pipeline().addLast(new NettyContainerHandler(new ICallback<GatewayREQ, GatewayRES, HttpRequest>() {
+
 							@Override
-							public GatewayRES callback(GatewayREQ req, Object... args) throws Throwable {
+							public void before(HttpRequest bef, Object... args) throws Exception {
+								
+							}
+
+							@Override
+							public GatewayRES callback(GatewayREQ req, Object... args) throws Exception {
 								return handler(req, args);
 							}
 						}));
@@ -83,7 +91,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 	}
 
 	@Override
-	public GatewayRES handler(GatewayREQ req, Object... args) throws Throwable {
+	public GatewayRES handler(GatewayREQ req, Object... args) throws Exception {
 		GatewayRES res = super.sendGatewayHandler(req, args);
 		
 		return res;

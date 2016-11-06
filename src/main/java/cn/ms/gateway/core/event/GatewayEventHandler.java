@@ -4,8 +4,8 @@ import io.netty.handler.codec.http.HttpResponse;
 
 import org.apache.logging.log4j.ThreadContext;
 
+import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
-import cn.ms.gateway.base.connector.IConnectorCallback;
 import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
@@ -24,9 +24,9 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 
 	public static final Logger logger = LoggerFactory.getLogger(GatewayEventHandler.class);
 
-	private IConnector connector;
+	private IConnector<GatewayRES, GatewayRES, HttpResponse> connector;
 
-	public GatewayEventHandler(IConnector connector) {
+	public GatewayEventHandler(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
 		this.connector = connector;
 	}
 
@@ -37,17 +37,18 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 			ThreadContext.put(Constants.TRADEID_KEY, gatewayREQ.getTradeId());// 线程参数继续
 			logger.info("=====路由开始=====");
 			
-			connector.connect(gatewayREQ, new IConnectorCallback() {
+			connector.connect(gatewayREQ, new ICallback<GatewayRES, GatewayRES, HttpResponse>() {
 				@Override
-				public void before(HttpResponse response) throws Exception {
+				public void before(HttpResponse response, Object... args) throws Exception {
 				}
 				
 				@Override
-				public void callback(GatewayRES gatewayRES) throws Exception {
+				public GatewayRES callback(GatewayRES gatewayRES, Object... args) throws Exception {
 					ThreadContext.put(Constants.TRADEID_KEY, gatewayREQ.getTradeId());// 线程参数继续
-					
 					//$NON-NLS-组装响应结果$
 					AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
+					
+					return null;
 				}
 			});
 		} catch (Throwable t) {

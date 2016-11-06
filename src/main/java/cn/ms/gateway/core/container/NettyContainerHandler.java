@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.HttpRequest;
 
 import org.apache.logging.log4j.ThreadContext;
 
+import cn.ms.gateway.base.connector.ICallback;
 import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
@@ -20,11 +21,11 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
     
 	private Logger logger=LoggerFactory.getLogger(NettyContainerHandler.class);
 	
-	private IContainerCallback callback;
+	private ICallback<GatewayREQ, GatewayRES, HttpRequest> callback;
 	private HttpRequest request;
 	private TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
 	
-	public NettyContainerHandler(IContainerCallback callback) {
+	public NettyContainerHandler(ICallback<GatewayREQ, GatewayRES, HttpRequest> callback) {
 		this.callback=callback;
 	}
     
@@ -32,6 +33,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof HttpRequest) {
             request = (HttpRequest) msg;
+            callback.before(request);
         }
         if (msg instanceof HttpContent) {
         	long tradeStartTime=System.currentTimeMillis();
@@ -52,7 +54,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
             gatewayREQ.setCtx(ctx);
             
             try {
-            	GatewayRES gatewayRES = callback.callback(gatewayREQ, request);
+            	GatewayRES gatewayRES = callback.callback(gatewayREQ);
             	
             	if(gatewayRES!=null){
             		//$NON-NLS-组装响应结果$
