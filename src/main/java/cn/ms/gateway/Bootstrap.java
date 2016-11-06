@@ -10,7 +10,7 @@ import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.core.connector.ConnectorConf;
 import cn.ms.gateway.core.connector.NettyConnector;
-import cn.ms.gateway.core.container.NettyConf;
+import cn.ms.gateway.core.container.ContainerConf;
 import cn.ms.gateway.core.container.NettyContainer;
 import cn.ms.gateway.core.event.DisruptorEventConf;
 import cn.ms.gateway.core.event.DisruptorEventSupport;
@@ -42,7 +42,7 @@ public enum Bootstrap {
 		gateway = new Gateway<GatewayREQ, GatewayRES>();
 		connector=new NettyConnector(new ConnectorConf());
 		event = new DisruptorEventSupport(new DisruptorEventConf(), connector);
-		container = new NettyContainer(gateway, new NettyConf());
+		container = new NettyContainer(gateway, new ContainerConf());
 	}
 
 	public void init() throws Exception {

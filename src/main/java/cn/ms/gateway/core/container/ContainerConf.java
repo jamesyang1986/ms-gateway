@@ -1,6 +1,6 @@
 package cn.ms.gateway.core.container;
 
-public class NettyConf {
+public class ContainerConf {
 
 	/**
 	 * HTTP暴露端口

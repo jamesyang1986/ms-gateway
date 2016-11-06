@@ -17,15 +17,15 @@ import cn.ms.gateway.core.AssemblySupport;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
-public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
+public class ContainerHandler extends ChannelInboundHandlerAdapter {
     
-	private Logger logger=LoggerFactory.getLogger(NettyContainerHandler.class);
+	private Logger logger=LoggerFactory.getLogger(ContainerHandler.class);
 	
 	private ICallback<GatewayREQ, GatewayRES, HttpRequest> callback;
 	private HttpRequest request;
 	private TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
 	
-	public NettyContainerHandler(ICallback<GatewayREQ, GatewayRES, HttpRequest> callback) {
+	public ContainerHandler(ICallback<GatewayREQ, GatewayRES, HttpRequest> callback) {
 		this.callback=callback;
 	}
     

@@ -14,7 +14,7 @@ import cn.ms.gateway.entity.GatewayRES;
  * 
  * @author lry
  */
-public class NettyHandler extends ChannelInboundHandlerAdapter {
+public class ConnectorHandler extends ChannelInboundHandlerAdapter {
 
 	ICallback<GatewayRES, GatewayRES, HttpResponse> callback;
 

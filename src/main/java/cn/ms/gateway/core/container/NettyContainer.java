@@ -32,12 +32,12 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 	private static final Logger logger=LoggerFactory.getLogger(NettyContainer.class);
 	
-	NettyConf nettyConf;
+	ContainerConf nettyConf;
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
 	
-	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway, NettyConf nettyConf) {
+	public NettyContainer(IGateway<GatewayREQ, GatewayRES> gateway, ContainerConf nettyConf) {
 		super(gateway);
 		this.nettyConf = nettyConf;
 	}
@@ -57,7 +57,7 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 						ch.pipeline().addLast(new HttpRequestDecoder());
 						ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
 						
-						ch.pipeline().addLast(new NettyContainerHandler(new ICallback<GatewayREQ, GatewayRES, HttpRequest>() {
+						ch.pipeline().addLast(new ContainerHandler(new ICallback<GatewayREQ, GatewayRES, HttpRequest>() {
 
 							@Override
 							public void before(HttpRequest bef, Object... args) throws Exception {

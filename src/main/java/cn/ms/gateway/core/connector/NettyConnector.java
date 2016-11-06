@@ -35,7 +35,7 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 
 	private ConnectorConf conf = null;
 	private Bootstrap bootstrap = null;
-	private ConcurrentHashMap<String, NettyHandler> nettyHandlerMap = new ConcurrentHashMap<String, NettyHandler>();
+	private ConcurrentHashMap<String, ConnectorHandler> nettyHandlerMap = new ConcurrentHashMap<String, ConnectorHandler>();
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
 
 	public NettyConnector(ConnectorConf conf) {
@@ -62,10 +62,10 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 		String address=tempURI.getHost()+":"+(tempURI.getPort()<=0?80:tempURI.getPort());
 		
 		//$NON-NLS-处理器和通道回收利用,一次创建N次使用$
-		NettyHandler nettyHandler = nettyHandlerMap.get(address);
+		ConnectorHandler nettyHandler = nettyHandlerMap.get(address);
 		ChannelFuture channelFuture = channelFutureMap.get(address);
 		if (nettyHandler==null || channelFuture == null) {
-			final NettyHandler tempNettyHandler = new NettyHandler();
+			final ConnectorHandler tempNettyHandler = new ConnectorHandler();
 			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
