@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
-import cn.ms.gateway.core.processer.GatewayEventHandler;
+import cn.ms.gateway.core.processer.ProcesserHandler;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -22,7 +22,7 @@ import cn.ms.gateway.entity.GatewayRES;
 @SuppressWarnings("deprecation")
 public class AssemblySupport {
 
-	public static final Logger logger = LoggerFactory.getLogger(GatewayEventHandler.class);
+	public static final Logger logger = LoggerFactory.getLogger(ProcesserHandler.class);
 	
 	/**
 	 * 通道响应

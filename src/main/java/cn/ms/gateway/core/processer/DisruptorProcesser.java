@@ -16,15 +16,15 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 
-public class DisruptorEventSupport implements IProcesser {
+public class DisruptorProcesser implements IProcesser {
 
-	DisruptorEventConf conf;
+	ProcesserConf conf;
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
 	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
 
-	public DisruptorEventSupport(DisruptorEventConf conf, IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
+	public DisruptorProcesser(ProcesserConf conf, IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
 		this.conf=conf;
 		this.connector=connector;
 	}
@@ -46,7 +46,7 @@ public class DisruptorEventSupport implements IProcesser {
 		disruptor = new Disruptor<GatewayREQ>(eventFactory, conf.getRingBufferSize(),
 				executorService, conf.getProducerType(), conf.getWaitStrategy());
 
-		EventHandler<GatewayREQ> eventHandler = new GatewayEventHandler(connector);
+		EventHandler<GatewayREQ> eventHandler = new ProcesserHandler(connector);
 		disruptor.handleEventsWith(eventHandler);
 	}
 

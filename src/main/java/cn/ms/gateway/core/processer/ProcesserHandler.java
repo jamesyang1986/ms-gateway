@@ -20,13 +20,13 @@ import com.lmax.disruptor.EventHandler;
  * 
  * @author lry
  */
-public class GatewayEventHandler implements EventHandler<GatewayREQ> {
+public class ProcesserHandler implements EventHandler<GatewayREQ> {
 
-	public static final Logger logger = LoggerFactory.getLogger(GatewayEventHandler.class);
+	public static final Logger logger = LoggerFactory.getLogger(ProcesserHandler.class);
 
 	private IConnector<GatewayRES, GatewayRES, HttpResponse> connector;
 
-	public GatewayEventHandler(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
+	public ProcesserHandler(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
 		this.connector = connector;
 	}
 
