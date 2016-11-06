@@ -32,7 +32,7 @@ public class DisruptorProcesser implements IProcesser {
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public void init() throws Exception {
-		eventFactory = new GatewayEventFactory();
+		eventFactory = new ProcesserEventFactory();
 		executorService=new FixedThreadPoolExecutor(conf.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
 			@Override
 			protected void beforeExecute(Thread t, Runnable r) {

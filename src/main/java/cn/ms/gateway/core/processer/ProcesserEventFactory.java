@@ -9,7 +9,7 @@ import com.lmax.disruptor.EventFactory;
  * 
  * @author lry
  */
-public class GatewayEventFactory implements EventFactory<GatewayREQ> {
+public class ProcesserEventFactory implements EventFactory<GatewayREQ> {
 
 	/**
 	 * 启动时会创建ringBufferSize个实例
