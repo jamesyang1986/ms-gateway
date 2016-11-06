@@ -11,6 +11,11 @@ import cn.ms.gateway.entity.GatewayREQ;
  */
 public interface IProcesser<REQ, RES, BEF> extends IAdapter {
 
+	/**
+	 * 设置连接器
+	 * 
+	 * @param connector
+	 */
 	void setConnector(IConnector<REQ, RES, BEF> connector);
 
 	/**

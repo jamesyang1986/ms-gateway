@@ -10,8 +10,13 @@ import cn.ms.gateway.base.IGateway;
  */
 public interface IContainer<REQ, RES> extends IAdapter {
 
+	/**
+	 * 设置网关
+	 * 
+	 * @param gateway
+	 */
 	void setGateway(IGateway<REQ, RES> gateway);
-	
+
 	/**
 	 * 容器的请求入口
 	 * 

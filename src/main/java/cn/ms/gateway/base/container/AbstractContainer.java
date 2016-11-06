@@ -3,7 +3,7 @@ package cn.ms.gateway.base.container;
 import cn.ms.gateway.base.IGateway;
 
 /**
- * 容器抽象模块
+ * 抽象容器
  * 
  * @author lry
  */
