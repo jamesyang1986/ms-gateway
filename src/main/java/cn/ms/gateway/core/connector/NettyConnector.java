@@ -31,6 +31,11 @@ import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
+/**
+ * 基于Netty实现的连接器
+ * 
+ * @author lry
+ */
 @SuppressWarnings("deprecation")
 public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpResponse> {
 

@@ -23,6 +23,11 @@ import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+/**
+ * 基于Disruptor实现网关的事件处理器
+ * 
+ * @author lry
+ */
 public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, HttpResponse> {
 
 	Disruptor<GatewayREQ> disruptor;
