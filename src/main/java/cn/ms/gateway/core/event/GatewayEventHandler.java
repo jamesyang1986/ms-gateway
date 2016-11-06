@@ -5,7 +5,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import org.apache.logging.log4j.ThreadContext;
 
 import cn.ms.gateway.base.connector.IConnector;
-import cn.ms.gateway.base.connector.IProxyCallback;
+import cn.ms.gateway.base.connector.IConnectorCallback;
 import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
@@ -37,7 +37,7 @@ public class GatewayEventHandler implements EventHandler<GatewayREQ> {
 			ThreadContext.put(Constants.TRADEID_KEY, gatewayREQ.getTradeId());// 线程参数继续
 			logger.info("=====路由开始=====");
 			
-			connector.connect(gatewayREQ, new IProxyCallback() {
+			connector.connect(gatewayREQ, new IConnectorCallback() {
 				@Override
 				public void before(HttpResponse response) throws Exception {
 				}
