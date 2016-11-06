@@ -16,7 +16,7 @@ public abstract class MSFilter<REQ, RES> implements IFilter<REQ, RES> {
 	}
 
 	@Override
-	public <MOD> void moduler(MOD mod) {
+	public <MOD> void inject(MOD mod) {
 
 	}
 

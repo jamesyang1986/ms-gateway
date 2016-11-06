@@ -18,11 +18,11 @@ public interface IFilter<REQ, RES> {
 	void init() throws Exception;
 
 	/**
-	 * 设置模块
+	 * 注入自定义对象
 	 * 
 	 * @param mod
 	 */
-	<MOD> void moduler(MOD mod);
+	<MOD> void inject(MOD mod);
 
 	/**
 	 * 过滤器是否执行校验

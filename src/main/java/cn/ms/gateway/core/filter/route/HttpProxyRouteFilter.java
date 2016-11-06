@@ -24,7 +24,7 @@ public class HttpProxyRouteFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <MOD> void moduler(MOD mod) {
+	public <MOD> void inject(MOD mod) {
 		this.processer=(IProcesser<GatewayRES, GatewayRES, HttpResponse>) mod;
 	}
 	
