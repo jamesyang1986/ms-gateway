@@ -2,7 +2,7 @@ package cn.ms.gateway.core.filter.route;
 
 import io.netty.handler.codec.http.HttpResponse;
 import cn.ms.gateway.base.filter.FilterType;
-import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.base.filter.MSFilter;
 import cn.ms.gateway.base.processer.IProcesser;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.common.log.Logger;
@@ -10,22 +10,24 @@ import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
+/**
+ * 网关核心远程路由过滤器
+ * 
+ * @author lry
+ */
 @Filter(value = FilterType.ROUTE, order = 300)
-public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
+public class HttpProxyRouteFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	private static final Logger logger=LoggerFactory.getLogger(HttpProxyRouteFilter.class);
 	
 	IProcesser<GatewayRES, GatewayRES, HttpResponse> processer;
 
-	public void setEvent(IProcesser<GatewayRES, GatewayRES, HttpResponse> processer) {
-		this.processer=processer;
+	@SuppressWarnings("unchecked")
+	@Override
+	public <MOD> void moduler(MOD mod) {
+		this.processer=(IProcesser<GatewayRES, GatewayRES, HttpResponse>) mod;
 	}
 	
-	@Override
-	public void init() throws Exception {
-		
-	}
-
 	@Override
 	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		return true;

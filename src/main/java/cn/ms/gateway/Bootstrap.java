@@ -57,7 +57,7 @@ public enum Bootstrap {
 		
 		//$NON-NLS-注入Disruptor$
 		HttpProxyRouteFilter httpProxyRouteFilter = gateway.getFilter(HttpProxyRouteFilter.class);
-		httpProxyRouteFilter.setEvent(processer);
+		httpProxyRouteFilter.moduler(processer);
 	}
 
 	public void start() throws Exception {

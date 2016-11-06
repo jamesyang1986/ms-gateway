@@ -3,7 +3,7 @@ package cn.ms.gateway.core.filter.pre;
 import java.net.InetSocketAddress;
 
 import cn.ms.gateway.base.filter.FilterType;
-import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.base.filter.MSFilter;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -14,12 +14,7 @@ import cn.ms.gateway.entity.GatewayRES;
  * @author lry
  */
 @Filter(value = FilterType.PRE, order=100)
-public class IpWhiteListPreFilter implements IFilter<GatewayREQ, GatewayRES> {
-
-	@Override
-	public void init() throws Exception {
-		
-	}
+public class IpWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 	
 	@Override
 	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {

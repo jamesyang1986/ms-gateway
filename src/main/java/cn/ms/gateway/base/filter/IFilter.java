@@ -18,6 +18,13 @@ public interface IFilter<REQ, RES> {
 	void init() throws Exception;
 
 	/**
+	 * 设置模块
+	 * 
+	 * @param mod
+	 */
+	<MOD> void moduler(MOD mod);
+
+	/**
 	 * 过滤器是否执行校验
 	 * 
 	 * @param req

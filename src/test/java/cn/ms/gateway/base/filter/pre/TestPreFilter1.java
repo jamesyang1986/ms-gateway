@@ -1,19 +1,14 @@
 package cn.ms.gateway.base.filter.pre;
 
 import cn.ms.gateway.base.filter.FilterType;
-import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.base.filter.MSFilter;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.common.annotation.FilterEnable;
 
 @FilterEnable
 @Filter(value=FilterType.PRE, order=10)
-public class TestPreFilter1 implements IFilter<String, String> {
+public class TestPreFilter1 extends MSFilter<String, String> {
 
-	@Override
-	public void init() throws Exception {
-		
-	}
-	
 	@Override
 	public boolean check(String req, String res, Object...args) {
 		System.out.println(this.getClass().getName()+" ---> check");

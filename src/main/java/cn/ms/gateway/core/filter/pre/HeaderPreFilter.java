@@ -2,7 +2,7 @@ package cn.ms.gateway.core.filter.pre;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import cn.ms.gateway.base.filter.FilterType;
-import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.base.filter.MSFilter;
 import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.entity.GatewayREQ;
@@ -14,13 +14,8 @@ import cn.ms.gateway.entity.GatewayRES;
  * @author lry
  */
 @Filter(value = FilterType.PRE, order = 120)
-public class HeaderPreFilter implements IFilter<GatewayREQ, GatewayRES> {
+public class HeaderPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
-	@Override
-	public void init() throws Exception {
-		
-	}
-	
 	@Override
 	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		return true;
