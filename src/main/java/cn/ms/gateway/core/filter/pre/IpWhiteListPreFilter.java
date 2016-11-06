@@ -22,12 +22,12 @@ public class IpWhiteListPreFilter implements IFilter<GatewayREQ, GatewayRES> {
 	}
 	
 	@Override
-	public boolean check(GatewayREQ req, GatewayRES res, Object... args) {
+	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		return true;
 	}
 
 	@Override
-	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) {
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		String clientIP = req.getRequest().headers().get("X-Forwarded-For");
 		if (clientIP == null) {
 			InetSocketAddress insocket = (InetSocketAddress) req.getCtx()

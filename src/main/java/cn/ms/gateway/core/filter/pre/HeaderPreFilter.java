@@ -22,12 +22,12 @@ public class HeaderPreFilter implements IFilter<GatewayREQ, GatewayRES> {
 	}
 	
 	@Override
-	public boolean check(GatewayREQ req, GatewayRES res, Object... args) {
+	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		return true;
 	}
 
 	@Override
-	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) {
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		HttpHeaders httpHeaders = req.getRequest().headers();
 		if (!httpHeaders.contains(Constants.CHANNELID_KEY)) {//渠道ID参数不存在
 

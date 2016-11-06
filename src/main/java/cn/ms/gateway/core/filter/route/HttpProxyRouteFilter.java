@@ -26,12 +26,12 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 	}
 
 	@Override
-	public boolean check(GatewayREQ req, GatewayRES res, Object... args) {
+	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		return true;
 	}
 
 	@Override
-	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) {
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		try {
 			event.publish(req);
 		} catch (Throwable t) {

@@ -8,23 +8,27 @@ public interface IFilter<REQ, RES> {
 	 * @throws Exception
 	 */
 	void init() throws Exception;
-	
-	/**
-	 * Whether to perform filtering
-	 * 
-	 * @param req
-	 * @param res
-	 * @return
-	 */
-	boolean check(REQ req, RES res, Object...args);
 
 	/**
-	 * Filtering logic processing
+	 * 过滤器是否执行校验
 	 * 
 	 * @param req
 	 * @param res
+	 * @param args
 	 * @return
+	 * @throws Exception
 	 */
-	RES run(REQ req, RES res, Object...args);
+	boolean check(REQ req, RES res, Object... args) throws Exception;
+
+	/**
+	 * 过滤器执行器
+	 * 
+	 * @param req
+	 * @param res
+	 * @param args
+	 * @return
+	 * @throws Exception
+	 */
+	RES run(REQ req, RES res, Object... args) throws Exception;
 
 }
