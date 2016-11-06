@@ -10,6 +10,11 @@ import cn.ms.gateway.common.annotation.FilterEnable;
 public class TestErrorFilter1 implements IFilter<String, String> {
 
 	@Override
+	public void init() throws Exception {
+		
+	}
+	
+	@Override
 	public boolean check(String req, String res, Object...args) {
 		System.out.println(this.getClass().getName()+" ---> check");
 		return true;

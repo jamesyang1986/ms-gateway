@@ -15,6 +15,11 @@ import cn.ms.gateway.entity.GatewayRES;
 public class PathPreFilter implements IFilter<GatewayREQ, GatewayRES> {
 
 	@Override
+	public void init() throws Exception {
+		
+	}
+	
+	@Override
 	public boolean check(GatewayREQ req, GatewayRES res, Object... args) {
 		return true;
 	}

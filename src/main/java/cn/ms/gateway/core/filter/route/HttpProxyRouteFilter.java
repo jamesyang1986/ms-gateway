@@ -19,6 +19,11 @@ public class HttpProxyRouteFilter implements IFilter<GatewayREQ, GatewayRES> {
 	public void setEvent(IEvent event) {
 		this.event=event;
 	}
+	
+	@Override
+	public void init() throws Exception {
+		
+	}
 
 	@Override
 	public boolean check(GatewayREQ req, GatewayRES res, Object... args) {

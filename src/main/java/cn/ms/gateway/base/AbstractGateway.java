@@ -29,7 +29,7 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 	protected Map<String, Map<String, IFilter<REQ, RES>>> serviceFilterOffLineMap = new LinkedHashMap<String, Map<String, IFilter<REQ, RES>>>();
 
 	@Override
-	public void addFilter(IFilter<REQ, RES> filter) {
+	public void addFilter(IFilter<REQ, RES> filter) throws Exception {
 		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
 		
 		logger.info("The scanner filter is: %s", filter.getClass().getName());
@@ -72,15 +72,16 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 	}
 
 	@Override
-	public void addFilters(List<IFilter<REQ, RES>> filters) {
+	public void addFilters(List<IFilter<REQ, RES>> filters) throws Exception {
 		for (IFilter<REQ, RES> filter : filters) {
+			filter.init();//初始化成功后才添加
 			this.addFilter(filter);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getFilter(FilterType filterType, String id) {
+	public <T> T getFilter(FilterType filterType, String id) throws Exception {
 		IFilter<REQ, RES> filter = null;
 		if (!serviceFilterOnLineMap.isEmpty()) {
 			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(filterType.getCode());
@@ -106,7 +107,7 @@ public abstract class AbstractGateway<REQ, RES> implements IGateway<REQ, RES> {
 	}
 
 	@Override
-	public <T> T getFilter(Class<T> t) {
+	public <T> T getFilter(Class<T> t) throws Exception {
 		Filter filterAnnotation = t.getAnnotation(Filter.class);
 		if (filterAnnotation != null) {
 			String filterId = filterAnnotation.id();

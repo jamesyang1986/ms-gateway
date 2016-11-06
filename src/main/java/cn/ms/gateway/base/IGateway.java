@@ -17,12 +17,12 @@ import cn.ms.gateway.base.filter.IFilter;
 public interface IGateway<REQ, RES> extends IAdapter {
 
 	//$NON-NLS-添加自定义过滤器$
-	void addFilter(IFilter<REQ, RES> filter);
-	void addFilters(List<IFilter<REQ, RES>> filters);
+	void addFilter(IFilter<REQ, RES> filter) throws Exception;
+	void addFilters(List<IFilter<REQ, RES>> filters) throws Exception;
 
 	//$NON-NLS-获取指定过滤器$
-	<T> T getFilter(Class<T> t);
-	<T> T getFilter(FilterType filterType, String id);
+	<T> T getFilter(Class<T> t) throws Exception;
+	<T> T getFilter(FilterType filterType, String id) throws Exception;
 	
 	/**
 	 * The Gateway handler center.

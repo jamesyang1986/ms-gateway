@@ -3,6 +3,13 @@ package cn.ms.gateway.base.filter;
 public interface IFilter<REQ, RES> {
 
 	/**
+	 * 初始化
+	 * 
+	 * @throws Exception
+	 */
+	void init() throws Exception;
+	
+	/**
 	 * Whether to perform filtering
 	 * 
 	 * @param req
