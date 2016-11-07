@@ -10,28 +10,30 @@ import io.netty.handler.codec.http.HttpRequest;
  */
 public class GatewayREQ {
 
-	/**
-	 * 交易ID
-	 */
+	//$NON-NLS-网关系统参数$
+	/**交易ID**/
 	String tradeId;
-	/**
-	 * 交易开始时间
-	 */
+	/**交易开始时间**/
 	long tradeStartTime;
-	/**
-	 * 路由开始时间
-	 */
+	/**路由开始时间**/
 	long routeStartTime;
-	/**
-	 * 请求报文
-	 */
+	
+	//$NON-NLS-请求对象$
+	/**请求报文**/
 	String content;
 	HttpRequest request;
 	ChannelHandlerContext ctx;
+	
 	/**
 	 * 远程通讯地址
 	 */
-	String originURI="http://localhost:8844/serviceId";
+	String remoteHost;
+	int remotePort=80;
+	String remoteProtocol="http";
+	String remoteAddress="localhost:8844";
+	String remotePath="/serviceId";
+	String remoteURI;
+
 	
 	public String getTradeId() {
 		return tradeId;
@@ -69,11 +71,35 @@ public class GatewayREQ {
 	public void setCtx(ChannelHandlerContext ctx) {
 		this.ctx = ctx;
 	}
-	public String getOriginURI() {
-		return originURI;
+	public String getRemoteHost() {
+		return remoteHost;
 	}
-	public void setOriginURI(String originURI) {
-		this.originURI = originURI;
+	public void setRemoteHost(String remoteHost) {
+		this.remoteHost = remoteHost;
+	}
+	public int getRemotePort() {
+		return remotePort;
+	}
+	public void setRemotePort(int remotePort) {
+		this.remotePort = remotePort;
+	}
+	public String getRemoteProtocol() {
+		return remoteProtocol;
+	}
+	public void setRemoteProtocol(String remoteProtocol) {
+		this.remoteProtocol = remoteProtocol;
+	}
+	public String getRemoteAddress() {
+		return (remoteAddress==null||remoteAddress.length()<1)?(getRemoteHost()+":"+getRemotePort()):(remoteAddress);
+	}
+	public void setRemoteAddress(String remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
+	public String getRemoteURI() {
+		return (remoteURI==null||remoteURI.length()<1)?(getRemoteProtocol()+"://"+getRemoteAddress()):(remoteURI);
+	}
+	public void setRemoteURI(String remoteURI) {
+		this.remoteURI = remoteURI;
 	}
 	
 }

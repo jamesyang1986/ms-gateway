@@ -39,7 +39,7 @@ public class ConnectorHandler extends ChannelInboundHandlerAdapter {
 				
 				callback.callback(gatewayRES);
 			} finally {
-				buf.release();
+				buf.release();//释放
 			}
 		}
 	}

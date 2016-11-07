@@ -104,7 +104,7 @@ public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, Ht
 			GatewayREQ event = ringBuffer.get(sequence);
 			event.setTradeId(req.getTradeId());
 			event.setTradeStartTime(req.getTradeStartTime());
-			event.setOriginURI(req.getOriginURI());
+			event.setRemoteURI(req.getRemoteURI());
 			event.setContent(req.getContent());
 			event.setRequest(req.getRequest());
 			event.setCtx(req.getCtx());

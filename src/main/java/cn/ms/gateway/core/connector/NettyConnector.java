@@ -40,7 +40,7 @@ import cn.ms.gateway.entity.GatewayRES;
 public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpResponse> {
 
 	//$NON-NLS-通道回调函数绑定KEY$
-	public static final AttributeKey<ICallback<GatewayRES, GatewayRES, HttpResponse>> CHANNEL_CALLBACK_KEY = AttributeKey.valueOf("gatewayCallback");
+	public static final AttributeKey<ICallback<GatewayRES, GatewayRES, HttpResponse>> CHANNEL_CALLBACK_KEY = AttributeKey.valueOf("gateway_connector_callback");
 	
 	private Bootstrap bootstrap = null;
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
@@ -48,6 +48,7 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 	@Override
 	public void init() throws Exception {
 		EventLoopGroup workerGroup = new NioEventLoopGroup(Conf.CONF.getConnectorWorkerThreadNum(), new NamedThreadFactory("NettyConnectorWorker"));
+		
 		bootstrap = new Bootstrap();
 		bootstrap.group(workerGroup);
 		bootstrap.channel(NioSocketChannel.class);
@@ -61,9 +62,8 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 
 	@Override
 	public void connect(GatewayREQ req, ICallback<GatewayRES, GatewayRES, HttpResponse> callback, Object... args) throws Throwable {
-		URI tempURI = new URI(req.getOriginURI());
-		String address = tempURI.getHost() + ":"
-				+ (tempURI.getPort() <= 0 ? 80 : tempURI.getPort());
+		URI tempURI = new URI(req.getRemoteURI());
+		String address = tempURI.getHost() + ":" + (tempURI.getPort() <= 0 ? 80 : tempURI.getPort());
 
 		//$NON-NLS-处理器和通道回收利用,一次创建N次使用$
 		ChannelFuture channelFuture = channelFutureMap.get(address);
