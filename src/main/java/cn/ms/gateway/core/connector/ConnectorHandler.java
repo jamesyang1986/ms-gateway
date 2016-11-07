@@ -16,17 +16,15 @@ import cn.ms.gateway.entity.GatewayRES;
  */
 public class ConnectorHandler extends ChannelInboundHandlerAdapter {
 
-	ICallback<GatewayRES, GatewayRES, HttpResponse> callback;
-
-	public void setProxyCallback(ICallback<GatewayRES, GatewayRES, HttpResponse> callback) {
-		this.callback = callback;
-	}
-
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		//$NON-NLS-通过通道获取回调函数$
+		ICallback<GatewayRES, GatewayRES, HttpResponse> callback = ctx.channel().attr(NettyConnector.CHANNEL_CALLBACK_KEY).get();
+		
 		if (msg instanceof HttpResponse) {
 			callback.before((HttpResponse) msg);
 		}
+		
 		if (msg instanceof HttpContent) {
 			ByteBuf buf = null;
 			HttpContent content = null;
