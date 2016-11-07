@@ -8,8 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -51,12 +51,10 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 						ch.pipeline().addLast(new HttpRequestDecoder());
 						ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
 						
-						ch.pipeline().addLast(new ContainerHandler(new ICallback<GatewayREQ, GatewayRES, HttpRequest>() {
-
+						ch.pipeline().addLast(new ContainerHandler(new ICallback<GatewayREQ, GatewayRES, FullHttpRequest>() {
 							@Override
-							public void before(HttpRequest bef, Object... args) throws Exception {
+							public void before(FullHttpRequest bef, Object... args) throws Exception {
 							}
-
 							@Override
 							public GatewayRES callback(GatewayREQ req, Object... args) throws Exception {
 								return handler(req, args);
