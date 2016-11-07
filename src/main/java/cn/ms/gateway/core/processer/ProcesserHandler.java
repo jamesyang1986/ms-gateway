@@ -1,6 +1,6 @@
 package cn.ms.gateway.core.processer;
 
-import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
 
 import org.apache.logging.log4j.ThreadContext;
 
@@ -24,9 +24,9 @@ public class ProcesserHandler implements EventHandler<GatewayREQ> {
 
 	public static final Logger logger = LoggerFactory.getLogger(ProcesserHandler.class);
 
-	private IConnector<GatewayRES, GatewayRES, HttpResponse> connector;
+	private IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector;
 
-	public ProcesserHandler(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
+	public ProcesserHandler(IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector) {
 		this.connector = connector;
 	}
 
@@ -37,9 +37,9 @@ public class ProcesserHandler implements EventHandler<GatewayREQ> {
 			ThreadContext.put(Constants.TRADEID_KEY, gatewayREQ.getTradeId());// 线程参数继续
 			logger.info("=====路由开始=====");
 			
-			connector.connect(gatewayREQ, new ICallback<GatewayRES, GatewayRES, HttpResponse>() {
+			connector.connect(gatewayREQ, new ICallback<GatewayRES, GatewayRES, FullHttpResponse>() {
 				@Override
-				public void before(HttpResponse response, Object... args) throws Exception {
+				public void before(FullHttpResponse response, Object... args) throws Exception {
 				}
 				
 				@Override

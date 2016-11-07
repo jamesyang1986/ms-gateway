@@ -1,6 +1,6 @@
 package cn.ms.gateway.core.processer;
 
-import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
 
 import java.util.concurrent.ExecutorService;
 
@@ -28,15 +28,15 @@ import com.lmax.disruptor.dsl.ProducerType;
  * 
  * @author lry
  */
-public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, HttpResponse> {
+public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, FullHttpResponse> {
 
 	Disruptor<GatewayREQ> disruptor;
 	ExecutorService executorService;
 	EventFactory<GatewayREQ> eventFactory;
-	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
+	IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector=null;
 
 	@Override
-	public void setConnector(IConnector<GatewayRES, GatewayRES, HttpResponse> connector) {
+	public void setConnector(IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector) {
 		this.connector=connector;
 	}
 	

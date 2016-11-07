@@ -1,6 +1,6 @@
 package cn.ms.gateway;
 
-import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
 import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.IGateway;
 import cn.ms.gateway.base.connector.IConnector;
@@ -31,9 +31,9 @@ public enum Bootstrap {
 	IGateway<GatewayREQ, GatewayRES> gateway = null;
 	
 	/** 连接器 **/
-	IConnector<GatewayRES, GatewayRES, HttpResponse> connector=null;
+	IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector=null;
 	/** 事件处理器 **/
-	IProcesser<GatewayRES, GatewayRES, HttpResponse> processer = null;
+	IProcesser<GatewayRES, GatewayRES, FullHttpResponse> processer = null;
 	/** 网关容器 **/
 	IContainer<GatewayREQ, GatewayRES> container = null;
 	

@@ -75,11 +75,14 @@ public class ContainerHandler extends ChannelInboundHandlerAdapter {
             gatewayREQ.setCtx(ctx);
             
             try {
-            	GatewayRES gatewayRES = callback.callback(gatewayREQ);
-            	if(gatewayRES!=null){
-            		//$NON-NLS-组装响应结果$
-            		AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
-            	}
+            	GatewayRES gatewayRES=new GatewayRES();
+            	gatewayRES.setContent("I am OK");
+            	AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
+//            	GatewayRES gatewayRES = callback.callback(gatewayREQ);
+//            	if(gatewayRES!=null){
+//            		//$NON-NLS-组装响应结果$
+//            		AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
+//            	}
 			} catch (Throwable t) {
 				logger.error(t, "微服务网关处理异常: %s", t.getMessage());
 			}

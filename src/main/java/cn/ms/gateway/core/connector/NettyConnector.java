@@ -10,12 +10,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders.Names;
 import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestEncoder;
-import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -38,10 +38,10 @@ import cn.ms.gateway.entity.GatewayRES;
  * @author lry
  */
 @SuppressWarnings("deprecation")
-public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpResponse> {
+public class NettyConnector implements IConnector<GatewayRES, GatewayRES, FullHttpResponse> {
 
 	//$NON-NLS-通道回调函数绑定KEY$
-	public static final AttributeKey<ICallback<GatewayRES, GatewayRES, HttpResponse>> CHANNEL_CALLBACK_KEY = AttributeKey.valueOf("gateway_connector_callback");
+	public static final AttributeKey<ICallback<GatewayRES, GatewayRES, FullHttpResponse>> CHANNEL_CALLBACK_KEY = AttributeKey.valueOf("gateway_connector_callback");
 	
 	private Bootstrap bootstrap = null;
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
@@ -62,7 +62,7 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 	}
 
 	@Override
-	public void connect(GatewayREQ req, ICallback<GatewayRES, GatewayRES, HttpResponse> callback, Object... args) throws Throwable {
+	public void connect(GatewayREQ req, ICallback<GatewayRES, GatewayRES, FullHttpResponse> callback, Object... args) throws Throwable {
 		URI tempURI = new URI(req.getRemoteURI());
 
 		//$NON-NLS-处理器和通道回收利用,一次创建N次使用$
