@@ -46,8 +46,8 @@ public class ContainerHandler extends ChannelInboundHandlerAdapter {
         	ThreadContext.put(Constants.TRADEID_KEY, tradeId);
         	logger.info("=====交易开始=====");
         	
-        	GatewayREQ gatewayREQ=new GatewayREQ();
-            gatewayREQ.setTradeId(String.valueOf(tradeId));
+        	final GatewayREQ gatewayREQ=new GatewayREQ();
+            gatewayREQ.setTradeId(tradeId);
             gatewayREQ.setTradeStartTime(tradeStartTime);
             gatewayREQ.setLocalHost(LOACLHOST);
         	
