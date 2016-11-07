@@ -11,30 +11,31 @@ import io.netty.handler.codec.http.HttpRequest;
 public class GatewayREQ {
 
 	//$NON-NLS-网关系统参数$
-	/**交易ID**/
+	/** 交易ID **/
 	String tradeId;
-	/**交易开始时间**/
+	/** 交易开始时间 **/
 	long tradeStartTime;
-	/**路由开始时间**/
+	/** 路由开始时间 **/
 	long routeStartTime;
-	
+	/** 网关本机HOST **/
+	String localHost;
+
 	//$NON-NLS-请求对象$
-	/**请求报文**/
+	/** 客户端HOST **/
+	String clientHost;
+	/** 请求报文 **/
 	String content;
 	HttpRequest request;
 	ChannelHandlerContext ctx;
-	
-	/**
-	 * 远程通讯地址
-	 */
+
+	//$NON-NLS-远程通讯信息$
 	String remoteHost;
-	int remotePort=80;
-	String remoteProtocol="http";
-	String remoteAddress="localhost:8844";
-	String remotePath="/serviceId";
+	int remotePort = 80;
+	String remoteProtocol = "http";
+	String remoteAddress = "localhost:8844";
+	String remotePath = "/serviceId";
 	String remoteURI;
 
-	
 	public String getTradeId() {
 		return tradeId;
 	}
@@ -52,6 +53,18 @@ public class GatewayREQ {
 	}
 	public void setRouteStartTime(long routeStartTime) {
 		this.routeStartTime = routeStartTime;
+	}
+	public String getLocalHost() {
+		return localHost;
+	}
+	public void setLocalHost(String localHost) {
+		this.localHost = localHost;
+	}
+	public String getClientHost() {
+		return clientHost;
+	}
+	public void setClientHost(String clientHost) {
+		this.clientHost = clientHost;
 	}
 	public String getContent() {
 		return content;
@@ -89,17 +102,23 @@ public class GatewayREQ {
 	public void setRemoteProtocol(String remoteProtocol) {
 		this.remoteProtocol = remoteProtocol;
 	}
-	public String getRemoteAddress() {
-		return (remoteAddress==null||remoteAddress.length()<1)?(getRemoteHost()+":"+getRemotePort()):(remoteAddress);
+	public String getRemotePath() {
+		return remotePath;
+	}
+	public void setRemotePath(String remotePath) {
+		this.remotePath = remotePath;
 	}
 	public void setRemoteAddress(String remoteAddress) {
 		this.remoteAddress = remoteAddress;
 	}
-	public String getRemoteURI() {
-		return (remoteURI==null||remoteURI.length()<1)?(getRemoteProtocol()+"://"+getRemoteAddress()):(remoteURI);
-	}
 	public void setRemoteURI(String remoteURI) {
 		this.remoteURI = remoteURI;
 	}
-	
+	public String getRemoteURI() {
+		return (remoteURI == null || remoteURI.length() < 1) ? (getRemoteProtocol() + "://" + getRemoteAddress()) : (remoteURI);
+	}
+	public String getRemoteAddress() {
+		return (remoteAddress == null || remoteAddress.length() < 1) ? (getRemoteHost() + ":" + getRemotePort()) : (remoteAddress);
+	}
+
 }

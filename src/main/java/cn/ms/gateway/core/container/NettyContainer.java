@@ -55,7 +55,6 @@ public class NettyContainer extends AbstractContainer<GatewayREQ, GatewayRES> {
 
 							@Override
 							public void before(HttpRequest bef, Object... args) throws Exception {
-								
 							}
 
 							@Override

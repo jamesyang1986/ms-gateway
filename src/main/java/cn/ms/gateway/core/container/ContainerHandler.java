@@ -41,21 +41,26 @@ public class ContainerHandler extends ChannelInboundHandlerAdapter {
         	ThreadContext.put(Constants.TRADEID_KEY, tradeId);
         	logger.info("=====交易开始=====");
         	
-            HttpContent httpContent = (HttpContent) msg;
-            ByteBuf buf = httpContent.content();
-            String content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
-            buf.release();
-
-            GatewayREQ gatewayREQ=new GatewayREQ();
+        	GatewayREQ gatewayREQ=new GatewayREQ();
             gatewayREQ.setTradeId(String.valueOf(tradeId));
             gatewayREQ.setTradeStartTime(tradeStartTime);
+        	
+            ByteBuf buf = null;
+            String content = null;
+            try {
+            	HttpContent httpContent = (HttpContent) msg;
+            	buf = httpContent.content();
+                content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
+			} finally {
+				buf.release();
+			}
+            
             gatewayREQ.setContent(content);
             gatewayREQ.setRequest(request);
             gatewayREQ.setCtx(ctx);
             
             try {
             	GatewayRES gatewayRES = callback.callback(gatewayREQ);
-            	
             	if(gatewayRES!=null){
             		//$NON-NLS-组装响应结果$
             		AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
