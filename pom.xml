@@ -16,6 +16,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.zbus</groupId>
+			<artifactId>zbus</artifactId>
+			<version>7.2.0</version>
+		</dependency>
+
 		<!-- 核心 -->
 		<dependency>
 			<groupId>io.netty</groupId>
