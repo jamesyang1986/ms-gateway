@@ -81,7 +81,7 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 				}
 			});
 
-			channelFuture = bootstrap.connect(req.getRemoteHost(), req.getRemotePort()).sync();
+			channelFuture = bootstrap.connect(tempURI.getHost(), tempURI.getPort()).sync();
 			channelFutureMap.put(req.getRemoteAddress(), channelFuture);
 		}
 
@@ -89,7 +89,7 @@ public class NettyConnector implements IConnector<GatewayRES, GatewayRES, HttpRe
 				HttpMethod.POST, tempURI.toASCIIString(), Unpooled.wrappedBuffer(req.getContent().getBytes("UTF-8")));
 
 		// 构建http请求
-		request.headers().set("clientHost", req.getLocalHost());//客户端HOST
+		request.headers().set("clientHost", req.getClientHost());//客户端HOST
 		request.headers().set(Names.HOST, req.getLocalHost());//网关本机HOST
 		request.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
 		request.headers().set(Names.CONTENT_LENGTH, request.content().readableBytes());

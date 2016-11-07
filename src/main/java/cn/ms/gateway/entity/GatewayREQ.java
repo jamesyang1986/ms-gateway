@@ -29,7 +29,7 @@ public class GatewayREQ {
 	ChannelHandlerContext ctx;
 
 	//$NON-NLS-远程通讯信息$
-	String remoteHost;
+	String remoteHost="localhost";
 	int remotePort = 80;
 	String remoteProtocol = "http";
 	String remoteAddress = "localhost:8844";

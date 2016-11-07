@@ -23,7 +23,7 @@ public enum Conf {
 	
 	//$NON-NLS-处理器配置项$
 	/**The size of the ring buffer, must be power of 2.**/
-	private int ringBufferSize=1024;
+	private int ringBufferSize=1024*1024;
 	/**An Executor to execute event processors**/
 	private int executorThread=10;
 	/**The claim strategy to use for the ring buffer.**/
