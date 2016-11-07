@@ -30,30 +30,29 @@ import com.lmax.disruptor.dsl.ProducerType;
  */
 public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, FullHttpResponse> {
 
-	Disruptor<GatewayREQ> disruptor;
-	ExecutorService executorService;
-	EventFactory<GatewayREQ> eventFactory;
-	IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector=null;
+	private Disruptor<GatewayREQ> disruptor = null;
+	private ExecutorService executorService = null;
+	private EventFactory<GatewayREQ> eventFactory = null;
+	private IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector = null;
 
 	@Override
 	public void setConnector(IConnector<GatewayRES, GatewayRES, FullHttpResponse> connector) {
-		this.connector=connector;
+		this.connector = connector;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public void init() throws Exception {
 		eventFactory = new ProcesserEventFactory();
-		executorService=new FixedThreadPoolExecutor(Conf.CONF.getExecutorThread(), new NamedThreadFactory("disruptorFactory")){
+		executorService = new FixedThreadPoolExecutor(Conf.CONF.getExecutorThread(), new NamedThreadFactory("disruptorFactory")) {
 			@Override
 			protected void beforeExecute(Thread t, Runnable r) {
 			}
-			
 			@Override
 			protected void afterExecute(Runnable r, Throwable t) {
 			}
 		};
-		
+
 		ProducerType producerType = null;
 		if (Constants.PRODUCER_TYPE_SINGLE.equals(Conf.CONF.getProducerType())) {
 			producerType = ProducerType.SINGLE;
@@ -69,7 +68,7 @@ public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, Fu
 		} else if (Constants.WS_YIELDING_WAIT.equals(Conf.CONF.getWaitStrategy())) {
 			waitStrategy = new YieldingWaitStrategy();
 		}
-		
+
 		disruptor = new Disruptor<GatewayREQ>(eventFactory, Conf.CONF.getRingBufferSize(), executorService, producerType, waitStrategy);
 		EventHandler<GatewayREQ> eventHandler = new ProcesserHandler(connector);
 		disruptor.handleEventsWith(eventHandler);
@@ -86,7 +85,7 @@ public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, Fu
 	 * Disruptor 的事件发布过程是一个两阶段提交的过程:<p>
 	 * 第一步：先从 RingBuffer 获取下一个可以写入的事件的序号<p>
 	 * 第二步：获取对应的事件对象，将数据写入事件对象<p>
-	 * 第三部：将事件提交到 RingBuffer<p>
+	 * 第三步：将事件提交到 RingBuffer<p>
 	 * <p>
 	 * 注意：事件只有在提交之后才会通知 EventProcessor 进行处理
 	 * 
@@ -95,7 +94,7 @@ public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, Fu
 	 * @throws Throwable
 	 */
 	@Override
-	public void publish(GatewayREQ req, Object...args) throws Throwable {
+	public void publish(GatewayREQ req, Object... args) throws Throwable {
 		RingBuffer<GatewayREQ> ringBuffer = disruptor.getRingBuffer();
 		long sequence = ringBuffer.next();
 
@@ -105,12 +104,12 @@ public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, Fu
 			event.setTradeId(req.getTradeId());
 			event.setTradeStartTime(req.getTradeStartTime());
 			event.setLocalHost(req.getLocalHost());
-			
+
 			event.setClientHost(req.getClientHost());
 			event.setContent(req.getContent());
 			event.setRequest(req.getRequest());
 			event.setCtx(req.getCtx());
-			
+
 			event.setRemoteAddress(event.getRemoteAddress());
 			event.setRemoteHost(event.getRemoteHost());
 			event.setRemotePath(event.getRemotePath());
@@ -118,7 +117,7 @@ public class DisruptorProcesser implements IProcesser<GatewayRES, GatewayRES, Fu
 			event.setRemoteProtocol(event.getRemoteProtocol());
 			event.setRemoteURI(req.getRemoteURI());
 		} finally {
-			//TODO MDC问题需要处理?
+			// TODO MDC问题需要处理?
 			ringBuffer.publish(sequence);// 发布事件
 		}
 	}

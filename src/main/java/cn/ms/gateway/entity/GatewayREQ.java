@@ -1,5 +1,6 @@
 package cn.ms.gateway.entity;
 
+import cn.ms.gateway.common.utils.NetUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 
@@ -10,6 +11,8 @@ import io.netty.handler.codec.http.HttpRequest;
  */
 public class GatewayREQ {
 
+	public static final String LOACALHOST=NetUtils.getLocalIp();
+	
 	//$NON-NLS-网关系统参数$
 	/** 交易ID **/
 	String tradeId;
@@ -18,7 +21,7 @@ public class GatewayREQ {
 	/** 路由开始时间 **/
 	long routeStartTime;
 	/** 网关本机HOST **/
-	String localHost;
+	String localHost=LOACALHOST;
 
 	//$NON-NLS-请求对象$
 	/** 客户端HOST **/

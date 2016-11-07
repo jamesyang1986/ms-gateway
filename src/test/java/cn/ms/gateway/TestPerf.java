@@ -21,9 +21,9 @@ public class TestPerf {
 				};
 			} 
 		}; 
-		perf.loopCount = 100000;
+		perf.loopCount = 10000;
 		perf.threadCount = 16;
-		perf.logInterval = 100000;
+		perf.logInterval = 10000;
 		perf.run();
 		perf.close();
 	} 

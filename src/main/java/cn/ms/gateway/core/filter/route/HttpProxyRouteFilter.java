@@ -38,6 +38,7 @@ public class HttpProxyRouteFilter extends MSFilter<GatewayREQ, GatewayRES> {
 		try {
 			processer.publish(req);
 		} catch (Throwable t) {
+			t.printStackTrace();
 			logger.error(t, "发布事件异常: %s",t.getMessage());
 		}
 		

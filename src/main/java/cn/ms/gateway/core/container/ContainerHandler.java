@@ -15,7 +15,6 @@ import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
-import cn.ms.gateway.common.utils.NetUtils;
 import cn.ms.gateway.core.AssemblySupport;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -23,8 +22,6 @@ import cn.ms.gateway.entity.GatewayRES;
 public class ContainerHandler extends ChannelInboundHandlerAdapter {
     
 	private Logger logger=LoggerFactory.getLogger(ContainerHandler.class);
-	
-	public static final String LOACLHOST=NetUtils.getLocalIp();
 	
 	private ICallback<GatewayREQ, GatewayRES, FullHttpRequest> callback;
 	private FullHttpRequest request;
@@ -49,7 +46,6 @@ public class ContainerHandler extends ChannelInboundHandlerAdapter {
         	final GatewayREQ gatewayREQ=new GatewayREQ();
             gatewayREQ.setTradeId(tradeId);
             gatewayREQ.setTradeStartTime(tradeStartTime);
-            gatewayREQ.setLocalHost(LOACLHOST);
         	
             //$NON-NLS-获取客户端端IP$
             String clientIP = request.headers().get("X-Forwarded-For");
