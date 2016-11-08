@@ -31,14 +31,14 @@ public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> 
 	public void refresh() throws Exception {
 		Map<BlackWhiteIPListType, String> bwIPs = new HashMap<BlackWhiteIPListType, String>();
 		//$NON-NLS-收集黑名单$
-		String blackList = Conf.CONF.getBlackListIP();
+		String blackList = Conf.CONF.getBlackListIPs();
 		if (blackList != null) {
 			if (blackList.length() > 0) {
 				bwIPs.put(BlackWhiteIPListType.BLACKLIST, blackList);
 			}
 		}
 		//$NON-NLS-收集白名单$
-		String whiteList = Conf.CONF.getWhiteListIP();
+		String whiteList = Conf.CONF.getWhiteListIPs();
 		if (whiteList != null) {
 			if (whiteList.length() > 0) {
 				bwIPs.put(BlackWhiteIPListType.WHITELIST, whiteList);

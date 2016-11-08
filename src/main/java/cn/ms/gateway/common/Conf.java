@@ -11,9 +11,13 @@ public enum Conf {
 	
 	//$NON-NLS-Neural配置参数$
 	/**IP黑名单**/
-	private String blackListIP;
+	private String blackListIPs;
 	/**IP白名单**/
-	private String whiteListIP;
+	private String whiteListIPs;
+	/**请求参数**/
+	private String params="serviceId";
+	/**请求头参数**/
+	private String headers;
 	
 	//$NON-NLS-连接器配置项$
 	private int connectorBossThreadNum=0;
@@ -38,17 +42,29 @@ public enum Conf {
 	private String waitStrategy="YIELDING_WAIT";
 	
 	
-	public String getBlackListIP() {
-		return blackListIP;
+	public String getBlackListIPs() {
+		return blackListIPs;
 	}
-	public void setBlackListIP(String blackListIP) {
-		this.blackListIP = blackListIP;
+	public void setBlackListIPs(String blackListIPs) {
+		this.blackListIPs = blackListIPs;
 	}
-	public String getWhiteListIP() {
-		return whiteListIP;
+	public String getWhiteListIPs() {
+		return whiteListIPs;
 	}
-	public void setWhiteListIP(String whiteListIP) {
-		this.whiteListIP = whiteListIP;
+	public void setWhiteListIPs(String whiteListIPs) {
+		this.whiteListIPs = whiteListIPs;
+	}
+	public String getParams() {
+		return params;
+	}
+	public void setParams(String params) {
+		this.params = params;
+	}
+	public String getHeaders() {
+		return headers;
+	}
+	public void setHeaders(String headers) {
+		this.headers = headers;
 	}
 	public int getConnectorBossThreadNum() {
 		return connectorBossThreadNum;
