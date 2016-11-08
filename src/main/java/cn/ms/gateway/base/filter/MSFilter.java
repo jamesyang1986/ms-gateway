@@ -14,9 +14,14 @@ public abstract class MSFilter<REQ, RES> implements IFilter<REQ, RES> {
 	public void init() throws Exception {
 
 	}
+	
+	@Override
+	public void refresh() throws Exception {
+		
+	}
 
 	@Override
-	public <MOD> void inject(MOD mod) {
+	public <MOD> void inject(MOD mod) throws Exception {
 
 	}
 

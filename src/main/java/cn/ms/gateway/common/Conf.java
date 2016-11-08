@@ -9,6 +9,12 @@ public enum Conf {
 
 	CONF;
 	
+	//$NON-NLS-Neural配置参数$
+	/**IP黑名单**/
+	private String blackListIP;
+	/**IP白名单**/
+	private String whiteListIP;
+	
 	//$NON-NLS-连接器配置项$
 	private int connectorBossThreadNum=0;
 	private int connectorWorkerThreadNum=0;
@@ -30,6 +36,20 @@ public enum Conf {
 	private String producerType="SINGLE";
 	/**The wait strategy to use for the ring buffer.**/
 	private String waitStrategy="YIELDING_WAIT";
+	
+	
+	public String getBlackListIP() {
+		return blackListIP;
+	}
+	public void setBlackListIP(String blackListIP) {
+		this.blackListIP = blackListIP;
+	}
+	public String getWhiteListIP() {
+		return whiteListIP;
+	}
+	public void setWhiteListIP(String whiteListIP) {
+		this.whiteListIP = whiteListIP;
+	}
 	public int getConnectorBossThreadNum() {
 		return connectorBossThreadNum;
 	}

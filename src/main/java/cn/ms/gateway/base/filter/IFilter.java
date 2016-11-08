@@ -16,13 +16,20 @@ public interface IFilter<REQ, RES> {
 	 * @throws Exception
 	 */
 	void init() throws Exception;
+	
+	/**
+	 * 刷新
+	 * 
+	 * @throws Exception
+	 */
+	void refresh() throws Exception;
 
 	/**
 	 * 注入自定义对象
 	 * 
 	 * @param mod
 	 */
-	<MOD> void inject(MOD mod);
+	<MOD> void inject(MOD mod) throws Exception;;
 
 	/**
 	 * 过滤器是否执行校验

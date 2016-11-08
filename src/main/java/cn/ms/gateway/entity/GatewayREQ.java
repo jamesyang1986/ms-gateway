@@ -166,7 +166,6 @@ public class GatewayREQ {
 		this.remoteURI = remoteURI;
 	}
 
-	
 	//$NON-NLS-特殊情况$
 	public void putParam(String key, String val) {
 		this.params.put(key, val);
