@@ -1,6 +1,7 @@
 #PRE类过滤器
 cn.ms.gateway.core.filter.pre.IpWhiteListPreFilter
 cn.ms.gateway.core.filter.pre.PathPreFilter
+cn.ms.gateway.core.filter.pre.ParamPreFilter
 cn.ms.gateway.core.filter.pre.HeaderPreFilter
 cn.ms.gateway.core.filter.pre.CctFlowCtrlPreFilter
 cn.ms.gateway.core.filter.pre.QpsFlowCtrlPreFilter

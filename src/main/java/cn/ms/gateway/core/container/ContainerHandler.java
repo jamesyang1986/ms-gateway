@@ -5,8 +5,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.ThreadContext;
 
@@ -54,6 +57,16 @@ public class ContainerHandler extends ChannelInboundHandlerAdapter {
                 clientIP = insocket.getAddress().getHostAddress();
             }
             gatewayREQ.setClientHost(clientIP);
+            
+            //$NON-NLS-读取参数$
+            gatewayREQ.putAllParameter(new QueryStringDecoder(request.uri()).parameters());
+            if(!gatewayREQ.getParameters().isEmpty()){
+            	for(Map.Entry<String, List<String>> entry:gatewayREQ.getParameters().entrySet()){
+                	if(entry.getValue().size()==1){
+                		gatewayREQ.putParam(entry.getKey(), entry.getValue().get(0));
+                	}
+                }	
+            }
             
             //$NON-NLS-读取请求报文$
             ByteBuf buf = null;
