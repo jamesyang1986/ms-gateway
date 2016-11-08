@@ -41,10 +41,12 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 	@Override
 	public void setBlackWhiteIPs(Map<BlackWhiteIPListType, String> blackWhiteIPs) {
 		ipFilterMap.clear();
-		
-		for (Map.Entry<BlackWhiteIPListType, String> bwIP : blackWhiteIPs.entrySet()) {
+
+		for (Map.Entry<BlackWhiteIPListType, String> bwIP : blackWhiteIPs
+				.entrySet()) {
 			// 192.168.0.*转换为192.168.0.1-192.168.0.255
-			for (String allow : bwIP.getValue().replaceAll("\\s", "").split(";")) {
+			for (String allow : bwIP.getValue().replaceAll("\\s", "")
+					.split(";")) {
 				if (allow.indexOf("*") > -1) {
 					String[] ips = allow.split("\\.");
 					String[] from = new String[] { "0", "0", "0", "0" };
@@ -76,12 +78,15 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 					endIP.deleteCharAt(endIP.length() - 1);
 
 					for (String s : tem) {
-						String ip = fromIP.toString().replace("[*]", s.split(";")[0]) + "-"
-								+ endIP.toString().replace("[*]", s.split(";")[1]);
+						String ip = fromIP.toString().replace("[*]",
+								s.split(";")[0])
+								+ "-"
+								+ endIP.toString().replace("[*]",
+										s.split(";")[1]);
 						if (validate(ip)) {
 							Set<String> ipList = ipFilterMap.get(bwIP.getKey());
-							if(ipList==null||ipList.isEmpty()){
-								ipList=new HashSet<String>();
+							if (ipList == null || ipList.isEmpty()) {
+								ipList = new HashSet<String>();
 							}
 							ipList.add(ip);
 							ipFilterMap.put(bwIP.getKey(), ipList);
@@ -90,8 +95,8 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 				} else {
 					if (validate(allow)) {
 						Set<String> ipList = ipFilterMap.get(bwIP.getKey());
-						if(ipList==null||ipList.isEmpty()){
-							ipList=new HashSet<String>();
+						if (ipList == null || ipList.isEmpty()) {
+							ipList = new HashSet<String>();
 						}
 						ipList.add(allow);
 						ipFilterMap.put(bwIP.getKey(), ipList);

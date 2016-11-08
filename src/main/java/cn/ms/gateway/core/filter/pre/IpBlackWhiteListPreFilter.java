@@ -13,7 +13,7 @@ import cn.ms.gateway.neural.blackwhitelist.BlackWhiteIPListFactory;
 import cn.ms.gateway.neural.blackwhitelist.BlackWhiteIPListType;
 
 /**
- * IP 白名单过滤
+ * IP 黑/白名单过滤
  * 
  * @author lry
  */
@@ -30,24 +30,52 @@ public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> 
 	@Override
 	public void refresh() throws Exception {
 		Map<BlackWhiteIPListType, String> bwIPs = new HashMap<BlackWhiteIPListType, String>();
-		bwIPs.put(BlackWhiteIPListType.BLACKLIST, Conf.CONF.getBlackListIP());
-		bwIPs.put(BlackWhiteIPListType.WHITELIST, Conf.CONF.getWhiteListIP());
-
-		ipFilterFactory.setBlackWhiteIPs(bwIPs);
+		//$NON-NLS-收集黑名单$
+		String blackList = Conf.CONF.getBlackListIP();
+		if (blackList != null) {
+			if (blackList.length() > 0) {
+				bwIPs.put(BlackWhiteIPListType.BLACKLIST, blackList);
+			}
+		}
+		//$NON-NLS-收集白名单$
+		String whiteList = Conf.CONF.getWhiteListIP();
+		if (whiteList != null) {
+			if (whiteList.length() > 0) {
+				bwIPs.put(BlackWhiteIPListType.WHITELIST, whiteList);
+			}
+		}
+		//$NON-NLS-更新黑/白名单$
+		if (!bwIPs.isEmpty()) {
+			ipFilterFactory.setBlackWhiteIPs(bwIPs);
+		}
 	}
 
 	@Override
-	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
+	public boolean check(GatewayREQ req, GatewayRES res, Object... args)
+			throws Exception {
 		return true;
 	}
 
 	@Override
-	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args)
+			throws Exception {
 		String clientIP = req.getClientHost();
-		if (clientIP == null || clientIP.length() < 1) {
-			ipFilterFactory.check(BlackWhiteIPListType.BLACKLIST, req.getClientHost());
-		} else {
-
+		if (clientIP != null) {
+			if (clientIP.length() > 0) {
+				boolean isBlackList = ipFilterFactory.check(BlackWhiteIPListType.BLACKLIST, req.getClientHost());
+				if(isBlackList){
+					res=new GatewayRES();
+					res.setContent(req.getClientHost()+"为黑名单IP");
+					return res;
+				}
+				
+				boolean isWhiteList = ipFilterFactory.check(BlackWhiteIPListType.WHITELIST, req.getClientHost());
+				if(!isWhiteList){
+					res=new GatewayRES();
+					res.setContent(req.getClientHost()+"不为白名单IP");
+					return res;
+				}
+			}
 		}
 
 		return null;
