@@ -1,4 +1,4 @@
-package cn.ms.gateway;
+package cn.ms.gateway.zbus;
 
 import java.io.IOException;
 import java.util.List;

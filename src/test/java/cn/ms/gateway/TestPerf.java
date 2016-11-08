@@ -13,7 +13,8 @@ public class TestPerf {
 					}
 					
 					public void doTask() throws Exception {
-						Document doc=Jsoup.connect("http://10.24.1.65:8090").ignoreContentType(true).get();
+						Document doc=Jsoup.connect("http://localhost:9500").ignoreContentType(true).get();
+						System.out.println(doc.text());
 						if(!doc.text().contains("This is 65")){
 							throw new RuntimeException();
 						}

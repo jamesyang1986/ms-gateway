@@ -1,4 +1,4 @@
-package cn.ms.gateway;
+package cn.ms.gateway.zbus;
 
 import org.zbus.kit.ConfigKit;
 import org.zbus.net.IoDriver;
