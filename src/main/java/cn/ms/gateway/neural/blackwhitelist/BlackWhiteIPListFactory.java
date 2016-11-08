@@ -109,8 +109,14 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 	@Override
 	public boolean check(BlackWhiteIPListType blackWhiteIPListType, String ip) {
 		Set<String> ipList = ipFilterMap.get(blackWhiteIPListType);
-		if (ipList.isEmpty() || ipList.contains(ip)) {
-			return true;
+		if (ipList == null || ipList.isEmpty() || ipList.contains(ip)) {
+			if(BlackWhiteIPListType.BLACKLIST==blackWhiteIPListType){
+				return false;
+			}else if(BlackWhiteIPListType.WHITELIST==blackWhiteIPListType){
+				return true;
+			} else {
+				throw new RuntimeException("非法类型");
+			}
 		} else {
 			for (String allow : ipList) {
 				if (allow.indexOf("-") > -1) {

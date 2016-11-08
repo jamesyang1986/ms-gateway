@@ -62,18 +62,22 @@ public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> 
 		String clientIP = req.getClientHost();
 		if (clientIP != null) {
 			if (clientIP.length() > 0) {
-				boolean isBlackList = ipFilterFactory.check(BlackWhiteIPListType.BLACKLIST, req.getClientHost());
-				if(isBlackList){
-					res=new GatewayRES();
-					res.setContent(req.getClientHost()+"为黑名单IP");
-					return res;
+				if (Conf.CONF.isBlackListIPSwitch()) {// 黑名单开关校验
+					boolean isBlackList = ipFilterFactory.check(BlackWhiteIPListType.BLACKLIST, req.getClientHost());
+					if (isBlackList) {
+						res = new GatewayRES();
+						res.setContent(req.getClientHost() + "为黑名单IP");
+						return res;
+					}
 				}
-				
-				boolean isWhiteList = ipFilterFactory.check(BlackWhiteIPListType.WHITELIST, req.getClientHost());
-				if(!isWhiteList){
-					res=new GatewayRES();
-					res.setContent(req.getClientHost()+"不为白名单IP");
-					return res;
+
+				if (Conf.CONF.isWhiteListIPSwitch()) {// 白名单开关校验
+					boolean isWhiteList = ipFilterFactory.check(BlackWhiteIPListType.WHITELIST, req.getClientHost());
+					if (!isWhiteList) {
+						res = new GatewayRES();
+						res.setContent(req.getClientHost() + "不为白名单IP");
+						return res;
+					}
 				}
 			}
 		}

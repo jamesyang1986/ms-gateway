@@ -11,7 +11,7 @@ import cn.ms.gateway.entity.GatewayRES;
  * 
  * @author lry
  */
-@Filter(value = FilterType.PRE, order=140)
+@Filter(value = FilterType.PRE, order=150)
 public class QpsFlowCtrlPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	@Override

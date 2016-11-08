@@ -7,6 +7,8 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.util.CharsetUtil;
 import cn.ms.gateway.base.ICallback;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.entity.GatewayRES;
 
 /**
@@ -16,6 +18,8 @@ import cn.ms.gateway.entity.GatewayRES;
  */
 public class ConnectorHandler extends ChannelInboundHandlerAdapter {
 
+	private static final Logger logger=LoggerFactory.getLogger(ConnectorHandler.class);
+	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		//$NON-NLS-通过通道获取回调函数$
@@ -43,4 +47,11 @@ public class ConnectorHandler extends ChannelInboundHandlerAdapter {
 			}
 		}
 	}
+	
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+			throws Exception {
+		logger.error(cause, "The connector processor handler is error: %s", cause.getMessage());
+	}
+	
 }

@@ -10,12 +10,16 @@ public enum Conf {
 	CONF;
 	
 	//$NON-NLS-Neural配置参数$
+	/**黑名单开关**/
+	private boolean blackListIPSwitch=false;
 	/**IP黑名单**/
 	private String blackListIPs;
+	/**白名单开关**/
+	private boolean whiteListIPSwitch=false;
 	/**IP白名单**/
 	private String whiteListIPs;
 	/**请求参数**/
-	private String params="serviceId";
+	private String params="serviceId;name;age";
 	/**请求头参数**/
 	private String headers;
 	
@@ -33,7 +37,7 @@ public enum Conf {
 	
 	//$NON-NLS-处理器配置项$
 	/**The size of the ring buffer, must be power of 2.**/
-	private int ringBufferSize=1024*1024;
+	private int ringBufferSize=1024;
 	/**An Executor to execute event processors**/
 	private int executorThread=10;
 	/**The claim strategy to use for the ring buffer.**/
@@ -41,12 +45,23 @@ public enum Conf {
 	/**The wait strategy to use for the ring buffer.**/
 	private String waitStrategy="YIELDING_WAIT";
 	
-	
+	public boolean isBlackListIPSwitch() {
+		return blackListIPSwitch;
+	}
+	public void setBlackListIPSwitch(boolean blackListIPSwitch) {
+		this.blackListIPSwitch = blackListIPSwitch;
+	}
 	public String getBlackListIPs() {
 		return blackListIPs;
 	}
 	public void setBlackListIPs(String blackListIPs) {
 		this.blackListIPs = blackListIPs;
+	}
+	public boolean isWhiteListIPSwitch() {
+		return whiteListIPSwitch;
+	}
+	public void setWhiteListIPSwitch(boolean whiteListIPSwitch) {
+		this.whiteListIPSwitch = whiteListIPSwitch;
 	}
 	public String getWhiteListIPs() {
 		return whiteListIPs;

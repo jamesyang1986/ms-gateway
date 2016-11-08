@@ -11,7 +11,7 @@ import cn.ms.gateway.entity.GatewayRES;
  * 
  * @author lry
  */
-@Filter(value = FilterType.PRE, order=130)
+@Filter(value = FilterType.PRE, order=140)
 public class CctFlowCtrlPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	@Override

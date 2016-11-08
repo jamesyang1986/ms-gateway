@@ -53,6 +53,10 @@ public class ProcesserHandler implements EventHandler<GatewayREQ> {
 			});
 		} catch (Throwable t) {
 			logger.error(t, "微服务网关远程路由异常: %s", t.getMessage());
+			
+			GatewayRES gatewayRES=new GatewayRES();
+			gatewayRES.setContent(String.format("微服务网关远程路由异常: %s", t.getMessage()));
+			AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
 		}
 	}
 

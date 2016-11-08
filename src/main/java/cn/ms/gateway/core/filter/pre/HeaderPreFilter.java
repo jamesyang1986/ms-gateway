@@ -13,7 +13,7 @@ import cn.ms.gateway.entity.GatewayRES;
  * 
  * @author lry
  */
-@Filter(value = FilterType.PRE, order = 120)
+@Filter(value = FilterType.PRE, order = 130)
 public class HeaderPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	@Override

@@ -11,6 +11,8 @@ import java.util.ServiceLoader;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.common.annotation.Filter;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
 
 /**
  * 微服务网关核心
@@ -22,6 +24,8 @@ import cn.ms.gateway.common.annotation.Filter;
  */
 public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 
+	private static final Logger logger=LoggerFactory.getLogger(Gateway.class);
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init() throws Exception {
@@ -78,7 +82,9 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 				if(res!=null){
 					return res;
 				}
-			} catch (Throwable e) {
+			} catch (Throwable t) {
+				logger.error(t, "The execute %s filter is error: %s", FilterType.PRE.getCode(), t.getMessage());
+				
 				res = doHandler(FilterType.ERROR, req, res, args);
 				return doHandler(FilterType.POST, req, res, args);
 			}
@@ -89,18 +95,24 @@ public class Gateway<REQ, RES> extends AbstractGateway<REQ, RES> {
 				if(res!=null){
 					return res;
 				}
-			} catch (Throwable e) {
+			} catch (Throwable t) {
+				logger.error(t, "The execute %s filter is error: %s", FilterType.ROUTE.getCode(), t.getMessage());
+				
 				res = doHandler(FilterType.ERROR, req, res, args);
 				return doHandler(FilterType.POST, req, res, args);
 			}
 		} catch (Throwable t) {
+			logger.error(t, "The execute %s and %s filter is error: %s", FilterType.PRE.getCode(), FilterType.ROUTE.getCode(), t.getMessage());
+			
 			//$NON-NLS-ERROR过滤器过滤$
 			return doHandler(FilterType.ERROR, req, res, args);
 		} finally {
 			try {
 				//$NON-NLS-PRE过滤器过滤$
 				doHandler(FilterType.POST, req, res, args);
-			} catch (Throwable e) {
+			} catch (Throwable t) {
+				logger.error(t, "The execute %s filter is error: %s", FilterType.POST.getCode(), t.getMessage());
+				
 				res = doHandler(FilterType.ERROR, req, res, args);
 			}
 		}
