@@ -18,7 +18,7 @@ import cn.ms.gateway.neural.blackwhitelist.BlackWhiteIPListType;
  * @author lry
  */
 @Filter(value = FilterType.PRE, order = 100)
-public class IpWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
+public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	private BlackWhiteIPListFactory ipFilterFactory = new BlackWhiteIPListFactory();
 
