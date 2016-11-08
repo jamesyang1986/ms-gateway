@@ -17,8 +17,12 @@ public class NettyConnectorPerfTest {
 		nettyConnector.start();
 		
 		final GatewayREQ req=new GatewayREQ();
+		req.setRemoteHost("10.24.1.65");
+		req.setRemotePort(8090);
 		req.setContent("I am OK");
 		req.setClientHost(NetUtils.getLocalIp());
+		
+		Thread.sleep(30000);
 		
 		Perf perf = new Perf(){ 
 			public TaskInThread buildTaskInThread() {
@@ -35,8 +39,8 @@ public class NettyConnectorPerfTest {
 								}
 								@Override
 								public GatewayRES callback(GatewayRES res, Object... args) throws Exception {
-									if(!res.getContent().contains("I am OK")){
-										throw new RuntimeException();
+									if(!res.getContent().contains("This is 65")){
+										throw new RuntimeException(res.getContent());
 									}
 									return null;
 								}
@@ -48,9 +52,9 @@ public class NettyConnectorPerfTest {
 				};
 			} 
 		}; 
-		perf.loopCount = 2000000;
+		perf.loopCount = 1000000;
 		perf.threadCount = 16;
-		perf.logInterval = 100000;
+		perf.logInterval = 10000;
 		perf.run();
 		perf.close();
 	} 

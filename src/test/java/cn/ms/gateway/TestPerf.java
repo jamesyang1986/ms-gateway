@@ -13,15 +13,15 @@ public class TestPerf {
 					}
 					
 					public void doTask() throws Exception {
-						Document doc=Jsoup.connect("http://127.0.0.1:9500").ignoreContentType(true).get();
-						if(!doc.text().contains("I am OK")){
+						Document doc=Jsoup.connect("http://10.24.1.65:8090").ignoreContentType(true).get();
+						if(!doc.text().contains("This is 65")){
 							throw new RuntimeException();
 						}
 					}
 				};
 			} 
 		}; 
-		perf.loopCount = 10000;
+		perf.loopCount = 1000000;
 		perf.threadCount = 16;
 		perf.logInterval = 10000;
 		perf.run();

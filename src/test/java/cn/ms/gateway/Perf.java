@@ -72,7 +72,7 @@ public abstract class Perf implements Closeable {
 					}
 				} catch (Exception e) {
 					failCounter.incrementAndGet();
-					e.printStackTrace();
+					//e.printStackTrace();
 					System.out.println("total failure " + failCounter.get() + " of " + counter.get() + " request");
 				}
 			}
