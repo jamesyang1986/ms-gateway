@@ -20,9 +20,9 @@ public enum Conf {
 	/**IP白名单**/
 	private String whiteListIPs;
 	/**请求参数**/
-	private String params="serviceId";
+	private String params="serviceId;channelId{length=5}";
 	/**请求头参数**/
-	private String headers="bizno{length=5,type=int}{};sysno{length=8,type=float};channelId";
+	private String headers="bizno{length=17,type=long}{};sysno{length=17,type=long};timeout";
 	
 	//$NON-NLS-连接器配置项$
 	private int connectorBossThreadNum=0;
