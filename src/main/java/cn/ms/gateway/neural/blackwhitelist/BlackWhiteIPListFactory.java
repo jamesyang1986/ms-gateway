@@ -11,14 +11,14 @@ import java.util.regex.Pattern;
 /**
  * 该过滤器用于过滤非指定列表中的IP不能访问指定功能权限<br>
  * <br>
- * 支持IP段*通配符配置，如：<br>
- * 1-->所有IP: 192.168.*<br>
- * 2-->所有192.168.开头的IP: 192.168.0.*<br>
- * 3-->所有0网段的IP: 10.195.13.0-10.195.13.255<br>
- * 4-->也支持这种格式的IP段指定: 192.168.1.100<br>
- * 5-->单独IP指定: 192.168.1*.50<br>
- * 6-->所有以192.168.1开头.50结尾的IP,即:
- * 192.168.10.50-192.168.19.50;192.168.100.50-192.168.199.50<br>
+ * 支持IP段*通配符配置，如:<br>
+ * 1.所有IP: *<br>
+ * 2.所有192.168.开头的IP: 192.168.*<br>
+ * 3.所有0网段的IP: 192.168.0.*<br>
+ * 4.也支持这种格式的IP段指定: 10.195.13.0-10.195.13.255<br>
+ * 5.单独IP指定: 192.168.1.100<br>
+ * 6.所有以192.168.1开头.50结尾的IP，即192.168.10.50-192.168.19.50;
+ * 192.168.100.50-192.168.199.50: 192.168.1*.50<br>
  * 
  * @author lry
  */
@@ -110,9 +110,9 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 	public boolean check(BlackWhiteIPListType blackWhiteIPListType, String ip) {
 		Set<String> ipList = ipFilterMap.get(blackWhiteIPListType);
 		if (ipList == null || ipList.isEmpty() || ipList.contains(ip)) {
-			if(BlackWhiteIPListType.BLACKLIST==blackWhiteIPListType){
+			if (BlackWhiteIPListType.BLACKLIST == blackWhiteIPListType) {
 				return false;
-			}else if(BlackWhiteIPListType.WHITELIST==blackWhiteIPListType){
+			} else if (BlackWhiteIPListType.WHITELIST == blackWhiteIPListType) {
 				return true;
 			} else {
 				throw new RuntimeException("非法类型");
