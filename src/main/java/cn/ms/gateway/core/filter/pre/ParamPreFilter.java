@@ -33,6 +33,7 @@ public class ParamPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 			if (paramsStr.length() > 0) {
 				String[] paramArray = paramsStr.split(";");
 				for (String pm : paramArray) {
+					pm=(pm.indexOf("{"))>0?pm.substring(0,pm.indexOf("{")):pm;
 					params.add(pm);
 				}
 			}
@@ -52,7 +53,7 @@ public class ParamPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 			for (String param : params) {
 				if (!req.getParams().containsKey(param)) {
 					res = new GatewayRES();
-					res.setContent(String.format("参数'%s'不能为空", param));
+					res.setContent(String.format("请求参数'%s'不能为空", param));
 					return res;
 				}
 			}

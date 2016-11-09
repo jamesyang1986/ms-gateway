@@ -1,5 +1,6 @@
 package cn.ms.gateway.common;
 
+
 /**
  * 配置项
  * 
@@ -19,9 +20,9 @@ public enum Conf {
 	/**IP白名单**/
 	private String whiteListIPs;
 	/**请求参数**/
-	private String params="serviceId;name;age";
+	private String params="serviceId";
 	/**请求头参数**/
-	private String headers;
+	private String headers="bizno{length=5,type=int}{};sysno{length=8,type=float};channelId";
 	
 	//$NON-NLS-连接器配置项$
 	private int connectorBossThreadNum=0;

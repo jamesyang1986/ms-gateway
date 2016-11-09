@@ -1,6 +1,5 @@
 package cn.ms.gateway.common;
 
-
 /**
  * 常数定义
  * 
@@ -8,6 +7,8 @@ package cn.ms.gateway.common;
  */
 public class Constants {
 
+	public static final String DEFAULT_ENCODEY="UTF-8";
+	
 	/**
 	 * 网关内部交易ID KEY
 	 */

@@ -1,9 +1,10 @@
 package cn.ms.gateway.core.filter.pre;
 
-import io.netty.handler.codec.http.HttpHeaders;
+import java.util.HashSet;
+
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.MSFilter;
-import cn.ms.gateway.common.Constants;
+import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.annotation.Filter;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -16,26 +17,49 @@ import cn.ms.gateway.entity.GatewayRES;
 @Filter(value = FilterType.PRE, order = 130)
 public class HeaderPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
+	private HashSet<String> headerParams = new HashSet<String>();
+	
 	@Override
-	public boolean check(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
+	public void init() throws Exception {
+		refresh();
+	}
+
+	@Override
+	public void refresh() throws Exception {
+		headerParams.clear();
+
+		String paramsStr = Conf.CONF.getHeaders();
+		if (paramsStr != null) {
+			if (paramsStr.length() > 0) {
+				String[] paramArray = paramsStr.split(";");
+				for (String pm : paramArray) {
+					//Map<String, String> param=ParamModuler.getParamsMap(pm, Constants.DEFAULT_ENCODEY);
+					pm=(pm.indexOf("{"))>0?pm.substring(0,pm.indexOf("{")):pm;
+					headerParams.add(pm);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean check(GatewayREQ req, GatewayRES res, Object... args)
+			throws Exception {
 		return true;
 	}
 
 	@Override
-	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
-		HttpHeaders httpHeaders = req.getRequest().headers();
-		if (!httpHeaders.contains(Constants.CHANNELID_KEY)) {//渠道ID参数不存在
-
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args)
+			throws Exception {
+		if (!headerParams.isEmpty()) {
+			for (String param : headerParams) {
+				if (!req.getRequest().headers().contains(param)) {
+					res = new GatewayRES();
+					res.setContent(String.format("请求头参数'%s'不能为空", param));
+					return res;
+				}
+			}
 		}
-		
-		if (!httpHeaders.contains(Constants.BIZNO_KEY)) {//业务流水ID参数不存在
 
-		}
-		
-		if (!httpHeaders.contains(Constants.SYSNO_KEY)) {//系统流水ID参数不存在
-
-		}
-		
 		return null;
 	}
 
