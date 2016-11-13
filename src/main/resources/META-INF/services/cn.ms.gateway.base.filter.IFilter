@@ -1,5 +1,7 @@
 #PRE类过滤器
 cn.ms.gateway.core.filter.pre.HeaderFilter
+cn.ms.gateway.core.filter.pre.IpBlackWhiteListPreFilter
+cn.ms.gateway.core.filter.pre.ParamPreFilter
 
 #ROUTE类过滤器
 cn.ms.gateway.core.filter.route.ConnectorFilter
