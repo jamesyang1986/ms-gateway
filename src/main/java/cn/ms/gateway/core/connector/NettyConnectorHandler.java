@@ -17,8 +17,9 @@ public class NettyConnectorHandler implements IHandler<GatewayREQ, GatewayRES> {
 	public GatewayRES handler(GatewayREQ req,
 			ICallback<GatewayREQ, GatewayRES> callback, Object... args)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		GatewayRES res=new GatewayRES();
+		res.setContent("ddddd");
+		return res;
 	}
 	
 	@Override

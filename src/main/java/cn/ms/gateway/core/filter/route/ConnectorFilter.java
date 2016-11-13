@@ -35,7 +35,6 @@ public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {
 					@Override
 					public void before(GatewayREQ req, Object... args) throws Exception {
 						// TODO Auto-generated method stub
-
 					}
 
 					@Override
@@ -47,7 +46,6 @@ public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {
 					@Override
 					public void after(GatewayREQ req, Object... args) throws Exception {
 						// TODO Auto-generated method stub
-
 					}
 				}, args);
 
