@@ -27,55 +27,61 @@ import cn.ms.gateway.base.filter.support.AbstractFilterFactory;
 public class FilterFactory<REQ, RES> extends AbstractFilterFactory<REQ, RES> {
 
 	private static final Logger logger=LoggerFactory.getLogger(Gateway.class);
-	
+
 	@SuppressWarnings("unchecked")
+	public FilterFactory() {
+		try {
+			//$NON-NLS-初始化所有处理器$
+			Map<String, List<IFilter<REQ, RES>>> filterMap = new LinkedHashMap<String, List<IFilter<REQ, RES>>>();
+			
+			@SuppressWarnings("rawtypes")
+			ServiceLoader<IFilter> serviceloader = ServiceLoader.load(IFilter.class);
+			for (IFilter<REQ, RES> filter : serviceloader) {
+				Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
+				if (filterAnnotation != null) {
+					//$NON-NLS-根据过滤器类型分组收集$
+					String filterType = filterAnnotation.value().getCode();
+					List<IFilter<REQ, RES>> filterList = filterMap.get(filterType);
+					if (filterList == null) {
+						filterList = new ArrayList<IFilter<REQ, RES>>();
+					}
+					
+					filterList.add(filter);
+					filterMap.put(filterType, filterList);
+				}
+			}
+
+			//$NON-NLS-排序$
+			for (FilterType filterType : FilterType.values()) {
+				List<IFilter<REQ, RES>> filterList = filterMap.get(filterType.getCode());
+				if (filterList == null || filterList.isEmpty()) {
+					continue;
+				}
+
+				// 分组进行组内排序过滤器
+				Collections.sort(filterList, new Comparator<IFilter<REQ, RES>>() {
+					@Override
+					public int compare(IFilter<REQ, RES> o1, IFilter<REQ, RES> o2) {
+						return o1.getClass().getAnnotation(Filter.class).order()
+								- o2.getClass().getAnnotation(Filter.class).order();
+					}
+				});
+
+				//$NON-NLS-收集有序服务$
+				super.addFilters(filterList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void init() throws Exception {
-		//$NON-NLS-初始化所有处理器$
-		Map<String, List<IFilter<REQ, RES>>> filterMap = new LinkedHashMap<String, List<IFilter<REQ, RES>>>();
-		
-		@SuppressWarnings("rawtypes")
-		ServiceLoader<IFilter> serviceloader = ServiceLoader.load(IFilter.class);
-		for (IFilter<REQ, RES> filter : serviceloader) {
-			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
-			if (filterAnnotation != null) {
-				//$NON-NLS-根据过滤器类型分组收集$
-				String filterType = filterAnnotation.value().getCode();
-				List<IFilter<REQ, RES>> filterList = filterMap.get(filterType);
-				if (filterList == null) {
-					filterList = new ArrayList<IFilter<REQ, RES>>();
-				}
-				
-				filterList.add(filter);
-				filterMap.put(filterType, filterList);
-			}
-		}
-
-		//$NON-NLS-排序$
-		for (FilterType filterType : FilterType.values()) {
-			List<IFilter<REQ, RES>> filterList = filterMap.get(filterType.getCode());
-			if (filterList == null || filterList.isEmpty()) {
-				continue;
-			}
-
-			// 分组进行组内排序过滤器
-			Collections.sort(filterList, new Comparator<IFilter<REQ, RES>>() {
-				@Override
-				public int compare(IFilter<REQ, RES> o1, IFilter<REQ, RES> o2) {
-					return o1.getClass().getAnnotation(Filter.class).order()
-							- o2.getClass().getAnnotation(Filter.class).order();
-				}
-			});
-
-			//$NON-NLS-收集有序服务$
-			super.addFilters(filterList);
-		}
 
 	}
 
 	@Override
 	public void start() throws Exception {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -160,7 +166,6 @@ public class FilterFactory<REQ, RES> extends AbstractFilterFactory<REQ, RES> {
 	
 	@Override
 	public void shutdown() throws Exception {
-		// TODO Auto-generated method stub
 
 	}
 

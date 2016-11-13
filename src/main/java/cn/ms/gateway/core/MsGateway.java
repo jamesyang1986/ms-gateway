@@ -19,7 +19,6 @@ public class MsGateway extends Gateway<GatewayREQ, GatewayRES> {
 			//$NON-NLS-创建资源$
 			connector = new NettyConnector();
 			// 向指定过滤器注入连接器
-			System.out.println(filterFactory.serviceFilterOnLineMap);
 			filterFactory.getFilter(ConnectorFilter.class).inject(connector);
 
 			// 向网关容器中注入网关处理器
