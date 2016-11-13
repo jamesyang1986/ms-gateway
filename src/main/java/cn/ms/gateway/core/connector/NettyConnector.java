@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import cn.ms.gateway.base.adapter.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.Conf;
-import cn.ms.gateway.common.NamedThreadFactory;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
+import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 

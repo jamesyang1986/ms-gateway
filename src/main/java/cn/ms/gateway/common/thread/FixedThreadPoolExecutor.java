@@ -1,4 +1,4 @@
-package cn.ms.gateway.common;
+package cn.ms.gateway.common.thread;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;

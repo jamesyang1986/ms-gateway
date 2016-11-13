@@ -15,10 +15,9 @@ import io.netty.util.concurrent.GenericFutureListener;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.filter.IFilterFactory;
 import cn.ms.gateway.common.Conf;
-import cn.ms.gateway.common.NamedThreadFactory;
-import cn.ms.gateway.common.NetUtils;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
+import cn.ms.gateway.common.thread.NamedThreadFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -67,7 +66,7 @@ public class NettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
 				if(future.isSuccess()){
-					logger.info("启动成功: http://%s:%s/", NetUtils.getLocalIp(), Conf.CONF.getPort());
+					logger.info("启动成功: http://%s:%s/", GatewayREQ.LOACALHOST, Conf.CONF.getPort());
 				}else{
 					logger.error("启动失败");
 				}

@@ -1,4 +1,4 @@
-package cn.ms.gateway.common;
+package cn.ms.gateway.common.utils;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;

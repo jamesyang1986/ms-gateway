@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.ms.gateway.common.NetUtils;
+import cn.ms.gateway.common.utils.NetUtils;
 
 /**
  * 网关请求对象
