@@ -1,0 +1,11 @@
+#PRE类过滤器
+cn.ms.gateway.core.filter.pre.HeaderFilter
+
+#ROUTE类过滤器
+cn.ms.gateway.core.filter.route.ConnectorFilter
+
+#POST类过滤器
+
+#ERROR类过滤器
+
+
