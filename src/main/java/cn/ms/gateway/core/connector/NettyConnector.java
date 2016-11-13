@@ -62,7 +62,8 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 	@Override
 	public void connector(GatewayREQ req, ICallback<GatewayREQ, GatewayRES> callback, Object... args) throws Exception {
 		URI tempURI = new URI(req.getRemoteURI());
-		String remoteAddress=tempURI.getHost()+":"+tempURI.getPort();
+		int remotePort=tempURI.getPort()<=0?80:tempURI.getPort();
+		String remoteAddress=tempURI.getHost()+":"+remotePort;
 		
 		//$NON-NLS-处理器和通道回收利用,一次创建N次使用$
 		ChannelFuture channelFuture = channelFutureMap.get(remoteAddress);
@@ -79,7 +80,7 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 				}
 			});
 
-			channelFuture = bootstrap.connect(tempURI.getHost(), tempURI.getPort()).sync();
+			channelFuture = bootstrap.connect(tempURI.getHost(), remotePort).sync();
 			channelFutureMap.put(remoteAddress, channelFuture);
 		}
 
@@ -93,7 +94,7 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 		request.headers().set(Names.CONTENT_LENGTH, request.content().readableBytes());
 
 		long routeStartTime = System.currentTimeMillis();
-		logger.info("=====交易开始=====");
+		logger.info("=====路由开始=====");
 		// $NON-NLS-通过通道获取回调函数$
 		channelFuture.channel().attr(CHANNEL_CALLBACK_KEY).set(
 				new CallbackTransferObject(req.getTradeId(), req.getTradeStartTime(), routeStartTime, callback));

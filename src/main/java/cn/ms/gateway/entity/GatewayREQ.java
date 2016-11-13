@@ -38,7 +38,7 @@ public class GatewayREQ {
 	HttpRequest request;
 	ChannelHandlerContext ctx;
 
-	//$NON-NLS-远程通讯信息$
+	//$NON-NLS-远程通讯信息$http://api.laifudao.com/open/xiaohua.json
 	String remoteURI="http://112.74.76.211:8080";
 
 	public String getTradeId() {
