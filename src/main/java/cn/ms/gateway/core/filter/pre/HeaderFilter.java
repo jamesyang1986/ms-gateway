@@ -37,14 +37,14 @@ public class HeaderFilter extends MSFilter<GatewayREQ, GatewayRES> {
 			if (headerstr.length() > 0) {
 				String[] paramArray = headerstr.split(Constants.PARAM_SEQ);
 				for (String pm : paramArray) {
-					ParamAttribute paramAttribute=new ParamAttribute();
 					int fno=pm.indexOf("{");
+					
+					ParamAttribute paramAttribute=new ParamAttribute();
 					paramAttribute.setParamKey((fno>0)?pm.substring(0, fno):pm);
 					
 					Matcher m = Constants.PARAM_PATTERN.matcher(pm);
-					String paramstr = "";//length=5&type=int
 					if (m.find()) {
-						paramstr = m.group(1).replace(",", "&");
+						String paramstr = m.group(1).replace(",", "&");
 						Map<String,String> attributeMap=ParamModuler.getParamsMap(paramstr, Constants.DEFAULT_ENCODEY);
 						String length=attributeMap.get(Constants.PARAM_LENGTH_KEY);
 						if(length!=null){
@@ -93,7 +93,7 @@ public class HeaderFilter extends MSFilter<GatewayREQ, GatewayRES> {
 					}
 					
 					if(!(attribute.getType()==null||attribute.getType().length()<1)){//第三步：需要校验类型
-						if(!ParamModuler.checkType(attribute.getType(), headerVal)){
+						if(!ParamModuler.checkDataType(attribute.getType(), headerVal)){
 							res=new GatewayRES();
 							res.setContent("校验类型失败");
 							return res;//校验类型失败

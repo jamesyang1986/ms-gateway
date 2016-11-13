@@ -8,22 +8,33 @@ import java.util.Map;
 
 public class ParamModuler {
 
-	public static Map<String, String> getParamsMap(String queryString,
-			String enc) {
+	/**
+	 * 解析URL中的参数
+	 * 
+	 * @param queryString
+	 * @param enc
+	 * @return
+	 */
+	public static Map<String, String> getParamsMap(String queryString, String enc) {
 		Map<String, String> params = new HashMap<String, String>();
 		Map<String, String[]> paramsMap = getParamsArrayMap(queryString, enc);
 		if (!paramsMap.isEmpty()) {
 			for (Map.Entry<String, String[]> entry : paramsMap.entrySet()) {
-				params.put(entry.getKey(),
-						entry.getValue()[entry.getValue().length - 1]);
+				params.put(entry.getKey(), entry.getValue()[entry.getValue().length - 1]);
 			}
 		}
 
 		return params;
 	}
 
-	public static Map<String, String[]> getParamsArrayMap(String queryString,
-			String enc) {
+	/**
+	 * 解析URL中的参数
+	 * 
+	 * @param queryString
+	 * @param enc
+	 * @return
+	 */
+	public static Map<String, String[]> getParamsArrayMap(String queryString, String enc) {
 		Map<String, String[]> paramsMap = new HashMap<String, String[]>();
 		if (queryString != null && queryString.length() > 0) {
 			int ampersandIndex, lastAmpersandIndex = 0;
@@ -33,8 +44,7 @@ public class ParamModuler {
 			do {
 				ampersandIndex = queryString.indexOf('&', lastAmpersandIndex) + 1;
 				if (ampersandIndex > 0) {
-					subStr = queryString.substring(lastAmpersandIndex,
-							ampersandIndex - 1);
+					subStr = queryString.substring(lastAmpersandIndex, ampersandIndex - 1);
 					lastAmpersandIndex = ampersandIndex;
 				} else {
 					subStr = queryString.substring(lastAmpersandIndex);
@@ -61,13 +71,19 @@ public class ParamModuler {
 
 				paramsMap.put(param, newValues);
 			} while (ampersandIndex > 0);
-
 		}
 
 		return paramsMap;
 	}
 
-	public static boolean checkType(String type, String data) {
+	/**
+	 * 校验数据类型
+	 * 
+	 * @param type
+	 * @param data
+	 * @return
+	 */
+	public static boolean checkDataType(String type, String data) {
 		switch (type) {
 		case "int":
 			try {
@@ -126,7 +142,7 @@ public class ParamModuler {
 				return false;
 			}
 		default:
-			return false;
+			throw new RuntimeException("非法类型");
 		}
 	}
 

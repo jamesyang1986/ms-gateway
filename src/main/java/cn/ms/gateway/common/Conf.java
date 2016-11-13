@@ -9,7 +9,7 @@ package cn.ms.gateway.common;
 public enum Conf {
 
 	CONF;
-	
+
 	//$NON-NLS-Neural配置参数$
 	/**黑名单开关**/
 	private boolean blackListIPSwitch=false;
@@ -20,9 +20,9 @@ public enum Conf {
 	/**IP白名单**/
 	private String whiteListIPs;
 	/**请求参数**/
-	private String params="serviceId;channelId{length=5}";
+	private String params="serviceId";
 	/**请求头参数**/
-	private String headers="bizno{length=17,type=long}{};sysno{length=17,type=long};timeout";
+	private String headers="channelId;bizno{length=18};sysno{length=18}";
 	
 	//$NON-NLS-连接器配置项$
 	private int connectorBossThreadNum=0;
