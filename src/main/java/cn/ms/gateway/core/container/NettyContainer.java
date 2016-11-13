@@ -69,13 +69,12 @@ public class NettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
 				if(future.isSuccess()){
-					logger.info("启动成功: http://%s:%s", NetUtils.getLocalIp(), Conf.CONF.getPort());
+					logger.info("启动成功: http://%s:%s/", NetUtils.getLocalIp(), Conf.CONF.getPort());
 				}else{
 					logger.error("启动失败");
 				}
 			}
 		});
-
 	}
 
 	@Override
