@@ -1,5 +1,6 @@
 package cn.ms.gateway.base;
 
+import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.filter.FilterFactory;
 
@@ -20,7 +21,9 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 
 	//$NON-NLS-网关容器$
 	protected FilterFactory<REQ, RES> filterFactory;
+	protected IConnector<REQ, RES> connector;
 	protected IContainer<REQ, RES> container;
+	
 
 	public Gateway() {
 		// 创建过滤器
@@ -28,26 +31,30 @@ public class Gateway<REQ, RES> implements IGateway<REQ, RES> {
 	}
 
 	@Override
-	public void inject(IContainer<REQ, RES> container, Object... args)
+	public void inject(IConnector<REQ, RES> connector, IContainer<REQ, RES> container, Object... args)
 			throws Exception {
+		this.connector = connector;
 		this.container = container;
 	}
 
 	@Override
 	public void init() throws Exception {
 		filterFactory.init();
+		connector.init();
 		container.init();
 	}
 
 	@Override
 	public void start() throws Exception {
 		filterFactory.start();
+		connector.start();
 		container.start();
 	}
 
 	@Override
 	public void shutdown() throws Exception {
 		container.shutdown();
+		connector.shutdown();
 		filterFactory.shutdown();
 	}
 

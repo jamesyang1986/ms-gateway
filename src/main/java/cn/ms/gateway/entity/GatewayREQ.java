@@ -39,12 +39,7 @@ public class GatewayREQ {
 	ChannelHandlerContext ctx;
 
 	//$NON-NLS-远程通讯信息$
-	String remoteHost = "localhost";
-	int remotePort = 80;
-	String remoteProtocol = "http";
-	String remoteAddress = "localhost:8844";
-	String remotePath = "/serviceId";
-	String remoteURI;
+	String remoteURI="http://localhost:8080/";
 
 	public String getTradeId() {
 		return tradeId;
@@ -126,46 +121,6 @@ public class GatewayREQ {
 		this.ctx = ctx;
 	}
 
-	public String getRemoteHost() {
-		return remoteHost;
-	}
-
-	public void setRemoteHost(String remoteHost) {
-		this.remoteHost = remoteHost;
-	}
-
-	public int getRemotePort() {
-		return remotePort;
-	}
-
-	public void setRemotePort(int remotePort) {
-		this.remotePort = remotePort;
-	}
-
-	public String getRemoteProtocol() {
-		return remoteProtocol;
-	}
-
-	public void setRemoteProtocol(String remoteProtocol) {
-		this.remoteProtocol = remoteProtocol;
-	}
-
-	public String getRemotePath() {
-		return remotePath;
-	}
-
-	public void setRemotePath(String remotePath) {
-		this.remotePath = remotePath;
-	}
-
-	public void setRemoteAddress(String remoteAddress) {
-		this.remoteAddress = remoteAddress;
-	}
-
-	public void setRemoteURI(String remoteURI) {
-		this.remoteURI = remoteURI;
-	}
-
 	//$NON-NLS-特殊情况$
 	public void putParam(String key, String val) {
 		this.params.put(key, val);
@@ -184,15 +139,11 @@ public class GatewayREQ {
 	}
 
 	public String getRemoteURI() {
-		return (remoteURI == null || remoteURI.length() < 1) ? (getRemoteProtocol()
-				+ "://" + getRemoteAddress())
-				: (remoteURI);
+		return remoteURI;
 	}
 
-	public String getRemoteAddress() {
-		return (remoteAddress == null || remoteAddress.length() < 1) ? (getRemoteHost()
-				+ ":" + getRemotePort())
-				: (remoteAddress);
+	public void setRemoteURI(String remoteURI) {
+		this.remoteURI = remoteURI;
 	}
 
 }

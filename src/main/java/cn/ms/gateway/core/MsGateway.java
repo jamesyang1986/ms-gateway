@@ -11,7 +11,7 @@ import cn.ms.gateway.entity.GatewayRES;
 
 public class MsGateway extends Gateway<GatewayREQ, GatewayRES> {
 
-	IConnector<GatewayREQ, GatewayRES> connector;
+	IConnector<GatewayREQ, GatewayRES> connector = null;
 	IContainer<GatewayREQ, GatewayRES> container = null;
 
 	public MsGateway() {
@@ -24,7 +24,7 @@ public class MsGateway extends Gateway<GatewayREQ, GatewayRES> {
 			// 向网关容器中注入网关处理器
 			container = new NettyContainer(filterFactory);
 			// 向微服务网关中注入网关容器
-			super.inject(container);
+			super.inject(connector, container);
 
 			
 			//$NON-NLS-初始化$

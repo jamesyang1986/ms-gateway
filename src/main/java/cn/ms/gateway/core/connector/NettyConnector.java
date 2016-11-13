@@ -42,10 +42,8 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void init() throws Exception {
-		EventLoopGroup workerGroup = new NioEventLoopGroup(
-				Conf.CONF.getConnectorWorkerThreadNum(),
-				new NamedThreadFactory("NettyConnectorWorker"));
-
+		EventLoopGroup workerGroup = new NioEventLoopGroup(Conf.CONF.getConnectorWorkerThreadNum(), new NamedThreadFactory("NettyConnectorWorker"));
+		
 		bootstrap = new Bootstrap();
 		bootstrap.group(workerGroup);
 		bootstrap.channel(NioSocketChannel.class);
@@ -60,10 +58,10 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 	@Override
 	public void connector(GatewayREQ req, ICallback<GatewayREQ, GatewayRES> callback, Object... args) throws Exception {
 		URI tempURI = new URI(req.getRemoteURI());
-
+		String remoteAddress=tempURI.getHost()+":"+tempURI.getPort();
+		
 		//$NON-NLS-处理器和通道回收利用,一次创建N次使用$
-		ChannelFuture channelFuture = channelFutureMap.get(req
-				.getRemoteAddress());
+		ChannelFuture channelFuture = channelFutureMap.get(remoteAddress);
 		if (channelFuture == null) {
 			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
@@ -78,7 +76,7 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 			});
 
 			channelFuture = bootstrap.connect(tempURI.getHost(), tempURI.getPort()).sync();
-			channelFutureMap.put(req.getRemoteAddress(), channelFuture);
+			channelFutureMap.put(remoteAddress, channelFuture);
 		}
 
 		DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, 
