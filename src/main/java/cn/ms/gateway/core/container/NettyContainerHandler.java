@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.ThreadContext;
 
@@ -71,6 +72,12 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
                 	}
                 }	
             }
+            
+            //$NON-NLS-请求头$
+	        List<Entry<String, String>> headers=request.headers().entries();
+	        for (Entry<String, String> entry:headers) {
+	        	gatewayREQ.putHeader(entry.getKey(), entry.getValue());
+			}
             
             //$NON-NLS-读取请求报文$
             ByteBuf buf = null;
