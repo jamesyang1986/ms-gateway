@@ -19,6 +19,7 @@ import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
+import io.netty.util.CharsetUtil;
 
 import java.net.URI;
 import java.util.Map;
@@ -84,8 +85,8 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 			channelFutureMap.put(remoteAddress, channelFuture);
 		}
 
-		DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, 
-				tempURI.toASCIIString(), Unpooled.wrappedBuffer(req.getContent().getBytes("UTF-8")));
+		DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, 
+				tempURI.toASCIIString(), Unpooled.wrappedBuffer(req.getContent().getBytes(CharsetUtil.UTF_8)));
 
 		// 构建http请求
 		request.headers().set("clientHost", req.getClientHost());// 客户端HOST

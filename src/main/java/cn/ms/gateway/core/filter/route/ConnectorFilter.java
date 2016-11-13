@@ -44,7 +44,7 @@ public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {
 			@Override
 			public void exception(Throwable t) {
 				GatewayRES res=new GatewayRES();
-				res.setContent("路由通讯:"+t.getMessage());
+				res.setContent("网关路由异常:"+t.getMessage());
 				AssemblySupport.HttpServerResponse(req, res);
 			}
 		}, args);
