@@ -1,6 +1,13 @@
 package cn.ms.gateway.base.adapter;
 
-
+/**
+ * 回调函数
+ * 
+ * @author lry
+ *
+ * @param <REQ>
+ * @param <RES>
+ */
 public interface ICallback<REQ, RES> {
 
 	/**
