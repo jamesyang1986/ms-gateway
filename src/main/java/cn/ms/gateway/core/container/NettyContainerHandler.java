@@ -30,7 +30,8 @@ import cn.ms.gateway.entity.GatewayRES;
 public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
 
 	private Logger logger=LoggerFactory.getLogger(NettyContainerHandler.class);
-	
+
+	FullHttpRequest request;
 	IFilterFactory<GatewayREQ, GatewayRES> filter;
 	TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
 
@@ -38,8 +39,6 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
 		this.filter = filter;
 	}
 
-	FullHttpRequest request;
-	
 	@Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest) {

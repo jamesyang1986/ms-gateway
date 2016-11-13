@@ -31,11 +31,10 @@ public class NettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 	
 	private static final Logger logger=LoggerFactory.getLogger(NettyContainer.class);
 	
-	IFilterFactory<GatewayREQ, GatewayRES> filterFactory;
-
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
+	IFilterFactory<GatewayREQ, GatewayRES> filterFactory;
 	
 	public NettyContainer(IFilterFactory<GatewayREQ, GatewayRES> filterFactory) {
 		this.filterFactory = filterFactory;
