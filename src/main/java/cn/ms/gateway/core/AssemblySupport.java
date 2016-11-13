@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.HttpHeaders.Names;
 import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.util.CharsetUtil;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.entity.GatewayREQ;
@@ -22,7 +23,7 @@ import cn.ms.gateway.entity.GatewayRES;
 public class AssemblySupport {
 
 	public static final Logger logger = LoggerFactory.getLogger(AssemblySupport.class);
-	
+
 	/**
 	 * 通道响应
 	 * 
@@ -33,22 +34,20 @@ public class AssemblySupport {
 	public static void HttpServerResponse(GatewayREQ req, GatewayRES res) {
 		try {
 			//$NON-NLS-通道响应$
-			FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, 
-					HttpResponseStatus.OK, Unpooled.wrappedBuffer(res.getContent().getBytes()));
+			FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
+					Unpooled.wrappedBuffer(res.getContent().getBytes(CharsetUtil.UTF_8)));
 			response.headers().set(Names.CONTENT_TYPE, "text/plain");
 			response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
 			if (HttpHeaders.isKeepAlive(req.getRequest())) {
 				response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
 			}
-			
+
 			req.getCtx().writeAndFlush(response);
 		} catch (Throwable t) {
 			logger.error(t, "网关响应装配异常: %s", t.getMessage());
 		} finally {
-			//TODO req对象的对象引用问题?
-			logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - req.getRouteStartTime()));
 			logger.info("[网关总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - req.getTradeStartTime()));
 		}
 	}
-	
+
 }

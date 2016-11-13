@@ -1,5 +1,6 @@
 package cn.ms.gateway.base.adapter;
 
+
 public interface ICallback<REQ, RES> {
 
 	/**
@@ -19,7 +20,7 @@ public interface ICallback<REQ, RES> {
 	 * @throws Exception
 	 */
 	RES callback(RES res, Object... args) throws Exception;
-	
+
 	/**
 	 * 容器请求处理后
 	 * 
@@ -28,5 +29,12 @@ public interface ICallback<REQ, RES> {
 	 * @throws Exception
 	 */
 	void after(RES req, Object... args) throws Exception;
+
+	/**
+	 * 抛异常处理
+	 * 
+	 * @param t
+	 */
+	void exception(Throwable t);
 
 }

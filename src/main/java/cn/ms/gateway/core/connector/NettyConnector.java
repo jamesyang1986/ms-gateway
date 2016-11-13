@@ -28,14 +28,18 @@ import cn.ms.gateway.base.adapter.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.NamedThreadFactory;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
 @SuppressWarnings("deprecation")
 public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 
+	private static final Logger logger=LoggerFactory.getLogger(NettyConnector.class);
+	
 	//$NON-NLS-通道回调函数绑定KEY$
-	public static final AttributeKey<ICallback<GatewayREQ, GatewayRES>> CHANNEL_CALLBACK_KEY = AttributeKey.valueOf("gateway_connector_callback");
+	public static final AttributeKey<CallbackTransferObject> CHANNEL_CALLBACK_KEY = AttributeKey.valueOf("gateway_connector_callback");
 
 	private Bootstrap bootstrap = null;
 	private ConcurrentHashMap<String, ChannelFuture> channelFutureMap = new ConcurrentHashMap<String, ChannelFuture>();
@@ -88,8 +92,12 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 		request.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
 		request.headers().set(Names.CONTENT_LENGTH, request.content().readableBytes());
 
+		long routeStartTime = System.currentTimeMillis();
+		logger.info("=====交易开始=====");
 		// $NON-NLS-通过通道获取回调函数$
-		channelFuture.channel().attr(CHANNEL_CALLBACK_KEY).set(callback);
+		channelFuture.channel().attr(CHANNEL_CALLBACK_KEY).set(
+				new CallbackTransferObject(req.getTradeId(), req.getTradeStartTime(), routeStartTime, callback));
+		
 		// 发送http请求
 		channelFuture.channel().writeAndFlush(request);
 	}
