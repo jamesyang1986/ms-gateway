@@ -37,5 +37,19 @@ public class MsGateway extends Gateway<GatewayREQ, GatewayRES> {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void main(String[] args) {
+		MsGateway msGateway = null;
+		try {
+			msGateway = new MsGateway();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				msGateway.shutdown();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
 
 }

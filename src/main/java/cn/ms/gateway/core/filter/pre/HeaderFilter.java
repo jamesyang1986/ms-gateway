@@ -81,13 +81,13 @@ public class HeaderFilter extends MSFilter<GatewayREQ, GatewayRES> {
 				String headerVal=req.getHeaders().get(attribute.getParamKey());
 				if(headerVal==null||headerVal.length()<1){//第一步：参数有无的校验
 					res=new GatewayRES();
-					res.setContent("参数不存在");
+					res.setContent(String.format("参数'%s'不存在",attribute.getParamKey()));
 					return res;//$NON-NLS-参数不存在$
 				}else{
 					if(attribute.getLength()>0){//第二步：需要校验长度
 						if(attribute.getLength()!=headerVal.length()){
 							res=new GatewayRES();
-							res.setContent("长度不相等");
+							res.setContent(String.format("参数'%s'值的长度必须为%s", attribute.getParamKey(), attribute.getLength()));
 							return res;//$NON-NLS-长度不相等$
 						}
 					}
@@ -95,7 +95,7 @@ public class HeaderFilter extends MSFilter<GatewayREQ, GatewayRES> {
 					if(!(attribute.getType()==null||attribute.getType().length()<1)){//第三步：需要校验类型
 						if(!ParamModuler.checkDataType(attribute.getType(), headerVal)){
 							res=new GatewayRES();
-							res.setContent("校验类型失败");
+							res.setContent(String.format("参数'%s'值的必须为'%s'类型", attribute.getParamKey(), attribute.getType()));
 							return res;//校验类型失败
 						}
 					}
