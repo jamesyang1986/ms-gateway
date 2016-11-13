@@ -1,8 +1,24 @@
 package cn.ms.gateway.core.container;
 
-import cn.ms.gateway.base.adapter.ICallback;
-import cn.ms.gateway.base.adapter.IHandler;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.QueryStringDecoder;
+
+import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.ThreadContext;
+
 import cn.ms.gateway.base.filter.IFilterFactory;
+import cn.ms.gateway.common.Constants;
+import cn.ms.gateway.common.TradeIdWorker;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
+import cn.ms.gateway.core.AssemblySupport;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -11,30 +27,88 @@ import cn.ms.gateway.entity.GatewayRES;
  * 
  * @author lry
  */
-public class NettyContainerHandler implements IHandler<GatewayREQ, GatewayRES> {
+public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
 
+	private Logger logger=LoggerFactory.getLogger(NettyContainerHandler.class);
+	
 	IFilterFactory<GatewayREQ, GatewayRES> filter;
+	TradeIdWorker tradeIdWorker=new TradeIdWorker(0, 0);
 
 	public NettyContainerHandler(IFilterFactory<GatewayREQ, GatewayRES> filter) {
 		this.filter = filter;
 	}
 
+	FullHttpRequest request;
+	
 	@Override
-	public void before(GatewayREQ req, Object... args) throws Exception {
-		// TODO Auto-generated method stub
-	}
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        if (msg instanceof FullHttpRequest) {
+            request = (FullHttpRequest) msg;
+        }
+        if (msg instanceof HttpContent) {
+        	long tradeStartTime=System.currentTimeMillis();
+        	String tradeId=String.valueOf(tradeIdWorker.nextId());
+        	ThreadContext.put(Constants.TRADEID_KEY, tradeId);
+        	logger.info("=====交易开始=====");
+        	
+        	final GatewayREQ gatewayREQ=new GatewayREQ();
+            gatewayREQ.setTradeId(tradeId);
+            gatewayREQ.setTradeStartTime(tradeStartTime);
+        	
+            //$NON-NLS-获取客户端端IP$
+            String clientIP = request.headers().get("X-Forwarded-For");
+            if (clientIP == null) {
+                InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
+                clientIP = insocket.getAddress().getHostAddress();
+            }
+            gatewayREQ.setClientHost(clientIP);
+            
+            //$NON-NLS-读取参数$
+            gatewayREQ.putAllParameter(new QueryStringDecoder(request.uri()).parameters());
+            if(!gatewayREQ.getParameters().isEmpty()){
+            	for(Map.Entry<String, List<String>> entry:gatewayREQ.getParameters().entrySet()){
+                	if(entry.getValue().size()==1){
+                		gatewayREQ.putParam(entry.getKey(), entry.getValue().get(0));
+                	}
+                }	
+            }
+            
+            //$NON-NLS-读取请求报文$
+            ByteBuf buf = null;
+            String content = null;
+            try {
+            	HttpContent httpContent = (HttpContent) msg;
+            	buf = httpContent.content();
+                content=buf.toString(io.netty.util.CharsetUtil.UTF_8);
+			} finally {
+				buf.release();
+			}
+            
+            gatewayREQ.setContent(content);
+            gatewayREQ.setRequest(request);
+            gatewayREQ.setCtx(ctx);
+            
+            try {
+            	GatewayRES gatewayRES = filter.doFilter(gatewayREQ);
+            	if(gatewayRES!=null){
+            		//$NON-NLS-组装响应结果$
+            		AssemblySupport.HttpServerResponse(gatewayREQ, gatewayRES);
+            	}
+			} catch (Throwable t) {
+				logger.error(t, "微服务网关处理异常: %s", t.getMessage());
+			}
+        }
+    }
 
-	@Override
-	public GatewayRES handler(GatewayREQ req,
-			ICallback<GatewayREQ, GatewayRES> callback, Object... args)
-			throws Exception {
-		return filter.doFilter(req, args);
-	}
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
+    }
 
-	@Override
-	public void after(GatewayREQ req, Object... args) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    	logger.error(cause, "微服务网关Netty接入异常: %s", cause.getMessage());
+        ctx.close();
+    }
+    
 }

@@ -12,7 +12,6 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.GenericFutureListener;
-import cn.ms.gateway.base.adapter.IHandler;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.filter.IFilterFactory;
 import cn.ms.gateway.common.Conf;
@@ -32,15 +31,14 @@ public class NettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 	
 	private static final Logger logger=LoggerFactory.getLogger(NettyContainer.class);
 	
-	IHandler<GatewayREQ, GatewayRES> handler;
+	IFilterFactory<GatewayREQ, GatewayRES> filterFactory;
 
 	EventLoopGroup bossGroup = null;
 	EventLoopGroup workerGroup = null;
 	ServerBootstrap serverBootstrap = null;
 	
 	public NettyContainer(IFilterFactory<GatewayREQ, GatewayRES> filterFactory) {
-		//向网关容器的处理器中注入过滤器
-		handler = new NettyContainerHandler(filterFactory);
+		this.filterFactory = filterFactory;
 	}
 
 	@Override
@@ -57,6 +55,7 @@ public class NettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 						ch.pipeline().addLast(new HttpResponseEncoder());
 						ch.pipeline().addLast(new HttpRequestDecoder());
 						ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
+						ch.pipeline().addLast(new NettyContainerHandler(filterFactory));
 					}
 				}).option(ChannelOption.SO_BACKLOG, 1024)
 				.childOption(ChannelOption.SO_KEEPALIVE, true);
