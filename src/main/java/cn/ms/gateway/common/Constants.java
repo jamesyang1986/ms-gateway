@@ -1,5 +1,7 @@
 package cn.ms.gateway.common;
 
+import java.util.regex.Pattern;
+
 /**
  * 常数定义
  * 
@@ -37,5 +39,12 @@ public class Constants {
 	public static final String WS_BLOCKING_WAIT="BLOCKING_WAIT";
 	public static final String WS_SLEEPING_WAIT="SLEEPING_WAIT";
 	public static final String WS_YIELDING_WAIT="YIELDING_WAIT";
+	
+	
+	public static final String PARAM_LENGTH_KEY="length";
+	public static final String PARAM_TYPE_KEY="type";
+	public static final Pattern PARAM_PATTERN = Pattern.compile("\\{(.*?)\\}");
+	public static final String PARAM_SEQ=";";
+	public static final String PARAM_MODEL_SEQ=",";
 	
 }

@@ -63,7 +63,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
             gatewayREQ.setClientHost(clientIP);
             
             //$NON-NLS-读取参数$
-            gatewayREQ.putAllParameter(new QueryStringDecoder(request.uri()).parameters());
+            gatewayREQ.putParameters(new QueryStringDecoder(request.uri()).parameters());
             if(!gatewayREQ.getParameters().isEmpty()){
             	for(Map.Entry<String, List<String>> entry:gatewayREQ.getParameters().entrySet()){
                 	if(entry.getValue().size()==1){

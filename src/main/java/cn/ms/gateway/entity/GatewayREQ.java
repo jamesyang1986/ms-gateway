@@ -35,11 +35,12 @@ public class GatewayREQ {
 	String content;
 	Map<String, String> params = new HashMap<String, String>();
 	Map<String, List<String>> parameters = new HashMap<String, List<String>>();
+	Map<String, String> headers = new HashMap<String, String>();
 	HttpRequest request;
 	ChannelHandlerContext ctx;
 
 	//$NON-NLS-远程通讯信息$
-	String remoteURI="http://www.qiushibaike.com";
+	String remoteURI = "http://www.qiushibaike.com";
 
 	public String getTradeId() {
 		return tradeId;
@@ -105,6 +106,14 @@ public class GatewayREQ {
 		this.parameters = parameters;
 	}
 
+	public Map<String, String> getHeaders() {
+		return headers;
+	}
+
+	public void setHeaders(Map<String, String> headers) {
+		this.headers = headers;
+	}
+
 	public HttpRequest getRequest() {
 		return request;
 	}
@@ -122,11 +131,20 @@ public class GatewayREQ {
 	}
 
 	//$NON-NLS-特殊情况$
+	//$NON-NLS-特殊情况$
+	public void putHeader(String key, String val) {
+		this.headers.put(key, val);
+	}
+
+	public void putHeaders(Map<String, String> headers) {
+		this.headers.putAll(params);
+	}
+
 	public void putParam(String key, String val) {
 		this.params.put(key, val);
 	}
 
-	public void putAllParam(Map<String, String> params) {
+	public void putParams(Map<String, String> params) {
 		this.params.putAll(params);
 	}
 
@@ -134,7 +152,7 @@ public class GatewayREQ {
 		this.parameters.put(key, vals);
 	}
 
-	public void putAllParameter(Map<String, List<String>> parameters) {
+	public void putParameters(Map<String, List<String>> parameters) {
 		this.parameters.putAll(parameters);
 	}
 

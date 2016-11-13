@@ -3,12 +3,13 @@ package cn.ms.gateway.core.filter.route;
 import cn.ms.gateway.base.adapter.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.filter.annotation.Filter;
+import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.MSFilter;
 import cn.ms.gateway.core.AssemblySupport;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
-@Filter
+@Filter(value = FilterType.ROUTE, order = 100)
 public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
 	IConnector<GatewayREQ, GatewayRES> connector = null;
