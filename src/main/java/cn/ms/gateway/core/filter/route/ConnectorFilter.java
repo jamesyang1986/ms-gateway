@@ -36,25 +36,24 @@ public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {
 	}
 
 	@Override
-	public GatewayRES run(final GatewayREQ gatewayREQ, GatewayRES res, Object... args) throws Exception {
-		gatewayREQ.setRouteStartTime(System.currentTimeMillis());
+	public GatewayRES run(final GatewayREQ req, GatewayRES res, Object... args) throws Exception {
+		req.setRouteStartTime(System.currentTimeMillis());
 		logger.info("=====交易开始=====");
 		
-		connector.connector(gatewayREQ, new ICallback<GatewayREQ, GatewayRES>() {
+		connector.connector(req, new ICallback<GatewayREQ, GatewayRES>() {
 			@Override
-			public void before(GatewayREQ req, Object... args) throws Exception {
+			public void before(GatewayRES res, Object... args) throws Exception {
 				
 			}
 			@Override
-			public GatewayRES callback(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
-				ThreadContext.put(Constants.TRADEID_KEY, gatewayREQ.getTradeId());// 线程参数继续
+			public GatewayRES callback(GatewayRES res, Object... args) throws Exception {
+				ThreadContext.put(Constants.TRADEID_KEY, req.getTradeId());// 线程参数继续
 				
-				AssemblySupport.HttpServerResponse(gatewayREQ, res);
-				
+				AssemblySupport.HttpServerResponse(req, res);
 				return null;
 			}
 			@Override
-			public void after(GatewayREQ req, Object... args) throws Exception {
+			public void after(GatewayRES res, Object... args) throws Exception {
 				
 			}
 		}, args);

@@ -33,7 +33,6 @@ private static final Logger logger=LoggerFactory.getLogger(NettyConnectorHandler
 				content = (HttpContent) msg;
 				buf = content.content();
 				String resContent = buf.toString(CharsetUtil.UTF_8);
-
 				GatewayRES gatewayRES=new GatewayRES();
 				gatewayRES.setContent(resContent);
 				

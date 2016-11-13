@@ -39,7 +39,7 @@ public class GatewayREQ {
 	ChannelHandlerContext ctx;
 
 	//$NON-NLS-远程通讯信息$
-	String remoteURI="http://localhost:8080/";
+	String remoteURI="http://112.74.76.211:8080";
 
 	public String getTradeId() {
 		return tradeId;
