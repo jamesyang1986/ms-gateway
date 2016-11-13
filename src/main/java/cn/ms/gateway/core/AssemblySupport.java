@@ -26,27 +26,28 @@ public class AssemblySupport {
 	/**
 	 * 通道响应
 	 * 
-	 * @param gatewayREQ
+	 * @param req
+	 * @param res
 	 * @param content
 	 */
-	public static void HttpServerResponse(GatewayREQ gatewayREQ, GatewayRES gatewayRES) {
+	public static void HttpServerResponse(GatewayREQ req, GatewayRES res) {
 		try {
 			//$NON-NLS-通道响应$
 			FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, 
-					HttpResponseStatus.OK, Unpooled.wrappedBuffer(gatewayRES.getContent().getBytes()));
+					HttpResponseStatus.OK, Unpooled.wrappedBuffer(res.getContent().getBytes()));
 			response.headers().set(Names.CONTENT_TYPE, "text/plain");
 			response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
-			if (HttpHeaders.isKeepAlive(gatewayREQ.getRequest())) {
+			if (HttpHeaders.isKeepAlive(req.getRequest())) {
 				response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
 			}
 			
-			gatewayREQ.getCtx().writeAndFlush(response);
+			req.getCtx().writeAndFlush(response);
 		} catch (Throwable t) {
 			logger.error(t, "网关响应装配异常: %s", t.getMessage());
 		} finally {
 			//TODO req对象的对象引用问题?
-			logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - gatewayREQ.getRouteStartTime()));
-			logger.info("[网关总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - gatewayREQ.getTradeStartTime()));
+			logger.info("[路由总耗时:%sms]=====路由结束=====", (System.currentTimeMillis() - req.getRouteStartTime()));
+			logger.info("[网关总耗时:%sms]=====交易结束=====", (System.currentTimeMillis() - req.getTradeStartTime()));
 		}
 	}
 	
