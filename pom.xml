@@ -9,7 +9,7 @@
 
 	<properties>
 		<netty-all>4.1.6.Final</netty-all>
-		<disruptor>3.3.6</disruptor>
+		<zbus>7.2.0</zbus>
 		<fastjson>1.2.20</fastjson>
 		<log4j-api>2.6.2</log4j-api>
 		<junit>4.12</junit>
@@ -17,14 +17,14 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.zbus</groupId>
-			<artifactId>zbus</artifactId>
-			<version>7.2.0</version>
-		</dependency>
-		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
-			<version>4.1.6.Final</version>
+			<version>${netty-all}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.zbus</groupId>
+			<artifactId>zbus</artifactId>
+			<version>${zbus}</version>
 		</dependency>
 
 		<!-- 日志 -->
@@ -56,4 +56,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
