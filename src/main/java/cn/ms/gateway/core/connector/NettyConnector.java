@@ -86,10 +86,12 @@ public class NettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 		}
 
 		DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, 
-				tempURI.toASCIIString(), Unpooled.wrappedBuffer(req.getContent().getBytes(CharsetUtil.UTF_8)));
+				tempURI.getPath(), Unpooled.wrappedBuffer(req.getContent().getBytes(CharsetUtil.UTF_8)));
 
 		// 构建http请求
-		request.headers().set("clientHost", req.getClientHost());// 客户端HOST
+		if(!(req.getClientHost()==null||req.getClientHost().length()<1)){
+			request.headers().set("clientHost", req.getClientHost());// 客户端HOST	
+		}
 		request.headers().set(Names.HOST, req.getLocalHost());// 网关本机HOST
 		request.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
 		request.headers().set(Names.CONTENT_LENGTH, request.content().readableBytes());

@@ -32,7 +32,7 @@ public class GatewayREQ {
 	/** 客户端HOST **/
 	String clientHost;
 	/** 请求报文 **/
-	String content;
+	String content="";
 	Map<String, String> params = new HashMap<String, String>();
 	Map<String, List<String>> parameters = new HashMap<String, List<String>>();
 	Map<String, String> headers = new HashMap<String, String>();

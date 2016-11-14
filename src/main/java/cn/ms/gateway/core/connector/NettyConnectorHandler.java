@@ -1,7 +1,5 @@
 package cn.ms.gateway.core.connector;
 
-import java.util.Date;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -26,7 +24,6 @@ public class NettyConnectorHandler extends ChannelInboundHandlerAdapter {
 	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		System.out.println("-------->"+new Date());
 		//$NON-NLS-通过通道获取回调函数$
 		CallbackTransferObject callbackTransferObject = getCallbackTransferObject(ctx);
 		

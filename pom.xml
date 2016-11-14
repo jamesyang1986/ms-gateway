@@ -17,6 +17,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.reactivex</groupId>
+			<artifactId>rxnetty</artifactId>
+			<version>0.4.19</version>
+		</dependency>
+
+		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>${netty-all}</version>
