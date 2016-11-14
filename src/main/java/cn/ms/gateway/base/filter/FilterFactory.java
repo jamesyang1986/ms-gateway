@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.zbus.kit.log.Logger;
-import org.zbus.kit.log.LoggerFactory;
-
 import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.filter.annotation.Filter;
 import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.AbstractFilterFactory;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
 
 /**
  * 微服务网关过滤器
