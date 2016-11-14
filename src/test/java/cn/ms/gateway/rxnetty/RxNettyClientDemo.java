@@ -13,7 +13,7 @@ import rx.functions.Func1;
 public final class RxNettyClientDemo {
 
 	public static void main(String... args) throws InterruptedException {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
         	final int k=i;
         	RxNetty.createHttpGet("http://localhost:8080/data")
             .flatMap(new Func1<HttpClientResponse<ByteBuf>, Observable<ByteBuf>>() {
