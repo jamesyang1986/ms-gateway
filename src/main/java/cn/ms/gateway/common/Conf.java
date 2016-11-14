@@ -11,6 +11,8 @@ public enum Conf {
 	CONF;
 
 	//$NON-NLS-Neural配置参数$
+	/**网关服务端口**/
+	private int gwport=9000;
 	/**黑名单开关**/
 	private boolean blackListIPSwitch=false;
 	/**IP黑名单**/
@@ -46,6 +48,12 @@ public enum Conf {
 	/**The wait strategy to use for the ring buffer.**/
 	private String waitStrategy="YIELDING_WAIT";
 	
+	public int getGwport() {
+		return gwport;
+	}
+	public void setGwport(int gwport) {
+		this.gwport = gwport;
+	}
 	public boolean isBlackListIPSwitch() {
 		return blackListIPSwitch;
 	}
