@@ -23,7 +23,7 @@ public abstract class MSFilter<REQ, RES> implements IFilter<REQ, RES> {
 	}
 
 	@Override
-	public <MOD> void inject(MOD mod) throws Exception {
+	public <MOD> void mod(MOD mod) throws Exception {
 
 	}
 

@@ -70,7 +70,7 @@ public class FilterFactory<REQ, RES> extends AbstractFilterFactory<REQ, RES> {
 				super.addFilters(filterList);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e, "网关过滤器扫描异常,异常信息为: %s", e.getMessage());
 		}
 	}
 	
@@ -94,8 +94,8 @@ public class FilterFactory<REQ, RES> extends AbstractFilterFactory<REQ, RES> {
 				if(res!=null){
 					return res;
 				}
-			} catch (Throwable t) {
-				logger.error("The execute "+FilterType.PRE.getCode()+" filter is error: " + t.getMessage(), t);
+			} catch (Exception e) {
+				logger.error("The execute "+FilterType.PRE.getCode()+" filter is error: " + e.getMessage(), e);
 				
 				res = doHandler(FilterType.ERROR, req, res, args);
 				return doHandler(FilterType.POST, req, res, args);
@@ -107,14 +107,14 @@ public class FilterFactory<REQ, RES> extends AbstractFilterFactory<REQ, RES> {
 				if(res!=null){
 					return res;
 				}
-			} catch (Throwable t) {
-				logger.error("The execute "+FilterType.ROUTE.getCode()+" filter is error: " + t.getMessage(), t);
+			} catch (Exception e) {
+				logger.error("The execute "+FilterType.ROUTE.getCode()+" filter is error: " + e.getMessage(), e);
 				
 				res = doHandler(FilterType.ERROR, req, res, args);
 				return doHandler(FilterType.POST, req, res, args);
 			}
-		} catch (Throwable t) {
-			logger.error("The execute "+FilterType.PRE.getCode()+" and "+FilterType.PRE.getCode()+" filter is error: " + t.getMessage(), t);
+		} catch (Exception e) {
+			logger.error("The execute "+FilterType.PRE.getCode()+" and "+FilterType.PRE.getCode()+" filter is error: " + e.getMessage(), e);
 			
 			//$NON-NLS-ERROR过滤器过滤$
 			return doHandler(FilterType.ERROR, req, res, args);
@@ -122,8 +122,8 @@ public class FilterFactory<REQ, RES> extends AbstractFilterFactory<REQ, RES> {
 			try {
 				//$NON-NLS-PRE过滤器过滤$
 				doHandler(FilterType.POST, req, res, args);
-			} catch (Throwable t) {
-				logger.error("The execute "+FilterType.POST.getCode()+" filter is error: " + t.getMessage(), t);
+			} catch (Exception e) {
+				logger.error("The execute "+FilterType.POST.getCode()+" filter is error: " + e.getMessage(), e);
 				
 				res = doHandler(FilterType.ERROR, req, res, args);
 			}

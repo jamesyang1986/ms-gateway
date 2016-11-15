@@ -114,9 +114,10 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 									res.setContent("微服务网关请求失败");
 			    				}
 							} catch (Exception e) {
+								logger.error(e, "网关过滤器执行失败", e.getMessage());
+								
 								res = new GatewayRES();
 								res.setContent("微服务网关异常");
-								e.printStackTrace();
 							}
 		    			
 		    				AssemblySupport.HttpServerResponse(req, res);
@@ -124,7 +125,7 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 						}
 					});
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e, "网关接入回调执行失败", e.getMessage());
 					
 					GatewayRES res = new GatewayRES();
 					res.setContent("服务器异常");

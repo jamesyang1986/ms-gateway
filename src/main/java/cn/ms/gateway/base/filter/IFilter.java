@@ -29,7 +29,7 @@ public interface IFilter<REQ, RES> {
 	 * 
 	 * @param mod
 	 */
-	<MOD> void inject(MOD mod) throws Exception;;
+	<MOD> void mod(MOD mod) throws Exception;;
 
 	/**
 	 * 过滤器是否执行校验

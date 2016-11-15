@@ -3,17 +3,18 @@ package cn.ms.gateway.base.filter.support;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.base.filter.IFilterFactory;
 import cn.ms.gateway.base.filter.annotation.Filter;
 import cn.ms.gateway.base.filter.annotation.FilterEnable;
 import cn.ms.gateway.base.filter.annotation.FilterType;
+import cn.ms.gateway.common.log.Logger;
+import cn.ms.gateway.common.log.LoggerFactory;
 
 public abstract class AbstractFilterFactory<REQ, RES> implements IFilterFactory<REQ, RES> {
 
-	private static final Logger logger = Logger.getLogger(AbstractFilterFactory.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AbstractFilterFactory.class);
 
 	/** 在线过滤器 **/
 	public Map<String, Map<String, IFilter<REQ, RES>>> serviceFilterOnLineMap = new LinkedHashMap<String, Map<String, IFilter<REQ, RES>>>();
@@ -22,47 +23,42 @@ public abstract class AbstractFilterFactory<REQ, RES> implements IFilterFactory<
 
 	@Override
 	public void addFilter(IFilter<REQ, RES> filter) throws Exception {
-		FilterEnable filterEnable = filter.getClass().getAnnotation(
-				FilterEnable.class);
-
-		logger.info(String.format("The scanner filter is: %s", filter.getClass().getName()));
+		FilterEnable filterEnable = filter.getClass().getAnnotation(FilterEnable.class);
+		logger.info("The scanner filter is: %s", filter.getClass().getName());
 
 		if (filterEnable == null || filterEnable.value()) {// 在线过滤器
 			// 过滤器注解
-			Filter filterAnnotation = filter.getClass().getAnnotation(
-					Filter.class);
+			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
 			if (filterAnnotation != null) {
 				String filterId = filterAnnotation.id();
 				if (filterId == null || filterId.length() < 1) {
 					filterId = filter.getClass().getName();
 				}
 				String code = filterAnnotation.value().getCode();
-				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap
-						.get(code);
+				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(code);
 				if (filterMap == null) {
 					filterMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
 				}
+				
 				filterMap.put(filterId, filter);
-
 				serviceFilterOnLineMap.put(code, filterMap);
 			}
 		} else {// 离线过滤器
 			// 过滤器注解
-			Filter filterAnnotation = filter.getClass().getAnnotation(
-					Filter.class);
+			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
 			if (filterAnnotation != null) {
 				String filterId = filterAnnotation.id();
 				if (filterId == null || filterId.length() < 1) {
 					filterId = filter.getClass().getName();
 				}
+				
 				String code = filterAnnotation.value().getCode();
-				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap
-						.get(code);
+				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(code);
 				if (filterMap == null) {
 					filterMap = new LinkedHashMap<String, IFilter<REQ, RES>>();
 				}
+				
 				filterMap.put(filterId, filter);
-
 				serviceFilterOffLineMap.put(code, filterMap);
 			}
 		}
@@ -81,8 +77,7 @@ public abstract class AbstractFilterFactory<REQ, RES> implements IFilterFactory<
 	public <T> T getFilter(FilterType filterType, String id) throws Exception {
 		IFilter<REQ, RES> filter = null;
 		if (!serviceFilterOnLineMap.isEmpty()) {
-			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap
-					.get(filterType.getCode());
+			Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOnLineMap.get(filterType.getCode());
 			if (filterMap != null) {
 				if (!filterMap.isEmpty()) {
 					filter = filterMap.get(id);
@@ -92,8 +87,7 @@ public abstract class AbstractFilterFactory<REQ, RES> implements IFilterFactory<
 
 		if (filter == null) {
 			if (!serviceFilterOffLineMap.isEmpty()) {
-				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap
-						.get(filterType.getCode());
+				Map<String, IFilter<REQ, RES>> filterMap = serviceFilterOffLineMap.get(filterType.getCode());
 				if (filterMap != null) {
 					if (!filterMap.isEmpty()) {
 						filter = filterMap.get(id);
@@ -113,6 +107,7 @@ public abstract class AbstractFilterFactory<REQ, RES> implements IFilterFactory<
 			if (filterId == null || filterId.length() < 1) {
 				filterId = t.getName();
 			}
+			
 			return this.getFilter(filterAnnotation.value(), filterId);
 		}
 
