@@ -39,15 +39,6 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 	public RxNettyContainer(IFilterFactory<GatewayREQ, GatewayRES> filterFactory) {
 		this.filterFactory = filterFactory;
 	}
-	public static void main(String[] args) {
-		try {
-			RxNettyContainer container=new RxNettyContainer(null);
-			container.init();
-			container.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	@Override
 	public void init() throws Exception {
@@ -57,10 +48,15 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 		RequestHandler<ByteBuf, ByteBuf> requestHandler=new RequestHandler<ByteBuf, ByteBuf>() {
 			@Override
 			public Observable<Void> handle(HttpServerRequest<ByteBuf> request, HttpServerResponse<ByteBuf> response) {
-				GatewayRES res = null;
+				GatewayRES res = new GatewayRES();
 				try {
 					GatewayREQ req = new GatewayREQ();
-					res = filterFactory.doFilter(req);
+					req.setIn(request);
+					req.setOut(response);
+//					req.setClientContent(request.getContent().toString());
+					
+					res.setContent("ddddddd");
+//					res = filterFactory.doFilter(req);
 					response.setStatus(HttpResponseStatus.OK);
 				} catch (Exception e) {
 					response.setStatus(HttpResponseStatus.INTERNAL_SERVER_ERROR);

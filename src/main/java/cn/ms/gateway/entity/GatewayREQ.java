@@ -123,7 +123,6 @@ public class GatewayREQ extends INOUT<HttpServerRequest<ByteBuf>, HttpServerResp
 	}
 
 	//$NON-NLS-特殊情况$
-	//$NON-NLS-特殊情况$
 	public void putClientHeader(String key, String val) {
 		this.clientHeaders.put(key, val);
 	}
