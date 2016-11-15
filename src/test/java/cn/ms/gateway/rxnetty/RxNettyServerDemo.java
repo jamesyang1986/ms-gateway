@@ -1,7 +1,5 @@
 package cn.ms.gateway.rxnetty;
 
-import java.nio.charset.Charset;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.reactivex.netty.RxNetty;
@@ -11,6 +9,10 @@ import io.reactivex.netty.protocol.http.server.HttpServerPipelineConfigurator;
 import io.reactivex.netty.protocol.http.server.HttpServerRequest;
 import io.reactivex.netty.protocol.http.server.HttpServerResponse;
 import io.reactivex.netty.protocol.http.server.RequestHandler;
+
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -28,7 +30,8 @@ public final class RxNettyServerDemo {
 							System.out.println("服务端收到报文:"+t.toString(Charset.forName("UTF-8")));
 						}
 					});
-	                response.setStatus(HttpResponseStatus.OK);
+					response.getHeaders().setHeader("msg", URLEncoder.encode("测试信息=====", "UTF-8"));
+					response.setStatus(HttpResponseStatus.OK);
 	                response.writeString("服务端响应报文:"+request.getContent());
 	                return response.close();
 	            } catch (Throwable e) {

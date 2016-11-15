@@ -14,15 +14,20 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import cn.ms.gateway.base.adapter.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
+/**
+ * 基于RxNetty的路由接出
+ * 
+ * @author lry
+ */
 public class RxNettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 
 	@Override
 	public void init() throws Exception {
+		
 	}
 
 	@Override
@@ -31,7 +36,9 @@ public class RxNettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 	}
 	
 	@Override
-	public void connector(GatewayREQ req, ICallback<GatewayREQ, GatewayRES> callback, Object... args) throws Exception {
+	public GatewayRES connector(GatewayREQ req, Object... args) throws Exception {
+		final GatewayRES res=new GatewayRES();
+		
 		HttpClientRequest<ByteBuf> request=HttpClientRequest.create(HttpVersion.HTTP_1_1, HttpMethod.POST, req.getRemoteURI());
 		request=request.withContent(req.getClientContent());
 		
@@ -43,16 +50,19 @@ public class RxNettyConnector implements IConnector<GatewayREQ, GatewayRES> {
         	public Observable<ByteBuf> call(HttpClientResponse<ByteBuf> response) {
         		return response.getContent();
         	}
-		}).forEach(new Action1<ByteBuf>() {
+		}).toBlocking().forEach(new Action1<ByteBuf>() {
 			@Override
 			public void call(ByteBuf data) {
-				System.out.println("----"+data.toString(Charset.defaultCharset()));
+				res.setContent(data.toString(Charset.defaultCharset()));
 			}
 		});
+		
+		return res;
 	}
 	
 	@Override
 	public void shutdown() throws Exception {
+		
 	}
 
 }

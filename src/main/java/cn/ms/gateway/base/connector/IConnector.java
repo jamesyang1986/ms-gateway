@@ -1,7 +1,6 @@
 package cn.ms.gateway.base.connector;
 
 import cn.ms.gateway.base.adapter.IAdapter;
-import cn.ms.gateway.base.adapter.ICallback;
 
 /**
  * 路由连接器 <br>
@@ -23,7 +22,6 @@ public interface IConnector<REQ, RES> extends IAdapter {
 	 * @param args
 	 * @throws Exception
 	 */
-	void connector(REQ req, ICallback<REQ, RES> callback, Object... args)
-			throws Exception;
+	RES connector(REQ req, Object... args) throws Exception;
 
 }

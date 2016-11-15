@@ -1,11 +1,9 @@
 package cn.ms.gateway.core.filter.route;
 
-import cn.ms.gateway.base.adapter.ICallback;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.filter.annotation.Filter;
 import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.MSFilter;
-import cn.ms.gateway.core.AssemblySupport;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
 
@@ -29,28 +27,15 @@ public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {
 	}
 
 	@Override
-	public GatewayRES run(final GatewayREQ req, GatewayRES res, Object... args) throws Exception {
-		connector.connector(req, new ICallback<GatewayREQ, GatewayRES>() {
-			@Override
-			public void before(GatewayRES res, Object... args) throws Exception {
-			}
-			@Override
-			public GatewayRES callback(GatewayRES res, Object... args) throws Exception {
-				AssemblySupport.HttpServerResponse(req, res);
-				return null;
-			}
-			@Override
-			public void after(GatewayRES res, Object... args) throws Exception {
-			}
-			@Override
-			public void exception(Throwable t) {
-				GatewayRES res=new GatewayRES();
-				res.setContent("网关路由异常:"+t.getMessage());
-				AssemblySupport.HttpServerResponse(req, res);
-			}
-		}, args);
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
+		try {
+			res = connector.connector(req, args);
+		} catch (Exception e) {
+			res=new GatewayRES();
+			res.setContent("网关路由异常:"+e.getMessage());
+		}
 		
-		return null;
+		return res;
 	}
 
 }
