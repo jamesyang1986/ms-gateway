@@ -2,23 +2,20 @@ package cn.ms.gateway.entity;
 
 public class INOUT<IN, OUT> {
 
-	IN in;
-	OUT out;
-
-	public IN getIn() {
-		return in;
+	IN input;
+	OUT output;
+	
+	public IN getInput() {
+		return input;
 	}
-
-	public void setIn(IN in) {
-		this.in = in;
+	public void setInput(IN input) {
+		this.input = input;
 	}
-
-	public OUT getOut() {
-		return out;
+	public OUT getOutput() {
+		return output;
 	}
-
-	public void setOut(OUT out) {
-		this.out = out;
+	public void setOutput(OUT output) {
+		this.output = output;
 	}
 
 }

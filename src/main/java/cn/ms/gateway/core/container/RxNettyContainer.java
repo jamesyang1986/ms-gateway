@@ -10,13 +10,21 @@ import io.reactivex.netty.protocol.http.server.RequestHandler;
 import io.reactivex.netty.spectator.SpectatorEventsListenerFactory;
 import io.reactivex.netty.spectator.http.HttpServerListener;
 
+import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.logging.log4j.ThreadContext;
 
 import rx.Observable;
 import rx.functions.Func1;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.base.filter.IFilterFactory;
 import cn.ms.gateway.common.Conf;
+import cn.ms.gateway.common.Constants;
+import cn.ms.gateway.common.TradeIdWorker;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.common.utils.NetUtils;
@@ -35,34 +43,70 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 
 	IFilterFactory<GatewayREQ, GatewayRES> filterFactory;
 	
+	TradeIdWorker tradeIdWorker;
+	
 	HttpServerListener listener;
 	HttpServer<ByteBuf, ByteBuf> server;
 	SpectatorEventsListenerFactory factory;
 	HttpServerBuilder<ByteBuf, ByteBuf> httpServerBuilder;
-
+	
+	
 	public RxNettyContainer(IFilterFactory<GatewayREQ, GatewayRES> filterFactory) {
 		this.filterFactory = filterFactory;
 	}
 	
 	@Override
 	public void init() throws Exception {
+		tradeIdWorker = new TradeIdWorker(0, 0);
 		factory = new SpectatorEventsListenerFactory();
 		
 		ServerBootstrap bootstrap=new ServerBootstrap();
 		RequestHandler<ByteBuf, ByteBuf> requestHandler=new RequestHandler<ByteBuf, ByteBuf>() {
 			@Override
 			public Observable<Void> handle(HttpServerRequest<ByteBuf> request, final HttpServerResponse<ByteBuf> response) {
+				long tradeStartTime=System.currentTimeMillis();
+				String tradeId=String.valueOf(tradeIdWorker.nextId());
+				ThreadContext.put(Constants.TRADEID_KEY, tradeId);
+		    	logger.info("=====交易开始=====");
+				
 				final GatewayREQ req = new GatewayREQ();
+				req.setTradeId(tradeId);
+				req.setTradeStartTime(tradeStartTime);
+				req.setInput(request);
+				req.setOutput(response);
+				
 				try {
-					req.setIn(request);
-					req.setOut(response);
+					//$NON-NLS-获取客户端端IP$
+			        String clientIP = request.getHeaders().get("X-Forwarded-For");
+			        if (clientIP == null) {
+			            InetSocketAddress insocket = (InetSocketAddress) request.getNettyChannel().remoteAddress();
+			            clientIP = insocket.getAddress().getHostAddress();
+			        }
+			        req.setClientHost(clientIP);
+					
+			        //$NON-NLS-读取参数$
+					if(!request.getQueryParameters().isEmpty()){
+						for (Map.Entry<String, List<String>> entry:request.getQueryParameters().entrySet()) {
+							if(entry.getValue().size()==1){
+								req.putClientParam(entry.getKey(), entry.getValue().get(0));
+							}
+						}
+						req.setClientParameters(request.getQueryParameters());
+					}
+					
+					//$NON-NLS-请求头$
+			        List<Entry<String, String>> headers=request.getHeaders().entries();
+			        for (Entry<String, String> entry:headers) {
+			        	req.putClientHeader(entry.getKey(), entry.getValue());
+					}
 					
 					return request.getContent().map(new Func1<ByteBuf, Void>(){
 						@Override
 						public Void call(ByteBuf data) {
-		    				GatewayRES res = null;
+		    				//$NON-NLS-读取请求报文$
 		    				req.setClientContent(data.toString(Charset.defaultCharset()));
-		    				
+
+		    				GatewayRES res = null;
 		    				try {
 		    					res = filterFactory.doFilter(req);
 		    					if(res==null){

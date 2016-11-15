@@ -38,7 +38,8 @@ public class RxNettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 	@Override
 	public GatewayRES connector(GatewayREQ req, Object... args) throws Exception {
 		final GatewayRES res=new GatewayRES();
-		
+		System.out.println("1--->"+req.getRemoteURI());
+		System.out.println("2--->"+req.getClientContent());
 		HttpClientRequest<ByteBuf> request=HttpClientRequest.create(HttpVersion.HTTP_1_1, HttpMethod.POST, req.getRemoteURI());
 		request=request.withContent(req.getClientContent());
 		

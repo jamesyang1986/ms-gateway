@@ -25,9 +25,9 @@ public class AssemblySupport {
 	public static void HttpServerResponse(GatewayREQ req, GatewayRES res) {
 		try {
 			//$NON-NLS-通道响应$
-			req.getOut().setStatus(HttpResponseStatus.OK);
-			req.getOut().writeStringAndFlush(res.getContent());
-			req.getOut().close();
+			req.getOutput().setStatus(HttpResponseStatus.OK);
+			req.getOutput().writeStringAndFlush(res.getContent());
+			req.getOutput().close();
 		} catch (Throwable t) {
 			logger.error(t, "网关响应装配异常: %s", t.getMessage());
 		} finally {
