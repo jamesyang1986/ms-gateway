@@ -1,6 +1,8 @@
 package cn.ms.gateway.entity;
 
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.buffer.ByteBuf;
+import io.reactivex.netty.protocol.http.server.HttpServerRequest;
+import io.reactivex.netty.protocol.http.server.HttpServerResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +15,7 @@ import cn.ms.gateway.common.utils.NetUtils;
  * 
  * @author lry
  */
-public class GatewayREQ {
+public class GatewayREQ extends INOUT<HttpServerRequest<ByteBuf>, HttpServerResponse<ByteBuf>> {
 
 	public static final String LOACALHOST = NetUtils.getLocalIp();
 
@@ -32,11 +34,10 @@ public class GatewayREQ {
 	String clientHost;
 	/** 请求报文 **/
 	String clientContent="";
+	String clientUri;
 	Map<String, String> clientParams = new HashMap<String, String>();
 	Map<String, List<String>> clientParameters = new HashMap<String, List<String>>();
 	Map<String, String> clientHeaders = new HashMap<String, String>();
-	String clientUri;
-	ChannelHandlerContext ctx;
 
 	//$NON-NLS-远程通讯信息$
 	String remoteURI = "http://www.qiushibaike.com";
@@ -119,14 +120,6 @@ public class GatewayREQ {
 
 	public void setClientUri(String clientUri) {
 		this.clientUri = clientUri;
-	}
-
-	public ChannelHandlerContext getCtx() {
-		return ctx;
-	}
-
-	public void setCtx(ChannelHandlerContext ctx) {
-		this.ctx = ctx;
 	}
 
 	//$NON-NLS-特殊情况$

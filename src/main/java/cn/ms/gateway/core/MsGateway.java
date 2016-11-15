@@ -4,7 +4,7 @@ import cn.ms.gateway.base.Gateway;
 import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.base.container.IContainer;
 import cn.ms.gateway.core.connector.NettyConnector;
-import cn.ms.gateway.core.container.NettyContainer;
+import cn.ms.gateway.core.container.RxNettyContainer;
 import cn.ms.gateway.core.filter.route.ConnectorFilter;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
@@ -22,7 +22,7 @@ public class MsGateway extends Gateway<GatewayREQ, GatewayRES> {
 			filterFactory.getFilter(ConnectorFilter.class).inject(connector);
 
 			// 向网关容器中注入网关处理器
-			container = new NettyContainer(filterFactory);
+			container = new RxNettyContainer(filterFactory);
 			// 向微服务网关中注入网关容器
 			super.inject(connector, container);
 
