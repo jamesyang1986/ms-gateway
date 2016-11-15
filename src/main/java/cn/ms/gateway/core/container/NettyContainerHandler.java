@@ -64,11 +64,11 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
             gatewayREQ.setClientHost(clientIP);
             
             //$NON-NLS-读取参数$
-            gatewayREQ.putParameters(new QueryStringDecoder(request.uri()).parameters());
-            if(!gatewayREQ.getParameters().isEmpty()){
-            	for(Map.Entry<String, List<String>> entry:gatewayREQ.getParameters().entrySet()){
+            gatewayREQ.putClientParameters(new QueryStringDecoder(request.uri()).parameters());
+            if(!gatewayREQ.getClientParameters().isEmpty()){
+            	for(Map.Entry<String, List<String>> entry:gatewayREQ.getClientParameters().entrySet()){
                 	if(entry.getValue().size()==1){
-                		gatewayREQ.putParam(entry.getKey(), entry.getValue().get(0));
+                		gatewayREQ.putClientParam(entry.getKey(), entry.getValue().get(0));
                 	}
                 }	
             }
@@ -76,7 +76,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
             //$NON-NLS-请求头$
 	        List<Entry<String, String>> headers=request.headers().entries();
 	        for (Entry<String, String> entry:headers) {
-	        	gatewayREQ.putHeader(entry.getKey(), entry.getValue());
+	        	gatewayREQ.putClientHeader(entry.getKey(), entry.getValue());
 			}
             
             //$NON-NLS-读取请求报文$
@@ -90,8 +90,7 @@ public class NettyContainerHandler extends ChannelInboundHandlerAdapter {
 				buf.release();
 			}
             
-            gatewayREQ.setContent(content);
-            gatewayREQ.setRequest(request);
+            gatewayREQ.setClientContent(content);
             gatewayREQ.setCtx(ctx);
             
             try {

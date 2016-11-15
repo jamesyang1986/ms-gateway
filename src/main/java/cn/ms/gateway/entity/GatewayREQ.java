@@ -1,7 +1,6 @@
 package cn.ms.gateway.entity;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpRequest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,11 +31,11 @@ public class GatewayREQ {
 	/** 客户端HOST **/
 	String clientHost;
 	/** 请求报文 **/
-	String content="";
-	Map<String, String> params = new HashMap<String, String>();
-	Map<String, List<String>> parameters = new HashMap<String, List<String>>();
-	Map<String, String> headers = new HashMap<String, String>();
-	HttpRequest request;
+	String clientContent="";
+	Map<String, String> clientParams = new HashMap<String, String>();
+	Map<String, List<String>> clientParameters = new HashMap<String, List<String>>();
+	Map<String, String> clientHeaders = new HashMap<String, String>();
+	String clientUri;
 	ChannelHandlerContext ctx;
 
 	//$NON-NLS-远程通讯信息$
@@ -82,44 +81,44 @@ public class GatewayREQ {
 		this.clientHost = clientHost;
 	}
 
-	public String getContent() {
-		return content;
+	public String getClientContent() {
+		return clientContent;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setClientContent(String clientContent) {
+		this.clientContent = clientContent;
 	}
 
-	public Map<String, String> getParams() {
-		return params;
+	public Map<String, String> getClientParams() {
+		return clientParams;
 	}
 
-	public void setParams(Map<String, String> params) {
-		this.params = params;
+	public void setClientParams(Map<String, String> clientParams) {
+		this.clientParams = clientParams;
 	}
 
-	public Map<String, List<String>> getParameters() {
-		return parameters;
+	public Map<String, List<String>> getClientParameters() {
+		return clientParameters;
 	}
 
-	public void setParameters(Map<String, List<String>> parameters) {
-		this.parameters = parameters;
+	public void setClientParameters(Map<String, List<String>> clientParameters) {
+		this.clientParameters = clientParameters;
 	}
 
-	public Map<String, String> getHeaders() {
-		return headers;
+	public Map<String, String> getClientHeaders() {
+		return clientHeaders;
 	}
 
-	public void setHeaders(Map<String, String> headers) {
-		this.headers = headers;
+	public void setClientHeaders(Map<String, String> clientHeaders) {
+		this.clientHeaders = clientHeaders;
 	}
 
-	public HttpRequest getRequest() {
-		return request;
+	public String getClientUri() {
+		return clientUri;
 	}
 
-	public void setRequest(HttpRequest request) {
-		this.request = request;
+	public void setClientUri(String clientUri) {
+		this.clientUri = clientUri;
 	}
 
 	public ChannelHandlerContext getCtx() {
@@ -132,28 +131,28 @@ public class GatewayREQ {
 
 	//$NON-NLS-特殊情况$
 	//$NON-NLS-特殊情况$
-	public void putHeader(String key, String val) {
-		this.headers.put(key, val);
+	public void putClientHeader(String key, String val) {
+		this.clientHeaders.put(key, val);
 	}
 
-	public void putHeaders(Map<String, String> headers) {
-		this.headers.putAll(params);
+	public void putClientHeaders(Map<String, String> clientHeaders) {
+		this.clientHeaders.putAll(clientHeaders);
 	}
 
-	public void putParam(String key, String val) {
-		this.params.put(key, val);
+	public void putClientParam(String key, String val) {
+		this.clientParams.put(key, val);
 	}
 
-	public void putParams(Map<String, String> params) {
-		this.params.putAll(params);
+	public void putClientParams(Map<String, String> clientParams) {
+		this.clientParams.putAll(clientParams);
 	}
 
-	public void putParameter(String key, List<String> vals) {
-		this.parameters.put(key, vals);
+	public void putClientParameter(String key, List<String> vals) {
+		this.clientParameters.put(key, vals);
 	}
 
-	public void putParameters(Map<String, List<String>> parameters) {
-		this.parameters.putAll(parameters);
+	public void putClientParameters(Map<String, List<String>> clientParameters) {
+		this.clientParameters.putAll(clientParameters);
 	}
 
 	public String getRemoteURI() {

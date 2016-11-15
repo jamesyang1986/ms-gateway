@@ -52,7 +52,7 @@ public class ParamPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 			throws Exception {
 		if (!params.isEmpty()) {
 			for (String param : params) {
-				if (!req.getParams().containsKey(param)) {
+				if (!req.getClientParams().containsKey(param)) {
 					res = new GatewayRES();
 					res.setContent(String.format("请求参数'%s'不能为空", param));
 					return res;

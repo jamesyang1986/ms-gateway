@@ -3,9 +3,7 @@ package cn.ms.gateway.core;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders.Names;
-import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
@@ -38,9 +36,9 @@ public class AssemblySupport {
 					Unpooled.wrappedBuffer(res.getContent().getBytes(CharsetUtil.UTF_8)));
 			response.headers().set(Names.CONTENT_TYPE, "text/plain");
 			response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
-			if (HttpHeaders.isKeepAlive(req.getRequest())) {
-				response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
-			}
+//			if (HttpHeaders.isKeepAlive(req.getRequest())) {
+//				response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
+//			}
 
 			req.getCtx().writeAndFlush(response);
 		} catch (Throwable t) {

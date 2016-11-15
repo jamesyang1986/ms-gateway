@@ -77,9 +77,9 @@ public class HeaderFilter extends MSFilter<GatewayREQ, GatewayRES> {
 	@Override
 	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		if(!headerParams.isEmpty()){
-			System.out.println("请求头:"+req.getHeaders());
+			System.out.println("请求头:"+req.getClientHeaders());
 			for (ParamAttribute attribute:headerParams) {//遍历需要验证的参数
-				String headerVal=req.getHeaders().get(attribute.getParamKey());
+				String headerVal=req.getClientHeaders().get(attribute.getParamKey());
 				if(headerVal==null||headerVal.length()<1){//第一步：参数有无的校验
 					res=new GatewayRES();
 					res.setContent(String.format("缺少请求头参数'%s'",attribute.getParamKey()));
