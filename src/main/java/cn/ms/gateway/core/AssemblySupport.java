@@ -1,5 +1,6 @@
 package cn.ms.gateway.core;
 
+import io.netty.handler.codec.http.HttpResponseStatus;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.entity.GatewayREQ;
@@ -24,7 +25,9 @@ public class AssemblySupport {
 	public static void HttpServerResponse(GatewayREQ req, GatewayRES res) {
 		try {
 			//$NON-NLS-通道响应$
+			req.getOut().setStatus(HttpResponseStatus.OK);
 			req.getOut().writeStringAndFlush(res.getContent());
+			req.getOut().close();
 		} catch (Throwable t) {
 			logger.error(t, "网关响应装配异常: %s", t.getMessage());
 		} finally {
