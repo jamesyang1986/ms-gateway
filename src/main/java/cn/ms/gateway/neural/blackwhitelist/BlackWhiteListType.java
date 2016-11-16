@@ -5,7 +5,7 @@ package cn.ms.gateway.neural.blackwhitelist;
  * 
  * @author lry
  */
-public enum BlackWhiteIPListType {
+public enum BlackWhiteListType {
 
 	/**
 	 * 黑名单
@@ -15,6 +15,11 @@ public enum BlackWhiteIPListType {
 	/**
 	 * 白名单
 	 */
-	WHITELIST;
+	WHITELIST,
+	
+	/**
+	 * 非黑白名单模式
+	 */
+	NON;
 
 }

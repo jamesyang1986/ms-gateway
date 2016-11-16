@@ -135,7 +135,7 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 			}
 		};
 		
-		httpServerBuilder=new HttpServerBuilder<ByteBuf, ByteBuf>(bootstrap, Conf.CONF.getGwport(), requestHandler, true);
+		httpServerBuilder=new HttpServerBuilder<ByteBuf, ByteBuf>(bootstrap, Conf.CONF.getPort(), requestHandler, true);
 		httpServerBuilder.withMetricEventsListenerFactory(factory);
 		server = httpServerBuilder.build();
 		listener = factory.forHttpServer(server);

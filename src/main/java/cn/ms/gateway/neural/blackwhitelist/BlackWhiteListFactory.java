@@ -22,12 +22,12 @@ import java.util.regex.Pattern;
  * 
  * @author lry
  */
-public class BlackWhiteIPListFactory implements BlackWhiteIPList {
+public class BlackWhiteListFactory implements BlackWhiteList {
 
 	/**
 	 * 允许的IP访问列表
 	 */
-	public Map<BlackWhiteIPListType, Set<String>> ipFilterMap = new HashMap<BlackWhiteIPListType, Set<String>>();
+	public Map<BlackWhiteListType, Set<String>> ipFilterMap = new HashMap<BlackWhiteListType, Set<String>>();
 
 	/**
 	 * IP的正则
@@ -39,10 +39,10 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 					+ "(1\\d{1,2}|2[0-4]\\d|25[0-5]|\\d{1,2})");
 
 	@Override
-	public void setBlackWhiteIPs(Map<BlackWhiteIPListType, String> blackWhiteIPs) {
+	public void setBlackWhiteIPs(Map<BlackWhiteListType, String> blackWhiteIPs) {
 		ipFilterMap.clear();
 
-		for (Map.Entry<BlackWhiteIPListType, String> bwIP : blackWhiteIPs
+		for (Map.Entry<BlackWhiteListType, String> bwIP : blackWhiteIPs
 				.entrySet()) {
 			// 192.168.0.*转换为192.168.0.1-192.168.0.255
 			for (String allow : bwIP.getValue().replaceAll("\\s", "")
@@ -107,12 +107,12 @@ public class BlackWhiteIPListFactory implements BlackWhiteIPList {
 	}
 
 	@Override
-	public boolean check(BlackWhiteIPListType blackWhiteIPListType, String ip) {
+	public boolean check(BlackWhiteListType blackWhiteIPListType, String ip) {
 		Set<String> ipList = ipFilterMap.get(blackWhiteIPListType);
 		if (ipList == null || ipList.isEmpty() || ipList.contains(ip)) {
-			if (BlackWhiteIPListType.BLACKLIST == blackWhiteIPListType) {
+			if (BlackWhiteListType.BLACKLIST == blackWhiteIPListType) {
 				return false;
-			} else if (BlackWhiteIPListType.WHITELIST == blackWhiteIPListType) {
+			} else if (BlackWhiteListType.WHITELIST == blackWhiteIPListType) {
 				return true;
 			} else {
 				throw new RuntimeException("非法类型");

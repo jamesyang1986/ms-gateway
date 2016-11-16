@@ -1,5 +1,6 @@
 package cn.ms.gateway.common;
 
+import cn.ms.gateway.neural.blackwhitelist.BlackWhiteListType;
 
 /**
  * 配置项
@@ -9,22 +10,18 @@ package cn.ms.gateway.common;
 public enum Conf {
 
 	CONF;
-
+	
 	//$NON-NLS-Neural配置参数$
-	/**网关服务端口**/
-	private int gwport=9000;
-	/**黑名单开关**/
-	private boolean blackListIPSwitch=false;
+	/**黑/白名单开关**/
+	private String blackWhiteList=BlackWhiteListType.NON.toString();
 	/**IP黑名单**/
-	private String blackListIPs;
-	/**白名单开关**/
-	private boolean whiteListIPSwitch=false;
+	private String blackList;
 	/**IP白名单**/
-	private String whiteListIPs;
+	private String whiteList;
 	/**请求参数**/
 	private String params="serviceId";
 	/**请求头参数**/
-	private String headers="channelId;bizno{length=18};sysno{length=18}";
+	private String headers="channelId;bizno{length=32};sysno{length=32}";
 	
 	//$NON-NLS-连接器配置项$
 	private int connectorBossThreadNum=0;
@@ -34,7 +31,7 @@ public enum Conf {
 	private int allIdleTimeSeconds = 100;//读写全部空闲100秒
 	
 	//$NON-NLS-网关容器配置项$
-	private int port=9500;
+	private int port=9000;
 	private int bossGroupThread=0;
 	private int workerGroupThread=0;
 	
@@ -48,35 +45,23 @@ public enum Conf {
 	/**The wait strategy to use for the ring buffer.**/
 	private String waitStrategy="YIELDING_WAIT";
 	
-	public int getGwport() {
-		return gwport;
+	public String getBlackWhiteList() {
+		return blackWhiteList;
 	}
-	public void setGwport(int gwport) {
-		this.gwport = gwport;
+	public void setBlackWhiteList(String blackWhiteList) {
+		this.blackWhiteList = blackWhiteList;
 	}
-	public boolean isBlackListIPSwitch() {
-		return blackListIPSwitch;
+	public String getBlackList() {
+		return blackList;
 	}
-	public void setBlackListIPSwitch(boolean blackListIPSwitch) {
-		this.blackListIPSwitch = blackListIPSwitch;
+	public void setBlackList(String blackList) {
+		this.blackList = blackList;
 	}
-	public String getBlackListIPs() {
-		return blackListIPs;
+	public String getWhiteList() {
+		return whiteList;
 	}
-	public void setBlackListIPs(String blackListIPs) {
-		this.blackListIPs = blackListIPs;
-	}
-	public boolean isWhiteListIPSwitch() {
-		return whiteListIPSwitch;
-	}
-	public void setWhiteListIPSwitch(boolean whiteListIPSwitch) {
-		this.whiteListIPSwitch = whiteListIPSwitch;
-	}
-	public String getWhiteListIPs() {
-		return whiteListIPs;
-	}
-	public void setWhiteListIPs(String whiteListIPs) {
-		this.whiteListIPs = whiteListIPs;
+	public void setWhiteList(String whiteList) {
+		this.whiteList = whiteList;
 	}
 	public String getParams() {
 		return params;

@@ -7,10 +7,11 @@ import cn.ms.gateway.base.filter.annotation.Filter;
 import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.MSFilter;
 import cn.ms.gateway.common.Conf;
+import cn.ms.gateway.core.StatusCode;
 import cn.ms.gateway.entity.GatewayREQ;
 import cn.ms.gateway.entity.GatewayRES;
-import cn.ms.gateway.neural.blackwhitelist.BlackWhiteIPListFactory;
-import cn.ms.gateway.neural.blackwhitelist.BlackWhiteIPListType;
+import cn.ms.gateway.neural.blackwhitelist.BlackWhiteListFactory;
+import cn.ms.gateway.neural.blackwhitelist.BlackWhiteListType;
 
 /**
  * IP 黑/白名单过滤
@@ -20,7 +21,7 @@ import cn.ms.gateway.neural.blackwhitelist.BlackWhiteIPListType;
 @Filter(value = FilterType.PRE, order = 100)
 public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> {
 
-	private BlackWhiteIPListFactory ipFilterFactory = new BlackWhiteIPListFactory();
+	private BlackWhiteListFactory ipFilterFactory = new BlackWhiteListFactory();
 
 	@Override
 	public void init() throws Exception {
@@ -29,19 +30,19 @@ public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> 
 
 	@Override
 	public void refresh() throws Exception {
-		Map<BlackWhiteIPListType, String> bwIPs = new HashMap<BlackWhiteIPListType, String>();
+		Map<BlackWhiteListType, String> bwIPs = new HashMap<BlackWhiteListType, String>();
 		//$NON-NLS-收集黑名单$
-		String blackList = Conf.CONF.getBlackListIPs();
+		String blackList = Conf.CONF.getBlackList();
 		if (blackList != null) {
 			if (blackList.length() > 0) {
-				bwIPs.put(BlackWhiteIPListType.BLACKLIST, blackList);
+				bwIPs.put(BlackWhiteListType.BLACKLIST, blackList);
 			}
 		}
 		//$NON-NLS-收集白名单$
-		String whiteList = Conf.CONF.getWhiteListIPs();
+		String whiteList = Conf.CONF.getWhiteList();
 		if (whiteList != null) {
 			if (whiteList.length() > 0) {
-				bwIPs.put(BlackWhiteIPListType.WHITELIST, whiteList);
+				bwIPs.put(BlackWhiteListType.WHITELIST, whiteList);
 			}
 		}
 		//$NON-NLS-更新黑/白名单$
@@ -57,31 +58,26 @@ public class IpBlackWhiteListPreFilter extends MSFilter<GatewayREQ, GatewayRES> 
 	}
 
 	@Override
-	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args)
-			throws Exception {
+	public GatewayRES run(GatewayREQ req, GatewayRES res, Object... args) throws Exception {
 		String clientIP = req.getClientHost();
-		if (clientIP != null) {
-			if (clientIP.length() > 0) {
-				if (Conf.CONF.isBlackListIPSwitch()) {// 黑名单开关校验
-					boolean isBlackList = ipFilterFactory.check(BlackWhiteIPListType.BLACKLIST, req.getClientHost());
-					if (isBlackList) {
-						res = new GatewayRES();
-						res.setContent(req.getClientHost() + "为黑名单IP");
-						return res;
+		if(!Conf.CONF.getBlackWhiteList().equalsIgnoreCase(BlackWhiteListType.NON.toString())){//黑白名单模式未关闭
+			if (clientIP == null || clientIP.length() <= 0) {//拦截非法绕过的请求
+				return StatusCode.Wrapper(StatusCode.SC31_BLACKWHITE_ILLEGAL);
+			}else{
+				if (Conf.CONF.getBlackWhiteList().equalsIgnoreCase(BlackWhiteListType.WHITELIST.toString())) {// 白名单开关校验
+					boolean isWhiteList = ipFilterFactory.check(BlackWhiteListType.WHITELIST, req.getClientHost());
+					if (!isWhiteList) {//不是白名单
+						return StatusCode.Wrapper(StatusCode.SC31_BLACKWHITE_WHITE, req.getClientHost());
 					}
-				}
-
-				if (Conf.CONF.isWhiteListIPSwitch()) {// 白名单开关校验
-					boolean isWhiteList = ipFilterFactory.check(BlackWhiteIPListType.WHITELIST, req.getClientHost());
-					if (!isWhiteList) {
-						res = new GatewayRES();
-						res.setContent(req.getClientHost() + "不为白名单IP");
-						return res;
+				} else if(Conf.CONF.getBlackWhiteList().equalsIgnoreCase(BlackWhiteListType.BLACKLIST.toString())){// 黑名单开关校验
+					boolean isBlackList = ipFilterFactory.check(BlackWhiteListType.BLACKLIST, req.getClientHost());
+					if (isBlackList) {//是黑名单
+						return StatusCode.Wrapper(StatusCode.SC31_BLACKWHITE_BLACK, req.getClientHost());
 					}
 				}
 			}
 		}
-
+		
 		return null;
 	}
 

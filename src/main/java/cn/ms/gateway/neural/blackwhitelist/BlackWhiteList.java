@@ -7,14 +7,14 @@ import java.util.Map;
  * 
  * @author lry
  */
-public interface BlackWhiteIPList {
+public interface BlackWhiteList {
 
 	/**
 	 * 设置更新数据
 	 * 
 	 * @param blackWhiteIPs
 	 */
-	void setBlackWhiteIPs(Map<BlackWhiteIPListType, String> blackWhiteIPs);
+	void setBlackWhiteIPs(Map<BlackWhiteListType, String> blackWhiteIPs);
 
 	/**
 	 * 校验黑白IP
@@ -23,6 +23,6 @@ public interface BlackWhiteIPList {
 	 * @param ip
 	 * @return
 	 */
-	boolean check(BlackWhiteIPListType blackWhiteIPListType, String ip);
+	boolean check(BlackWhiteListType blackWhiteIPListType, String ip);
 
 }
