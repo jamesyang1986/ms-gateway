@@ -10,16 +10,30 @@ public enum FlowControlType {
 	/**
 	 * 非流控
 	 */
-	NON,
-	
+	NON("NON"),
+
 	/**
 	 * 单机流量
 	 */
-	INJVM,
-	
+	INJVM("INJVM"),
+
 	/**
 	 * 分布式流控
 	 */
-	DISTR;
+	DISTR("DISTR");
+
+	String code;
+
+	FlowControlType(String code) {
+		this.code = code;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 	
 }
