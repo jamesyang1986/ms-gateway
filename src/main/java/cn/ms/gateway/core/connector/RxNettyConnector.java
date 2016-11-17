@@ -46,7 +46,7 @@ public class RxNettyConnector implements IConnector<GatewayREQ, GatewayRES> {
 	public GatewayRES connector(final GatewayREQ req, Object... args) throws Exception {
 		final GatewayRES res=new GatewayRES();
 		
-		HttpClientRequest<ByteBuf> request=HttpClientRequest.create(HttpVersion.HTTP_1_1, HttpMethod.GET, req.getRemoteURI());
+		HttpClientRequest<ByteBuf> request=HttpClientRequest.create(HttpVersion.HTTP_1_1, HttpMethod.POST, req.getRemoteURI());
 		request=request.withContent(req.getClientContent());
 		
 		req.setRouteStartTime(System.currentTimeMillis());

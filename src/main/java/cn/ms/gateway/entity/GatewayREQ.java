@@ -40,7 +40,7 @@ public class GatewayREQ extends INOUT<HttpServerRequest<ByteBuf>, HttpServerResp
 	Map<String, String> clientHeaders = new HashMap<String, String>();
 
 	//$NON-NLS-远程通讯信息$
-	String remoteURI = "http://www.qiushibaike.com";
+	String remoteURI = "http://v.juhe.cn/xiangji_weather/real_time_weather.php";
 
 	public String getTradeId() {
 		return tradeId;

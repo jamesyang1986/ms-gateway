@@ -32,6 +32,7 @@ public enum Conf {
 	
 	//$NON-NLS-网关容器配置项$
 	private int port=9000;
+	private boolean ssl=false;
 	private int bossGroupThread=0;
 	private int workerGroupThread=0;
 	
@@ -110,6 +111,12 @@ public enum Conf {
 	}
 	public void setPort(int port) {
 		this.port = port;
+	}
+	public boolean isSsl() {
+		return ssl;
+	}
+	public void setSsl(boolean ssl) {
+		this.ssl = ssl;
 	}
 	public int getBossGroupThread() {
 		return bossGroupThread;

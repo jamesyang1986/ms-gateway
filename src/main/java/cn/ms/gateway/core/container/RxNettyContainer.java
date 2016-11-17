@@ -2,6 +2,7 @@ package cn.ms.gateway.core.container;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
+import io.reactivex.netty.pipeline.ssl.DefaultFactories;
 import io.reactivex.netty.protocol.http.server.HttpServer;
 import io.reactivex.netty.protocol.http.server.HttpServerBuilder;
 import io.reactivex.netty.protocol.http.server.HttpServerRequest;
@@ -136,7 +137,10 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 		};
 		
 		httpServerBuilder=new HttpServerBuilder<ByteBuf, ByteBuf>(bootstrap, Conf.CONF.getPort(), requestHandler, true);
-		httpServerBuilder.withMetricEventsListenerFactory(factory);
+		httpServerBuilder=httpServerBuilder.withMetricEventsListenerFactory(factory);
+		if(Conf.CONF.isSsl()){
+			httpServerBuilder=httpServerBuilder.withSslEngineFactory(DefaultFactories.selfSigned());			
+		}
 		server = httpServerBuilder.build();
 		listener = factory.forHttpServer(server);
 	}
@@ -144,7 +148,7 @@ public class RxNettyContainer implements IContainer<GatewayREQ, GatewayRES> {
 	@Override
 	public void start() throws Exception {
 		server.start();
-		logger.info("微服务网关启动成功,服务地址为: http://"+NetUtils.getLocalIp()+":"+server.getServerPort()+"/");
+		logger.info("微服务网关启动成功,服务地址为: "+(Conf.CONF.isSsl()?"https":"http")+"://"+NetUtils.getLocalIp()+":"+server.getServerPort()+"/");
 		server.waitTillShutdown();
 	}
 
