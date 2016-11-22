@@ -9,8 +9,8 @@ import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.MSFilter;
 import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.common.Constants;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 import cn.ms.gateway.neural.param.ParamAttribute;
 import cn.ms.gateway.neural.param.ParamModuler;
 

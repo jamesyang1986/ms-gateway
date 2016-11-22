@@ -7,9 +7,9 @@ import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.core.connector.RxNettyConnector;
 import cn.ms.gateway.core.container.RxNettyContainer;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 import cn.ms.gateway.core.filter.route.ConnectorFilter;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
 
 public class MsGateway extends Gateway<GatewayREQ, GatewayRES> {
 	

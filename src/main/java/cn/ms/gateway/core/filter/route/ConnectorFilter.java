@@ -6,8 +6,8 @@ import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.MSFilter;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 
 @Filter(value = FilterType.ROUTE, order = 100)
 public class ConnectorFilter extends MSFilter<GatewayREQ, GatewayRES> {

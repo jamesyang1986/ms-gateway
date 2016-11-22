@@ -1,6 +1,6 @@
 package cn.ms.gateway.core;
 
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayRES;
 
 /**
  * 网关状态码

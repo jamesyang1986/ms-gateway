@@ -1,4 +1,4 @@
-package cn.ms.gateway.entity;
+package cn.ms.gateway.core.entity;
 
 public class INOUT<IN, OUT> {
 

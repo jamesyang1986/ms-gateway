@@ -30,8 +30,8 @@ import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
 import cn.ms.gateway.common.utils.NetUtils;
 import cn.ms.gateway.core.AssemblySupport;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 
 /**
  * 基于Netty实现微服务网关容器

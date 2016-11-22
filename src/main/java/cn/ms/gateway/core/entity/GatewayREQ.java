@@ -1,4 +1,4 @@
-package cn.ms.gateway.entity;
+package cn.ms.gateway.core.entity;
 
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.server.HttpServerRequest;

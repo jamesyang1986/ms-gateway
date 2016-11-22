@@ -1,7 +1,7 @@
 package cn.ms.gateway.core.connector;
 
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 
 public class NettyConnectorTest {
 

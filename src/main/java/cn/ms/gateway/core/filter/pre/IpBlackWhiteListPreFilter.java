@@ -8,8 +8,8 @@ import cn.ms.gateway.base.filter.annotation.FilterType;
 import cn.ms.gateway.base.filter.support.MSFilter;
 import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.core.StatusCode;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 import cn.ms.gateway.neural.blackwhitelist.BlackWhiteListFactory;
 import cn.ms.gateway.neural.blackwhitelist.BlackWhiteListType;
 

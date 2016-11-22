@@ -3,8 +3,8 @@ package cn.ms.gateway.core;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 
 /**
  * 静态装配支持类

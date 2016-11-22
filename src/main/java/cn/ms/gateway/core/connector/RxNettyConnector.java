@@ -20,8 +20,8 @@ import cn.ms.gateway.base.connector.IConnector;
 import cn.ms.gateway.common.Constants;
 import cn.ms.gateway.common.log.Logger;
 import cn.ms.gateway.common.log.LoggerFactory;
-import cn.ms.gateway.entity.GatewayREQ;
-import cn.ms.gateway.entity.GatewayRES;
+import cn.ms.gateway.core.entity.GatewayREQ;
+import cn.ms.gateway.core.entity.GatewayRES;
 
 /**
  * 基于RxNetty的路由接出
