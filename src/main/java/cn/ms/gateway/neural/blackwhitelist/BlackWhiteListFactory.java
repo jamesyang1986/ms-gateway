@@ -42,11 +42,9 @@ public class BlackWhiteListFactory implements BlackWhiteList {
 	public void setBlackWhiteIPs(Map<BlackWhiteListType, String> blackWhiteIPs) {
 		ipFilterMap.clear();
 
-		for (Map.Entry<BlackWhiteListType, String> bwIP : blackWhiteIPs
-				.entrySet()) {
+		for (Map.Entry<BlackWhiteListType, String> bwIP : blackWhiteIPs.entrySet()) {
 			// 192.168.0.*转换为192.168.0.1-192.168.0.255
-			for (String allow : bwIP.getValue().replaceAll("\\s", "")
-					.split(";")) {
+			for (String allow : bwIP.getValue().replaceAll("\\s", "").split(";")) {
 				if (allow.indexOf("*") > -1) {
 					String[] ips = allow.split("\\.");
 					String[] from = new String[] { "0", "0", "0", "0" };
@@ -78,11 +76,8 @@ public class BlackWhiteListFactory implements BlackWhiteList {
 					endIP.deleteCharAt(endIP.length() - 1);
 
 					for (String s : tem) {
-						String ip = fromIP.toString().replace("[*]",
-								s.split(";")[0])
-								+ "-"
-								+ endIP.toString().replace("[*]",
-										s.split(";")[1]);
+						String ip = fromIP.toString().replace("[*]", s.split(";")[0]) + "-"
+								+ endIP.toString().replace("[*]", s.split(";")[1]);
 						if (validate(ip)) {
 							Set<String> ipList = ipFilterMap.get(bwIP.getKey());
 							if (ipList == null || ipList.isEmpty()) {
