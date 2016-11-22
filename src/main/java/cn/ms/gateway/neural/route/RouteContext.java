@@ -1,4 +1,4 @@
-package cn.ms.gateway.neural.router;
+package cn.ms.gateway.neural.route;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author lry
  */
-public class RouterContext implements IRouter {
+public class RouteContext implements IRoute {
 
 	public static final String SEQ = ";";
 	public static final String ANY_VAL = "*";

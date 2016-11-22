@@ -10,11 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import cn.ms.gateway.neural.router.RouterContext;
-
 public class RouteTest3 {
 
-	RouterContext rc = new RouterContext();
+	RouteContext rc = new RouteContext();
 	List<URL> serviceList = new ArrayList<URL>();
 
 	@Before
