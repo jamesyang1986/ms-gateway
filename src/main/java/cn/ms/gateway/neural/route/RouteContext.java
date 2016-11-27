@@ -9,9 +9,9 @@ import cn.ms.gateway.common.ConcurrentHashSet;
 import cn.ms.gateway.neural.route.entity.RouteRule;
 import cn.ms.gateway.neural.route.entity.ServiceApp;
 import cn.ms.gateway.neural.route.exception.IllegalRequestException;
-import cn.ms.gateway.neural.route.exception.NoFoundProviderException;
-import cn.ms.gateway.neural.route.exception.NoFoundRouteRuleException;
-import cn.ms.gateway.neural.route.exception.ParameNoInitException;
+import cn.ms.gateway.neural.route.exception.NotFoundProviderException;
+import cn.ms.gateway.neural.route.exception.NotFoundRouteRuleException;
+import cn.ms.gateway.neural.route.exception.ParameNotInitException;
 
 /**
  * 分组路由<br>
@@ -77,9 +77,9 @@ public class RouteContext implements IRoute {
 		} else if (parameters == null || parameters.isEmpty()) {
 			throw new IllegalRequestException("parameters不能为空");
 		} else if (routeDataKeyMap.isEmpty()) {
-			throw new ParameNoInitException("routeDataKeyMap不能为空");
+			throw new ParameNotInitException("routeDataKeyMap不能为空");
 		} else if (routeRuleMap.isEmpty()) {
-			throw new ParameNoInitException("routeRuleMap不能为空");
+			throw new ParameNotInitException("routeRuleMap不能为空");
 		}
 
 		//$NON-NLS-第二步：实时组装路由KEY$
@@ -103,14 +103,14 @@ public class RouteContext implements IRoute {
 				//$NON-NLS-第四步：根据消费服务ID查找可用的服务实例集$
 				ServiceApp serviceApp = serviceAppMap.get(serviceId);
 				if (serviceApp.getApps().isEmpty()) {
-					throw new NoFoundProviderException("没有可用的提供者");
+					throw new NotFoundProviderException("没有可用的提供者");
 				} else {
 					return serviceApp.getApps();
 				}
 			}
 		}
 
-		throw new NoFoundRouteRuleException("没有找到可匹配的规则");
+		throw new NotFoundRouteRuleException("没有找到可匹配的规则");
 	}
 
 	/**
