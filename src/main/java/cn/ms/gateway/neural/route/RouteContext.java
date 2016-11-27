@@ -2,7 +2,7 @@ package cn.ms.gateway.neural.route;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import cn.ms.gateway.common.ConcurrentHashSet;
@@ -31,7 +31,7 @@ public class RouteContext implements IRoute {
 	// 数据结构:Set<渠道ID KEY, 机构号 KEY, 交易类型 KEY, 交易码 KEY, ...>
 	private ConcurrentSkipListSet<String> routeDataKeyMap = new ConcurrentSkipListSet<String>();
 	// 数据结构:Map<规则KEY(支持匹配), Map<serviceId, ServiceApp{serviceId@version, Set<ip:port>}>
-	private ConcurrentSkipListMap<String, ConcurrentSkipListMap<String, ServiceApp>> routeRuleMap = new ConcurrentSkipListMap<String, ConcurrentSkipListMap<String, ServiceApp>>();
+	private ConcurrentHashMap<String, ConcurrentHashMap<String, ServiceApp>> routeRuleMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, ServiceApp>>();
 
 	/**
 	 * 添加路由规则参数<br>
@@ -52,11 +52,11 @@ public class RouteContext implements IRoute {
 	 */
 	@Override
 	public void addRouteRule(RouteRule routeRule) {
-		ConcurrentSkipListMap<String, ServiceApp> tempMap=new ConcurrentSkipListMap<String, ServiceApp>();
-		for (Map.Entry<String, ConcurrentHashSet<InetSocketAddress>> serviceApp:routeRule.getServiceApps().entrySet()) {
-			String serviceIdVersion=serviceApp.getKey();
+		ConcurrentHashMap<String, ServiceApp> tempMap=new ConcurrentHashMap<String, ServiceApp>();
+		for (ServiceApp serviceApp:routeRule.getServiceApps()) {
+			String serviceIdVersion=serviceApp.getServiceIdVersion();
 			String serviceId=serviceIdVersion.substring(0, serviceIdVersion.indexOf(SERVICE_VERSION_SEQ));
-			tempMap.put(serviceId, new ServiceApp(serviceIdVersion, serviceApp.getValue()));
+			tempMap.put(serviceId, new ServiceApp(serviceIdVersion, serviceApp.getApps()));
 		}
 		
 		routeRuleMap.put(routeRule.getRules(), tempMap);
@@ -96,9 +96,9 @@ public class RouteContext implements IRoute {
 		}
 
 		//$NON-NLS-第三步：路由KEY四重匹配$
-		for (Map.Entry<String, ConcurrentSkipListMap<String, ServiceApp>> entry : routeRuleMap.entrySet()) {
+		for (Map.Entry<String, ConcurrentHashMap<String, ServiceApp>> entry : routeRuleMap.entrySet()) {
 			if (matches(routeRuleRegex, entry.getKey())) {// 进行路由KEY的匹配
-				ConcurrentSkipListMap<String, ServiceApp> serviceAppMap = entry.getValue();
+				ConcurrentHashMap<String, ServiceApp> serviceAppMap = entry.getValue();
 
 				//$NON-NLS-第四步：根据消费服务ID查找可用的服务实例集$
 				ServiceApp serviceApp = serviceAppMap.get(serviceId);

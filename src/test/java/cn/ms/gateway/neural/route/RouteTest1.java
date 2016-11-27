@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,6 +13,7 @@ import org.junit.Test;
 
 import cn.ms.gateway.common.ConcurrentHashSet;
 import cn.ms.gateway.neural.route.entity.RouteRule;
+import cn.ms.gateway.neural.route.entity.ServiceApp;
 
 public class RouteTest1 {
 
@@ -25,22 +25,22 @@ public class RouteTest1 {
 		//$NON-NLS-组装规则$
 		RouteRule routeRule1=new RouteRule();
 		routeRule1.setRules("weixin*@A00*");
-		ConcurrentHashMap<String, ConcurrentHashSet<InetSocketAddress>> serviceApps1=new ConcurrentHashMap<String, ConcurrentHashSet<InetSocketAddress>>();
+		List<ServiceApp> serviceApps1=new ArrayList<ServiceApp>();
 		ConcurrentHashSet<InetSocketAddress> set1=new ConcurrentHashSet<InetSocketAddress>();
 		set1.add(new InetSocketAddress("10.24.1.10", 8080));
 		set1.add(new InetSocketAddress("10.24.1.11", 8080));
 		set1.add(new InetSocketAddress("10.24.1.12", 8080));
-		serviceApps1.put("servic1:1.0.0", set1);
+		serviceApps1.add(new ServiceApp("servic1:1.0.0", set1));
 		routeRule1.setServiceApps(serviceApps1);
 		rc.addRouteRule(routeRule1);
 		
 		RouteRule routeRule2=new RouteRule();
 		routeRule2.setRules("app@A00*");
-		ConcurrentHashMap<String, ConcurrentHashSet<InetSocketAddress>> serviceApps2=new ConcurrentHashMap<String, ConcurrentHashSet<InetSocketAddress>>();
+		List<ServiceApp> serviceApps2=new ArrayList<ServiceApp>();
 		ConcurrentHashSet<InetSocketAddress> set2=new ConcurrentHashSet<InetSocketAddress>();
 		set2.add(new InetSocketAddress("10.24.1.13", 8080));
 		set2.add(new InetSocketAddress("10.24.1.14", 8080));
-		serviceApps2.put("servic2:1.0.0", set2);
+		serviceApps2.add(new ServiceApp("servic2:1.0.0", set2));
 		routeRule2.setServiceApps(serviceApps2);
 		rc.addRouteRule(routeRule2);
 		
