@@ -1,10 +1,10 @@
 package cn.ms.gateway;
 
+import cn.ms.gateway.demo.Test1Filter;
+import cn.ms.gateway.demo.Test2Filter;
+import cn.ms.gateway.demo.Test3Filter;
 import cn.ms.gateway.entity.Request;
 import cn.ms.gateway.entity.Response;
-import cn.ms.gateway.impl.Test1Filter;
-import cn.ms.gateway.impl.Test2Filter;
-import cn.ms.gateway.impl.Test3Filter;
 
 public class Test {
 

@@ -1,10 +1,10 @@
-package cn.ms.gateway.impl;
+package cn.ms.gateway.demo;
 
 import cn.ms.gateway.FilterContext;
 import cn.ms.gateway.entity.Request;
 import cn.ms.gateway.entity.Response;
 
-public class Test3Filter extends FilterContext<Request, Response> {
+public class Test2Filter extends FilterContext<Request, Response> {
 
 	@Override
 	public boolean check(Request req, Response res, Object... args) throws Exception {
