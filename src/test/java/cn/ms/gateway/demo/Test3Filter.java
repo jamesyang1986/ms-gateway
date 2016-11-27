@@ -1,6 +1,6 @@
 package cn.ms.gateway.demo;
 
-import cn.ms.gateway.FilterContext;
+import cn.ms.gateway.base.filter.FilterContext;
 import cn.ms.gateway.entity.Request;
 import cn.ms.gateway.entity.Response;
 

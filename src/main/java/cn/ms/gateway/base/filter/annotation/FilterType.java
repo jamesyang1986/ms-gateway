@@ -1,4 +1,4 @@
-package cn.ms.gateway.annotation;
+package cn.ms.gateway.base.filter.annotation;
 
 /**
  * 过滤器类型

@@ -1,5 +1,6 @@
 package cn.ms.gateway;
 
+import cn.ms.gateway.base.filter.FilterChainContext;
 import cn.ms.gateway.demo.Test1Filter;
 import cn.ms.gateway.demo.Test2Filter;
 import cn.ms.gateway.demo.Test3Filter;

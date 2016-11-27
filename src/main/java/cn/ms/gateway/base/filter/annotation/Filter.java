@@ -1,4 +1,4 @@
-package cn.ms.gateway.annotation;
+package cn.ms.gateway.base.filter.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
