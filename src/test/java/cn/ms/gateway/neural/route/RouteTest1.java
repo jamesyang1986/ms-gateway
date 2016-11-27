@@ -1,7 +1,6 @@
 package cn.ms.gateway.neural.route;
 
 import java.net.InetSocketAddress;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,6 @@ import cn.ms.gateway.neural.route.entity.ServiceApp;
 public class RouteTest1 {
 
 	RouteContext rc = new RouteContext();
-	List<URL> serviceList = new ArrayList<URL>();
 
 	@Before
 	public void init() throws Exception {
