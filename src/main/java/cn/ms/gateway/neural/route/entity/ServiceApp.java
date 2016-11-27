@@ -1,4 +1,4 @@
-package cn.ms.gateway.neural.route;
+package cn.ms.gateway.neural.route.entity;
 
 import java.net.InetSocketAddress;
 
