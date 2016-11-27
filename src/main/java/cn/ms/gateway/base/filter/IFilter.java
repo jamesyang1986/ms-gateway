@@ -3,6 +3,11 @@ package cn.ms.gateway.base.filter;
 public interface IFilter<REQ, RES> {
 
 	//$NON-NLS-辅助类动作$
+	/**
+	 * 初始化
+	 * 
+	 * @throws Exception
+	 */
 	void init() throws Exception;
 	
 	/**
@@ -17,10 +22,10 @@ public interface IFilter<REQ, RES> {
 	 * 注入<br>
 	 * 用于用户注入自定义的对象
 	 * 
-	 * @param cus
+	 * @param in
 	 * @throws Exception
 	 */
-	<CUS> void inject(CUS cus) throws Exception;;
+	<IN> void inject(IN in) throws Exception;
 
 	/**
 	 * 校验权限<br>
@@ -53,8 +58,7 @@ public interface IFilter<REQ, RES> {
 	 * @param args
 	 * @throws Throwable
 	 */
-	void doFilter(FilterChain<REQ, RES> chain, REQ req, RES res, Object... args)
-			throws Throwable;
+	void doFilter(FilterChain<REQ, RES> chain, REQ req, RES res, Object... args) throws Throwable;
 
 	/**
 	 * 请求响应前
