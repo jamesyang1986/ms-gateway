@@ -75,13 +75,13 @@ public class RouteContext implements IRoute {
 	public ConcurrentHashSet<InetSocketAddress> doSelectApps(String serviceId, Map<String, String> parameters) {
 		//$NON-NLS-第一步：数据校验$
 		if (serviceId == null || serviceId.length() < 1) {
-			throw new IllegalRequestException("serviceId不能为空");
+			throw new IllegalRequestException("非法请求:serviceId不能为空");
 		} else if (parameters == null || parameters.isEmpty()) {
-			throw new IllegalRequestException("parameters不能为空");
+			throw new IllegalRequestException("非法请求:parameters不能为空");
 		} else if (routeDataKeyMap.isEmpty()) {
-			throw new ParameNotInitException("routeDataKeyMap不能为空");
+			throw new ParameNotInitException("没有初始化路由参数:routeDataKeyMap");
 		} else if (routeRuleMap.isEmpty()) {
-			throw new ParameNotInitException("routeRuleMap不能为空");
+			throw new ParameNotInitException("没有初始化路由规则:routeRuleMap");
 		}
 
 		//$NON-NLS-第二步：实时组装路由KEY$
