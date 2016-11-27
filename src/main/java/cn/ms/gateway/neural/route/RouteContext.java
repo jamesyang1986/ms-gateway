@@ -1,13 +1,13 @@
 package cn.ms.gateway.neural.route;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import cn.ms.gateway.common.ConcurrentHashSet;
+import cn.ms.gateway.neural.route.entity.RouteRule;
+import cn.ms.gateway.neural.route.entity.ServiceApp;
 
 /**
  * 分组路由<br>
@@ -29,40 +29,6 @@ public class RouteContext {
 	// 数据结构:Map<规则KEY(支持匹配), Map<serviceId, ServiceApp{serviceId@version, Set<ip:port>}>
 	private ConcurrentSkipListMap<String, ConcurrentSkipListMap<String, ServiceApp>> routeRuleMap = new ConcurrentSkipListMap<String, ConcurrentSkipListMap<String, ServiceApp>>();
 
-	public static void main(String[] args) {
-		RouteContext rc=new RouteContext();
-		
-		//$NON-NLS-组装规则$
-		RouteRule routeRule=new RouteRule();
-		routeRule.setRules("weixin*@A00*");
-		ConcurrentHashMap<String, ConcurrentHashSet<InetSocketAddress>> serviceApps=new ConcurrentHashMap<String, ConcurrentHashSet<InetSocketAddress>>();
-		ConcurrentHashSet<InetSocketAddress> set1=new ConcurrentHashSet<InetSocketAddress>();
-		set1.add(new InetSocketAddress("10.24.1.10", 8080));
-		set1.add(new InetSocketAddress("10.24.1.11", 8080));
-		set1.add(new InetSocketAddress("10.24.1.12", 8080));
-		serviceApps.put("servic1:1.0.0", set1);
-		ConcurrentHashSet<InetSocketAddress> set2=new ConcurrentHashSet<InetSocketAddress>();
-		set2.add(new InetSocketAddress("10.24.1.13", 8080));
-		set2.add(new InetSocketAddress("10.24.1.14", 8080));
-		set2.add(new InetSocketAddress("10.24.1.15", 8080));
-		serviceApps.put("servic2:1.0.0", set2);
-		routeRule.setServiceApps(serviceApps);
-		rc.addRouteRule(routeRule);
-		System.out.println(rc.routeRuleMap);
-		
-		//设置路由数据结构
-		rc.addRouteDataKey("channelId");
-		rc.addRouteDataKey("code");
-		
-		//模拟请求
-		Map<String, String> parameters=new HashMap<String, String>();
-		parameters.put("channelId", "weixin3");
-		parameters.put("code", "A001");
-		//查找：指定渠道的某类交易码的服务分组
-		System.out.println(rc.doSelectApps("servic1", parameters));
-		
-	}
-	
 	/**
 	 * 添加路由规则参数<br>
 	 * <br>
@@ -141,7 +107,6 @@ public class RouteContext {
 	 * @return
 	 */
 	private boolean matches(String rule, String regex) {
-		System.out.println(rule+"-->"+regex);
 		//$NON-NLS-全匹配$
 		if (rule.equals(regex)) {
 			return true;
