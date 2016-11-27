@@ -18,8 +18,8 @@ public class FilterChain<REQ, RES> {
 	// 调用链上的过滤器时，记录过滤器的位置用
 	private AtomicInteger chainIndex = new AtomicInteger(0);
 	
-	public void addFilters(List<IFilter<REQ, RES>> filters) {
-		this.filters.addAll(filters);
+	public FilterChain(List<IFilter<REQ, RES>> filters) {
+		this.filters=filters;
 	}
 
 	public void doFilter(REQ req, RES res, Object... args) throws Throwable {

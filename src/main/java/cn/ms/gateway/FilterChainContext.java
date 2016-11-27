@@ -7,7 +7,6 @@ public class FilterChainContext<REQ, RES> {
 
 	private List<IFilter<REQ, RES>> filters = new ArrayList<IFilter<REQ, RES>>();
 	
-	
 	public FilterChainContext<REQ, RES> addFilter(IFilter<REQ, RES> filter) {
 		filters.add(filter);
 		return this;
@@ -19,8 +18,7 @@ public class FilterChainContext<REQ, RES> {
 	}
 	
 	public void doFilter(REQ req, RES res, Object... args) throws Throwable {
-		FilterChain<REQ, RES> chain = new FilterChain<REQ, RES>();
-		chain.addFilters(filters);
+		FilterChain<REQ, RES> chain = new FilterChain<REQ, RES>(filters);
 		chain.doFilter(req, res, args);
 	}
 	
