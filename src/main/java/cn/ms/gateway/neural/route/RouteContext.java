@@ -37,28 +37,30 @@ public class RouteContext implements IRoute {
 	 * 添加路由规则参数<br>
 	 * <br>
 	 * 有序<br>
+	 * 
 	 * @param routeKey
 	 */
 	@Override
 	public void addRouteDataKey(String routeKey) {
 		routeDataKeyMap.add(routeKey);
 	}
-	
+
 	/**
 	 * 添加一条规则<br>
-	 * <br>数据结构:{rules, Map<serviceId:version, Set<host : port>}
+	 * <br>
+	 * 数据结构:{rules, Map<serviceId:version, Set<host : port>}
 	 * 
 	 * @param routeRule
 	 */
 	@Override
 	public void addRouteRule(RouteRule routeRule) {
-		ConcurrentHashMap<String, ServiceApp> tempMap=new ConcurrentHashMap<String, ServiceApp>();
-		for (ServiceApp serviceApp:routeRule.getServiceApps()) {
-			String serviceIdVersion=serviceApp.getServiceIdVersion();
-			String serviceId=serviceIdVersion.substring(0, serviceIdVersion.indexOf(SERVICE_VERSION_SEQ));
+		ConcurrentHashMap<String, ServiceApp> tempMap = new ConcurrentHashMap<String, ServiceApp>();
+		for (ServiceApp serviceApp : routeRule.getServiceApps()) {
+			String serviceIdVersion = serviceApp.getServiceIdVersion();
+			String serviceId = serviceIdVersion.substring(0, serviceIdVersion.indexOf(SERVICE_VERSION_SEQ));
 			tempMap.put(serviceId, new ServiceApp(serviceIdVersion, serviceApp.getApps()));
 		}
-		
+
 		routeRuleMap.put(routeRule.getRules(), tempMap);
 	}
 
@@ -149,5 +151,5 @@ public class RouteContext implements IRoute {
 
 		return false;
 	}
-	
+
 }
