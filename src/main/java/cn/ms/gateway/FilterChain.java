@@ -2,6 +2,7 @@ package cn.ms.gateway;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 过滤链
@@ -15,19 +16,18 @@ public class FilterChain<REQ, RES> {
 
 	private List<IFilter<REQ, RES>> filters = new ArrayList<IFilter<REQ, RES>>();
 	// 调用链上的过滤器时，记录过滤器的位置用
-	private int index = 0;
-
-	public FilterChain<REQ, RES> addFilter(FilterContext<REQ, RES> filter) {
-		filters.add(filter);
-		return this;
+	private AtomicInteger chainIndex = new AtomicInteger(0);
+	
+	public void addFilters(List<IFilter<REQ, RES>> filters) {
+		this.filters.addAll(filters);
 	}
 
 	public void doFilter(REQ req, RES res, Object... args) throws Throwable {
-		if (index == filters.size()) {
+		if (chainIndex.get() == filters.size()) {
 			return;
 		}
 		// 得到当前过滤器
-		IFilter<REQ, RES> filter = filters.get(index++);
+		IFilter<REQ, RES> filter = filters.get(chainIndex.getAndIncrement());
 		boolean ischeck = filter.check(req, res, args);
 		if (ischeck) {
 			try {

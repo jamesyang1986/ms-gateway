@@ -15,7 +15,7 @@ public class Test {
 		req.reqStr = "request";
 		resp.respStr = "response";
 		// 搞一个过滤链，链上有两个过滤器
-		FilterChain<Request, Response> chain = new FilterChain<Request, Response>();
+		FilterChainContext<Request, Response> chain = new FilterChainContext<Request, Response>();
 		chain.addFilter(new Test1Filter()).addFilter(new Test2Filter()).addFilter(new Test3Filter());
 		// 开始过滤
 		chain.doFilter(req, resp);
