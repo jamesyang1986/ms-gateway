@@ -8,9 +8,7 @@
 	<description>微服务通讯网关</description>
 
 	<properties>
-		<rxnetty>0.4.19</rxnetty>
-		<rxnetty-http>0.5.2-rc.4</rxnetty-http>
-		<zbus>7.2.0</zbus>
+		<netty-all>4.1.6.Final</netty-all>
 		<fastjson>1.2.20</fastjson>
 		<log4j-api>2.6.2</log4j-api>
 		<junit>4.12</junit>
@@ -18,34 +16,17 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty-all}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.20</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.reactivex</groupId>
-			<artifactId>rxnetty-spectator</artifactId>
-			<version>${rxnetty}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.reactivex</groupId>
-			<artifactId>rxnetty</artifactId>
-			<version>${rxnetty}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.reactivex</groupId>
-			<artifactId>rxnetty-http</artifactId>
-			<version>${rxnetty-http}</version>
+			<version>${fastjson}</version>
 		</dependency>
 
 		<!-- 日志 -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>${log4j-api}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
@@ -55,6 +36,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
