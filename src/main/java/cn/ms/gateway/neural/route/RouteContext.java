@@ -20,7 +20,7 @@ import cn.ms.gateway.neural.route.exception.ParameNoInitException;
  * 
  * @author lry
  */
-public class RouteContext {
+public class RouteContext implements IRoute {
 
 	//$NON-NLS-常数定义$
 	public static final String SEQ = "@";
@@ -39,6 +39,7 @@ public class RouteContext {
 	 * 有序<br>
 	 * @param routeKey
 	 */
+	@Override
 	public void addRouteDataKey(String routeKey) {
 		routeDataKeyMap.add(routeKey);
 	}
@@ -49,6 +50,7 @@ public class RouteContext {
 	 * 
 	 * @param routeRule
 	 */
+	@Override
 	public void addRouteRule(RouteRule routeRule) {
 		ConcurrentSkipListMap<String, ServiceApp> tempMap=new ConcurrentSkipListMap<String, ServiceApp>();
 		for (Map.Entry<String, ConcurrentHashSet<InetSocketAddress>> serviceApp:routeRule.getServiceApps().entrySet()) {
@@ -60,6 +62,14 @@ public class RouteContext {
 		routeRuleMap.put(routeRule.getRules(), tempMap);
 	}
 
+	/**
+	 * 根据服务ID和路由参数进行分组选择服务实例
+	 * 
+	 * @param serviceId
+	 * @param parameters
+	 * @return
+	 */
+	@Override
 	public ConcurrentHashSet<InetSocketAddress> doSelectApps(String serviceId, Map<String, String> parameters) {
 		//$NON-NLS-第一步：数据校验$
 		if (serviceId == null || serviceId.length() < 1) {
