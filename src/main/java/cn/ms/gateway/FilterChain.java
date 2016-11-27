@@ -26,6 +26,7 @@ public class FilterChain<REQ, RES> {
 		if (chainIndex.get() == filters.size()) {
 			return;
 		}
+		
 		// 得到当前过滤器
 		IFilter<REQ, RES> filter = filters.get(chainIndex.getAndIncrement());
 		boolean ischeck = filter.check(req, res, args);
@@ -38,4 +39,5 @@ public class FilterChain<REQ, RES> {
 			}
 		}
 	}
+	
 }

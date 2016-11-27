@@ -16,7 +16,7 @@ public abstract class FilterContext<REQ, RES> implements IFilter<REQ, RES> {
 	}
 
 	@Override
-	public <CUS> void inject(CUS cus) throws Exception {
+	public <IN> void inject(IN in) throws Exception {
 
 	}
 

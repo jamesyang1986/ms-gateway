@@ -18,8 +18,7 @@ public class FilterChainContext<REQ, RES> {
 	}
 	
 	public void doFilter(REQ req, RES res, Object... args) throws Throwable {
-		FilterChain<REQ, RES> chain = new FilterChain<REQ, RES>(filters);
-		chain.doFilter(req, res, args);
+		new FilterChain<REQ, RES>(filters).doFilter(req, res, args);
 	}
 	
 }
