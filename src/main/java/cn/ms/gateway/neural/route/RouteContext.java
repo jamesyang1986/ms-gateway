@@ -8,6 +8,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import cn.ms.gateway.common.ConcurrentHashSet;
 import cn.ms.gateway.neural.route.entity.RouteRule;
 import cn.ms.gateway.neural.route.entity.ServiceApp;
+import cn.ms.gateway.neural.route.exception.IllegalRequestException;
+import cn.ms.gateway.neural.route.exception.NoFoundProviderException;
+import cn.ms.gateway.neural.route.exception.NoFoundRouteRuleException;
+import cn.ms.gateway.neural.route.exception.ParameNoInitException;
 
 /**
  * 分组路由<br>
@@ -59,13 +63,13 @@ public class RouteContext {
 	public ConcurrentHashSet<InetSocketAddress> doSelectApps(String serviceId, Map<String, String> parameters) {
 		//$NON-NLS-第一步：数据校验$
 		if (serviceId == null || serviceId.length() < 1) {
-			throw new RuntimeException("serviceId不能为空");
+			throw new IllegalRequestException("serviceId不能为空");
 		} else if (parameters == null || parameters.isEmpty()) {
-			throw new RuntimeException("parameters不能为空");
+			throw new IllegalRequestException("parameters不能为空");
 		} else if (routeDataKeyMap.isEmpty()) {
-			throw new RuntimeException("routeDataKeyMap不能为空");
+			throw new ParameNoInitException("routeDataKeyMap不能为空");
 		} else if (routeRuleMap.isEmpty()) {
-			throw new RuntimeException("routeRuleMap不能为空");
+			throw new ParameNoInitException("routeRuleMap不能为空");
 		}
 
 		//$NON-NLS-第二步：实时组装路由KEY$
@@ -73,7 +77,7 @@ public class RouteContext {
 		for (String routeDataKey : routeDataKeyMap) {
 			String tempVal = parameters.get(routeDataKey);
 			if (tempVal == null || tempVal.isEmpty()) {
-				throw new RuntimeException("非法请求");
+				throw new IllegalRequestException("非法请求");
 			}
 			routeRuleRegex += tempVal + SEQ;
 		}
@@ -89,14 +93,14 @@ public class RouteContext {
 				//$NON-NLS-第四步：根据消费服务ID查找可用的服务实例集$
 				ServiceApp serviceApp = serviceAppMap.get(serviceId);
 				if (serviceApp.getApps().isEmpty()) {
-					throw new RuntimeException("没有可用的提供者");
+					throw new NoFoundProviderException("没有可用的提供者");
 				} else {
 					return serviceApp.getApps();
 				}
 			}
 		}
 
-		throw new RuntimeException("没有找到可匹配的规则");
+		throw new NoFoundRouteRuleException("没有找到可匹配的规则");
 	}
 
 	/**
