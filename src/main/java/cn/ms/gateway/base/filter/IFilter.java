@@ -1,5 +1,13 @@
 package cn.ms.gateway.base.filter;
 
+/**
+ * 过滤器
+ * 
+ * @author lry
+ *
+ * @param <REQ>
+ * @param <RES>
+ */
 public interface IFilter<REQ, RES> {
 
 	//$NON-NLS-辅助类动作$

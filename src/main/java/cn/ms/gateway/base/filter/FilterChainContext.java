@@ -3,6 +3,14 @@ package cn.ms.gateway.base.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 过滤链上下文
+ * 
+ * @author lry
+ *
+ * @param <REQ>
+ * @param <RES>
+ */
 public class FilterChainContext<REQ, RES> {
 
 	private List<IFilter<REQ, RES>> filters = new ArrayList<IFilter<REQ, RES>>();
