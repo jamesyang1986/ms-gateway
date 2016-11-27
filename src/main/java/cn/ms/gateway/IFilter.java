@@ -3,7 +3,8 @@ package cn.ms.gateway;
 public interface IFilter<REQ, RES> {
 
 	//$NON-NLS-辅助类动作$
-
+	void init() throws Exception;
+	
 	/**
 	 * 刷新<br>
 	 * 用于动态变更过滤器中的全局变量
@@ -65,4 +66,11 @@ public interface IFilter<REQ, RES> {
 	 */
 	void after(REQ req, RES res, Object... args) throws Throwable;
 
+	/**
+	 * 销毁
+	 * 
+	 * @throws Exception
+	 */
+	void destroy() throws Exception;
+	
 }
