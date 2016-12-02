@@ -13,9 +13,9 @@ import com.weibo.api.motan.rpc.URL;
  */
 public class RouteResult {
 
-	// 返回结果类型
+	/** 返回结果类型 **/
 	private ResultType resultType;
-	// 服务提供者清单
+	/** 服务提供者清单 **/
 	private List<URL> urls;
 
 	RouteResult(ResultType resultType, List<URL> urls) {
@@ -50,7 +50,8 @@ public class RouteResult {
 
 	@Override
 	public String toString() {
-		return "RouteResult [resultType=[resultType= "+resultType+", msg=" + resultType.getMsg() + "], urls=" + urls + "]";
+		return "RouteResult [resultType=[resultType= " + resultType + ", msg="
+				+ resultType.getMsg() + "], urls=" + urls + "]";
 	}
 
 }

@@ -7,17 +7,17 @@ package cn.ms.gateway.core.processor.route;
  */
 public class RouteService {
 
-	// 服务ID
+	/** 服务ID **/
 	private String serviceId;
-	// 服务版本号
+	/** 服务版本号 **/
 	private String version;
-	// 场景ID
-	private String sceneId;
+	/** 服务组ID(相同服务相同版本的不同组) **/
+	private String group;
 
-	RouteService(String serviceId, String version, String sceneId) {
+	RouteService(String serviceId, String version, String group) {
 		this.serviceId = serviceId;
 		this.version = version;
-		this.sceneId = sceneId;
+		this.group = group;
 	}
 
 	public String getServiceId() {
@@ -36,20 +36,22 @@ public class RouteService {
 		this.version = version;
 	}
 
-	public String getSceneId() {
-		return sceneId;
+	public String getGroup() {
+		return group;
 	}
 
-	public void setSceneId(String sceneId) {
-		this.sceneId = sceneId;
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
 	//$NON-NLS-扩展$
 	public String buildKey() {
-		return getServiceId() + RouteContext.SVS_SEQ + getVersion() + RouteContext.SVS_SEQ + getSceneId();
+		return getServiceId() + RouteContext.SVS_SEQ + getVersion()
+				+ RouteContext.SVS_SEQ + getGroup();
 	}
-	
-	public static RouteService build(String serviceId, String version, String sceneId) {
+
+	public static RouteService build(String serviceId, String version,
+			String sceneId) {
 		return new RouteService(serviceId, version, sceneId);
 	}
 
@@ -57,7 +59,7 @@ public class RouteService {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((sceneId == null) ? 0 : sceneId.hashCode());
+		result = prime * result + ((group == null) ? 0 : group.hashCode());
 		result = prime * result
 				+ ((serviceId == null) ? 0 : serviceId.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
@@ -73,10 +75,10 @@ public class RouteService {
 		if (getClass() != obj.getClass())
 			return false;
 		RouteService other = (RouteService) obj;
-		if (sceneId == null) {
-			if (other.sceneId != null)
+		if (group == null) {
+			if (other.group != null)
 				return false;
-		} else if (!sceneId.equals(other.sceneId))
+		} else if (!group.equals(other.group))
 			return false;
 		if (serviceId == null) {
 			if (other.serviceId != null)
@@ -94,7 +96,7 @@ public class RouteService {
 	@Override
 	public String toString() {
 		return "RouteService [serviceId=" + serviceId + ", version=" + version
-				+ ", sceneId=" + sceneId + "]";
+				+ ", group=" + group + "]";
 	}
 
 }

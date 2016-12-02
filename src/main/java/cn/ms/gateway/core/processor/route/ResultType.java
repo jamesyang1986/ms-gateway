@@ -14,7 +14,7 @@ public enum ResultType {
 	REQPARAM_NOT_NULL("请求参数'%s'不能为空"), 
 	ILLEGAL_REQ_ROUTERULE("非法的路由请求规则'%s'"), 
 	ROUERULE_NOAVA_SERVICES("路由规则'%s'没有映射的服务清单"), 
-	SVS_NOT_NULL("serviceId:version:sceneId的值不能为空"), 
+	SVS_NOT_NULL("serviceId:version:group的值不能为空"), 
 	NO_AVA_PROVIDER("服务'%s'没有可用的提供者(provider-->%s)"), 
 	NOTFOUND_ROUTE_RULE("没有匹配到可用的路由规则");
 
