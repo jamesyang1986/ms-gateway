@@ -30,8 +30,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import cn.ms.gateway.core.processor.connector.client.AdditionalChannelInitializer;
-import cn.ms.gateway.core.processor.connector.client.NettyChannelPoolHandler;
+import cn.ms.gateway.core.processor.connector.AdditionalChannelInitializer;
+import cn.ms.gateway.core.processor.connector.NettyChannelPoolHandler;
 import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponseFuture;
 
 public class NettyChannelPool {

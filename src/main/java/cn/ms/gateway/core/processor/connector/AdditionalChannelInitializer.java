@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.connector.client;
+package cn.ms.gateway.core.processor.connector;
 
 import io.netty.channel.Channel;
 
