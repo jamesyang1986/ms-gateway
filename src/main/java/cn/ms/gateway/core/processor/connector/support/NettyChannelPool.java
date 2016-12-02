@@ -27,15 +27,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseFuture;
 import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseFutureUtil;
 
 public class NettyChannelPool {
 
-	private static final Logger logger = Logger.getLogger(NettyChannelPool.class.getName());
+//	private static final Logger logger = Logger.getLogger(NettyChannelPool.class.getName());
 
 	// channel pools per route
 	private ConcurrentMap<String, LinkedBlockingQueue<Channel>> routeToPoolChannels;
@@ -187,7 +185,7 @@ public class NettyChannelPool {
 
 		if (null != channel && channel.isActive()) {
 			if (poolChannels.offer(channel)) {
-				logger.log(Level.INFO, channel + "returned");
+//				logger.log(Level.INFO, channel + "returned");
 			}
 		}
 	}
@@ -224,7 +222,7 @@ public class NettyChannelPool {
 		if (!NettyHttpResponseFutureUtil.getForceConnect(channel)) {
 			LinkedBlockingQueue<Channel> poolChannels = routeToPoolChannels.get(key);
 			if (poolChannels.remove(channel)) {
-				logger.log(Level.INFO, channel + " removed");
+//				logger.log(Level.INFO, channel + " removed");
 			}
 			getAllowCreatePerRoute(key).release();
 		}
@@ -246,12 +244,12 @@ public class NettyChannelPool {
 			}
 			channel = poolChannels.poll(connectTimeOutInMilliSecondes, TimeUnit.MILLISECONDS);
 			if (null == channel || !channel.isActive()) {
-				logger.log(Level.WARNING, "obtain channel from pool timeout");
+//				logger.log(Level.WARNING, "obtain channel from pool timeout");
 				return false;
 			}
 		}
 
-		logger.log(Level.INFO, channel + " reuse");
+//		logger.log(Level.INFO, channel + " reuse");
 		NettyHttpResponseFutureUtil.attributeResponse(channel, responseFuture);
 
 		channel.writeAndFlush(request).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
@@ -271,13 +269,13 @@ public class NettyChannelPool {
 						future.channel().closeFuture().addListener(new ChannelFutureListener() {
 							@Override
 							public void operationComplete(ChannelFuture future) throws Exception {
-								logger.log(Level.SEVERE, future.channel() + " closed, exception: " + future.cause());
+//								logger.log(Level.SEVERE, future.channel() + " closed, exception: " + future.cause());
 								removeChannel(future.channel(), future.cause());
 							}
 						});
 						future.channel().writeAndFlush(request).addListener(CLOSE_ON_FAILURE);
 					} else {
-						logger.log(Level.SEVERE, future.channel() + " connect failed, exception: " + future.cause());
+//						logger.log(Level.SEVERE, future.channel() + " connect failed, exception: " + future.cause());
 						NettyHttpResponseFutureUtil.cancel(future.channel(), future.cause());
 						if (!NettyHttpResponseFutureUtil.getForceConnect(future.channel())) {
 							releaseCreatePerRoute(future.channel());
@@ -333,7 +331,7 @@ public class NettyChannelPool {
 				ChannelFuture connectFuture = clientBootstrap.connect(route.getHostName(), route.getPort());
 				return connectFuture;
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, "connect failed", e);
+//				logger.log(Level.SEVERE, "connect failed", e);
 				allowCreate.release();
 			}
 		}

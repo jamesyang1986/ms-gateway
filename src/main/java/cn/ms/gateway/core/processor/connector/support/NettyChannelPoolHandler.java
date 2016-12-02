@@ -7,16 +7,11 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.timeout.IdleStateEvent;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseFutureUtil;
-import cn.ms.gateway.core.processor.connector.support.NettyChannelPool;
 
 public class NettyChannelPoolHandler extends SimpleChannelInboundHandler<HttpObject> {
 
-	private static final Logger logger = Logger.getLogger(NettyChannelPoolHandler.class.getName());
+//	private static final Logger logger = Logger.getLogger(NettyChannelPoolHandler.class.getName());
 	private NettyChannelPool channelPool;
 
 	/**
@@ -53,7 +48,7 @@ public class NettyChannelPoolHandler extends SimpleChannelInboundHandler<HttpObj
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
 		if (evt instanceof IdleStateEvent) {
-			logger.log(Level.WARNING, "remove idle channel: " + ctx.channel());
+//			logger.log(Level.WARNING, "remove idle channel: " + ctx.channel());
 			ctx.channel().close();
 		} else {
 			ctx.fireUserEventTriggered(evt);
