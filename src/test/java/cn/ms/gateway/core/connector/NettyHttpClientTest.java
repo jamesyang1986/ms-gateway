@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import cn.ms.gateway.core.processor.connector.NettyHttpClient;
-import cn.ms.gateway.core.processor.connector.entity.NettyHttpRequest;
-import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponse;
-import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponseFuture;
+import cn.ms.gateway.core.processor.connector.NettyHttpRequest;
+import cn.ms.gateway.core.processor.connector.response.NettyHttpResponse;
+import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseFuture;
 
 @SuppressWarnings("deprecation")
 public class NettyHttpClientTest {

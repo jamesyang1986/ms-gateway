@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.connector.support;
+package cn.ms.gateway.core.processor.connector;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

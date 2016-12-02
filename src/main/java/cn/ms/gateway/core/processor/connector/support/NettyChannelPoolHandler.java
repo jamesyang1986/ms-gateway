@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.connector;
+package cn.ms.gateway.core.processor.connector.support;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
