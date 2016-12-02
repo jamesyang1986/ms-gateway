@@ -5,7 +5,7 @@ package cn.ms.gateway.core.processor.parameter;
  * 
  * @author lry
  */
-public class ParameterAttribute {
+public class ParameterModel {
 
 	private String paramKey;
 	private int length;
