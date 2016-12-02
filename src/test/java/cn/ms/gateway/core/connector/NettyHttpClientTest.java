@@ -1,4 +1,4 @@
-package cn.ms.gateway.core;
+package cn.ms.gateway.core.connector;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders.Names;
@@ -13,7 +13,7 @@ import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponse;
 import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponseFuture;
 
 @SuppressWarnings("deprecation")
-public class Test {
+public class NettyHttpClientTest {
 
 	public static void main(String[] args) {
 		try {
