@@ -8,7 +8,22 @@
 	<name>微服务网关</name>
 	<description>微服务网关</description>
 
+
+	<repositories>
+		<repository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</repository>
+	</repositories>
+
+
 	<dependencies>
+	
+		<dependency>
+			<groupId>me.shenfeng</groupId>
+			<artifactId>async-http-client</artifactId>
+			<version>1.1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
@@ -20,9 +35,9 @@
 			<version>0.2.2</version>
 		</dependency>
 		<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.12</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
 		</dependency>
 	</dependencies>
 
@@ -40,5 +55,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
