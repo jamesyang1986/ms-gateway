@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.connector.support;
+package cn.ms.gateway.core.processor.connector.response;
 
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.HttpContent;
@@ -8,8 +8,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.util.AttributeKey;
 
 import java.net.InetSocketAddress;
-
-import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponseFuture;
 
 @SuppressWarnings("deprecation")
 public class NettyHttpResponseFutureUtil {

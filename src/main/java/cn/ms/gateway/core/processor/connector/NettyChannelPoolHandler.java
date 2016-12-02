@@ -11,8 +11,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseFutureUtil;
 import cn.ms.gateway.core.processor.connector.support.NettyChannelPool;
-import cn.ms.gateway.core.processor.connector.support.NettyHttpResponseFutureUtil;
 
 public class NettyChannelPoolHandler extends SimpleChannelInboundHandler<HttpObject> {
 

@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.connector.entity;
+package cn.ms.gateway.core.processor.connector.response;
 
 import io.netty.channel.Channel;
 
@@ -7,8 +7,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseBuilder;
 
 public class NettyHttpResponseFuture {
 

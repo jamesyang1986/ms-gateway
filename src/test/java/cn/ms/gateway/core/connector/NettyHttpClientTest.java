@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.HttpHeaders.Names;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.ms.gateway.core.processor.connector.NettyHttpClient;
 import cn.ms.gateway.core.processor.connector.entity.NettyHttpRequest;
@@ -34,7 +35,7 @@ public class NettyHttpClientTest {
 		        .uri(postUrl).content(postContent, Charset.forName("UTF-8"));
 
 		        NettyHttpResponseFuture responseFuture = client.doPost(request);
-		        NettyHttpResponse response = (NettyHttpResponse) responseFuture.get();
+		        NettyHttpResponse response = (NettyHttpResponse) responseFuture.get(1,TimeUnit.SECONDS);
 		        
 		        System.out.println("响应报文:"+response.getResponseBody());
 			}

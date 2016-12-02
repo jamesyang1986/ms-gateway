@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cn.ms.gateway.core.processor.connector.entity.NettyHttpRequest;
-import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponseFuture;
+import cn.ms.gateway.core.processor.connector.response.NettyHttpResponseFuture;
 import cn.ms.gateway.core.processor.connector.support.NettyChannelPool;
 
 @SuppressWarnings("deprecation")

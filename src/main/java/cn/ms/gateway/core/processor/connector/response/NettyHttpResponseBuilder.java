@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.connector.support;
+package cn.ms.gateway.core.processor.connector.response;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpResponse;
@@ -6,8 +6,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import cn.ms.gateway.core.processor.connector.entity.NettyHttpResponse;
 
 public class NettyHttpResponseBuilder {
 
