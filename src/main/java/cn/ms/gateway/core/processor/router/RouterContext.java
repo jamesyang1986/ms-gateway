@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.route;
+package cn.ms.gateway.core.processor.router;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import com.weibo.api.motan.rpc.URL;
  * 
  * @author lry
  */
-public class RouteContext {
+public class RouterContext {
 
 	//$NON-NLS-常数定义$
 	public static final String SVS_SEQ = ":";
@@ -32,11 +32,11 @@ public class RouteContext {
 	private ConcurrentSkipListSet<String> routeRuleParamKeys = new ConcurrentSkipListSet<String>();
 
 	// 数据结构：Map<规则串, Map<serviceId, serviceId:version:sceneId>>
-	private ConcurrentHashMap<String, ConcurrentHashMap<String, RouteService>> routeRuleMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, RouteService>>();
+	private ConcurrentHashMap<String, ConcurrentHashMap<String, RouterService>> routeRuleMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, RouterService>>();
 	// 数据结构：Map<serviceId:version:sceneId, Map<host:port, URL>
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, URL>> routeListMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, URL>>();
 
-	public RouteContext() {
+	public RouterContext() {
 		// 第一步:设置路由匹配规则参数KEY
 		this.addRouteRuleParamKey("channelId");
 		this.addRouteRuleParamKey("code");
@@ -45,9 +45,9 @@ public class RouteContext {
 		Set<String> routeRules = new HashSet<String>();
 		routeRules.add("weixin**");
 		routeRules.add("A00*");
-		Set<RouteService> routeDataSet = new HashSet<RouteService>();
-		routeDataSet.add(RouteService.build("AtTran", "1.0.0", "S01"));
-		routeDataSet.add(RouteService.build("atbillquery", "1.0.0", "S02"));
+		Set<RouterService> routeDataSet = new HashSet<RouterService>();
+		routeDataSet.add(RouterService.build("AtTran", "1.0.0", "S01"));
+		routeDataSet.add(RouterService.build("atbillquery", "1.0.0", "S02"));
 		this.addRouteRule(routeRules, routeDataSet);
 
 		// 第三步:网关根据路由规则中的服务ID进行订阅服务提供者,并自动添加至服务清单中
@@ -74,7 +74,7 @@ public class RouteContext {
 	}
 
 	public static void main(String[] args) {
-		new RouteContext();
+		new RouterContext();
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class RouteContext {
 	 * @param routeRules
 	 * @param routeServices
 	 */
-	public void addRouteRule(Set<String> routeRules, Set<RouteService> routeServices) {
+	public void addRouteRule(Set<String> routeRules, Set<RouterService> routeServices) {
 		if (routeRules == null || routeRules.isEmpty()) {
 			throw new RuntimeException("'routeRules'不能为空");
 		}
@@ -120,12 +120,12 @@ public class RouteContext {
 			routeRule = routeRule.substring(0, routeRule.length() - SEQ.length());
 		}
 
-		ConcurrentHashMap<String, RouteService> routeDataMap = routeRuleMap.get(routeRule);
+		ConcurrentHashMap<String, RouterService> routeDataMap = routeRuleMap.get(routeRule);
 		if (routeDataMap == null) {
-			routeDataMap = new ConcurrentHashMap<String, RouteService>();
+			routeDataMap = new ConcurrentHashMap<String, RouterService>();
 		}
 
-		for (RouteService routeService : routeServices) {// routeData = serviceId:version:sceneId
+		for (RouterService routeService : routeServices) {// routeData = serviceId:version:sceneId
 			routeDataMap.put(routeService.getServiceId(), routeService);
 		}
 
@@ -168,19 +168,19 @@ public class RouteContext {
 	 *            路由参数组
 	 * @return
 	 */
-	public RouteResult selectRouteList(String serviceId, Map<String, String> parameters) {
+	public RouterResult selectRouteList(String serviceId, Map<String, String> parameters) {
 		//$NON-NLS-第一步：数据校验$
 		if (serviceId == null || serviceId.length() < 1) {
 			// ResultType用法一:多个参数
-			return RouteResult.build(ResultType.NOT_NULL_PARAM.wapper("serviceId", serviceId));
+			return RouterResult.build(ResultType.NOT_NULL_PARAM.wapper("serviceId", serviceId));
 		} else if (parameters == null || parameters.isEmpty()) {
-			return RouteResult.build(ResultType.NOT_NULL_PARAM.wapper("parameters", parameters));
+			return RouterResult.build(ResultType.NOT_NULL_PARAM.wapper("parameters", parameters));
 		} else if (routeRuleParamKeys.isEmpty()) {
-			return RouteResult.build(ResultType.NO_INIT_PARAM.wapper("routeRuleParamKeys", routeRuleParamKeys));
+			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeRuleParamKeys", routeRuleParamKeys));
 		} else if (routeRuleMap.isEmpty()) {
-			return RouteResult.build(ResultType.NO_INIT_PARAM.wapper("routeRuleMap", routeRuleMap));
+			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeRuleMap", routeRuleMap));
 		} else if (routeListMap.isEmpty()) {
-			return RouteResult.build(ResultType.NO_INIT_PARAM.wapper("routeListMap", routeListMap));
+			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeListMap", routeListMap));
 		}
 
 		//$NON-NLS-第二步：实时组装路由KEY$
@@ -189,7 +189,7 @@ public class RouteContext {
 			String tempVal = parameters.get(routeDataKey);
 			if (tempVal == null || tempVal.isEmpty()) {
 				// ResultType用法二:单个参数
-				return RouteResult.build(ResultType.REQPARAM_NOT_NULL.wapper(routeDataKey));
+				return RouterResult.build(ResultType.REQPARAM_NOT_NULL.wapper(routeDataKey));
 			}
 			routeRuleRegex += tempVal + SEQ;
 		}
@@ -197,27 +197,27 @@ public class RouteContext {
 			routeRuleRegex = routeRuleRegex.substring(0, routeRuleRegex.length() - SEQ.length());
 		}
 		if (routeRuleRegex == null || routeRuleRegex.length() < 1) {// 路由值结果校验
-			return RouteResult.build(ResultType.ILLEGAL_REQ_ROUTERULE.wapper("routeRuleRegex==" + routeRuleRegex));
+			return RouterResult.build(ResultType.ILLEGAL_REQ_ROUTERULE.wapper("routeRuleRegex==" + routeRuleRegex));
 		}
 
 		//$NON-NLS-第三步：路由KEY四重匹配$
 		List<URL> routeURLs = new ArrayList<URL>();
-		for (Map.Entry<String, ConcurrentHashMap<String, RouteService>> entry : routeRuleMap.entrySet()) {
+		for (Map.Entry<String, ConcurrentHashMap<String, RouterService>> entry : routeRuleMap.entrySet()) {
 			if (matches(routeRuleRegex, entry.getKey())) {// 进行路由KEY的匹配
 				if (entry.getValue() == null || entry.getValue().isEmpty()) {
-					return RouteResult.build(ResultType.ROUERULE_NOAVA_SERVICES.wapper(routeRuleRegex));
+					return RouterResult.build(ResultType.ROUERULE_NOAVA_SERVICES.wapper(routeRuleRegex));
 				}
 
 				//$NON-NLS-第四步：根据服务ID查找serviceId:version:sceneId$
-				RouteService routeService = entry.getValue().get(serviceId);
+				RouterService routeService = entry.getValue().get(serviceId);
 				if (routeService == null) {
-					return RouteResult.build(ResultType.SVS_NOT_NULL.wapper());
+					return RouterResult.build(ResultType.SVS_NOT_NULL.wapper());
 				}
 
 				//$NON-NLS-第五步：根据serviceId:version:sceneId来查找可用的服务提供者清单$
 				ConcurrentHashMap<String, URL> routeListURLMap = routeListMap.get(routeService.buildKey());
 				if (routeListURLMap == null || routeListURLMap.isEmpty()) {
-					return RouteResult.build(ResultType.NO_AVA_PROVIDER.wapper(routeService.buildKey(), routeListURLMap));
+					return RouterResult.build(ResultType.NO_AVA_PROVIDER.wapper(routeService.buildKey(), routeListURLMap));
 				}
 
 				//$NON-NLS-第六步：收集可用的服务提供者列表$
@@ -229,10 +229,10 @@ public class RouteContext {
 		// 最终结果校验
 		if (routeURLs.isEmpty()) {
 			// ResultType用法三:没有参数
-			return RouteResult.build(ResultType.NOTFOUND_ROUTE_RULE);
+			return RouterResult.build(ResultType.NOTFOUND_ROUTE_RULE);
 		} else {
 			// 路由成功
-			return RouteResult.build(ResultType.ROUTE_SELECT_OK, routeURLs);
+			return RouterResult.build(ResultType.ROUTE_SELECT_OK, routeURLs);
 		}
 	}
 

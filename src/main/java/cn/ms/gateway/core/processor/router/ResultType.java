@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.route;
+package cn.ms.gateway.core.processor.router;
 
 /**
  * 分组路由结果类型

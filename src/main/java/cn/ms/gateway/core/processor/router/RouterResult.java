@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.processor.route;
+package cn.ms.gateway.core.processor.router;
 
 import java.util.List;
 
@@ -11,14 +11,14 @@ import com.weibo.api.motan.rpc.URL;
  * 
  * @author lry
  */
-public class RouteResult {
+public class RouterResult {
 
 	/** 返回结果类型 **/
 	private ResultType resultType;
 	/** 服务提供者清单 **/
 	private List<URL> urls;
 
-	RouteResult(ResultType resultType, List<URL> urls) {
+	RouterResult(ResultType resultType, List<URL> urls) {
 		this.resultType = resultType;
 		this.urls = urls;
 	}
@@ -40,12 +40,12 @@ public class RouteResult {
 	}
 
 	//$NON-NLS-建造器$
-	public static RouteResult build(ResultType resultType) {
+	public static RouterResult build(ResultType resultType) {
 		return build(resultType, null);
 	}
 
-	public static RouteResult build(ResultType resultType, List<URL> urls) {
-		return new RouteResult(resultType, urls);
+	public static RouterResult build(ResultType resultType, List<URL> urls) {
+		return new RouterResult(resultType, urls);
 	}
 
 	@Override

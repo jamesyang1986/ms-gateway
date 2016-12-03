@@ -1,11 +1,11 @@
-package cn.ms.gateway.core.processor.route;
+package cn.ms.gateway.core.processor.router;
 
 /**
  * 路由服务
  * 
  * @author lry
  */
-public class RouteService {
+public class RouterService {
 
 	/** 服务ID **/
 	private String serviceId;
@@ -14,7 +14,7 @@ public class RouteService {
 	/** 服务组ID(相同服务相同版本的不同组) **/
 	private String group;
 
-	RouteService(String serviceId, String version, String group) {
+	RouterService(String serviceId, String version, String group) {
 		this.serviceId = serviceId;
 		this.version = version;
 		this.group = group;
@@ -46,13 +46,13 @@ public class RouteService {
 
 	//$NON-NLS-扩展$
 	public String buildKey() {
-		return getServiceId() + RouteContext.SVS_SEQ + getVersion()
-				+ RouteContext.SVS_SEQ + getGroup();
+		return getServiceId() + RouterContext.SVS_SEQ + getVersion()
+				+ RouterContext.SVS_SEQ + getGroup();
 	}
 
-	public static RouteService build(String serviceId, String version,
+	public static RouterService build(String serviceId, String version,
 			String sceneId) {
-		return new RouteService(serviceId, version, sceneId);
+		return new RouterService(serviceId, version, sceneId);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class RouteService {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RouteService other = (RouteService) obj;
+		RouterService other = (RouterService) obj;
 		if (group == null) {
 			if (other.group != null)
 				return false;
