@@ -13,8 +13,8 @@ import cn.ms.gateway.server.core.rest.ExecutorTask;
 import cn.ms.gateway.server.core.rest.HttpContext;
 import cn.ms.gateway.server.core.rest.URLResource;
 import cn.ms.gateway.server.core.rest.controller.URLController;
-import cn.ms.gateway.server.core.rest.request.NettyHttpRequestVisitor;
-import cn.ms.gateway.server.core.rest.response.HttpResponseBuilder;
+import cn.ms.gateway.server.core.rest.entity.HttpResponseBuilder;
+import cn.ms.gateway.server.core.rest.entity.NettyHttpRequestVisitor;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;

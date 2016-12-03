@@ -1,5 +1,9 @@
 package cn.ms.gateway.server.core.rest.controller;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import cn.ms.gateway.server.common.annotations.Header;
 import cn.ms.gateway.server.common.annotations.PathVariable;
 import cn.ms.gateway.server.common.annotations.RequestBody;
@@ -12,10 +16,6 @@ import cn.ms.gateway.server.core.rest.HttpContext;
 import cn.ms.gateway.server.core.rest.HttpSession;
 import cn.ms.gateway.server.core.rest.URLResource;
 import cn.ms.gateway.server.core.rest.controller.ControllerMethodDescriptor.MethodParams.AnnotationType;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * controller method descriptor include annotation params

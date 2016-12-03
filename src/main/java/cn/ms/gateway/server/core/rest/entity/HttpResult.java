@@ -1,4 +1,4 @@
-package cn.ms.gateway.server.core.rest.response;
+package cn.ms.gateway.server.core.rest.entity;
 
 import cn.ms.gateway.server.core.acceptor.ResultCode;
 

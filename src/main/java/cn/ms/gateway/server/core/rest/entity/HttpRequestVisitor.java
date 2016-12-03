@@ -1,4 +1,4 @@
-package cn.ms.gateway.server.core.rest.request;
+package cn.ms.gateway.server.core.rest.entity;
 
 import io.netty.handler.codec.http.HttpVersion;
 import cn.ms.gateway.server.common.RequestMethod;

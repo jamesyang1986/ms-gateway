@@ -1,4 +1,4 @@
-package cn.ms.gateway.server.core.rest.request;
+package cn.ms.gateway.server.core.rest.entity;
 
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.FullHttpRequest;

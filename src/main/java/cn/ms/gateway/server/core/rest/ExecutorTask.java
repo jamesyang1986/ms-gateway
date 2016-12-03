@@ -4,14 +4,15 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import cn.ms.gateway.server.common.utils.SerializeUtils;
-import cn.ms.gateway.server.core.rest.controller.URLController;
-import cn.ms.gateway.server.core.rest.interceptor.Interceptor;
-import cn.ms.gateway.server.core.rest.response.HttpResponseBuilder;
-import cn.ms.gateway.server.core.rest.response.HttpResult;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import cn.ms.gateway.server.common.utils.SerializeUtils;
+import cn.ms.gateway.server.core.rest.controller.URLController;
+import cn.ms.gateway.server.core.rest.entity.HttpResponseBuilder;
+import cn.ms.gateway.server.core.rest.entity.HttpResult;
+import cn.ms.gateway.server.core.rest.interceptor.Interceptor;
 
 public class ExecutorTask implements Callable<DefaultFullHttpResponse> {
 

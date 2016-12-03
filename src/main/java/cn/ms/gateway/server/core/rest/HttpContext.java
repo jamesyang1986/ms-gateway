@@ -1,12 +1,13 @@
 package cn.ms.gateway.server.core.rest;
 
 import io.netty.handler.codec.http.HttpVersion;
-import cn.ms.gateway.server.common.HttpConstants;
-import cn.ms.gateway.server.common.RequestMethod;
-import cn.ms.gateway.server.core.rest.request.HttpRequestVisitor;
 
 import java.util.Map;
 import java.util.UUID;
+
+import cn.ms.gateway.server.common.HttpConstants;
+import cn.ms.gateway.server.common.RequestMethod;
+import cn.ms.gateway.server.core.rest.entity.HttpRequestVisitor;
 
 /**
  * http context. include all http request and response information

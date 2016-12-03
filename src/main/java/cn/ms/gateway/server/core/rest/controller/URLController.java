@@ -7,7 +7,7 @@ import cn.ms.gateway.server.common.exception.ControllerParamsParsedException;
 import cn.ms.gateway.server.common.utils.Hitcounter;
 import cn.ms.gateway.server.core.acceptor.ResultCode;
 import cn.ms.gateway.server.core.rest.HttpContext;
-import cn.ms.gateway.server.core.rest.response.HttpResult;
+import cn.ms.gateway.server.core.rest.entity.HttpResult;
 
 public class URLController extends Hitcounter {
 
