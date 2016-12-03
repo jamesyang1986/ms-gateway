@@ -1,16 +1,16 @@
 package cn.ms.gateway.server.core.protocol;
 
 import cn.ms.gateway.server.core.NestyServer;
-import cn.ms.gateway.server.core.acceptor.IOAcceptor;
+import cn.ms.gateway.server.core.acceptor.IoAcceptor;
 
 public class NestyHttpServer extends NestyServer {
 
     /**
      * core io acceptor. implement http protocol
      */
-    private IOAcceptor ioAcceptor;
+    private IoAcceptor ioAcceptor;
 
-    public NestyHttpServer ioAcceptor(IOAcceptor asyncAcceptor) {
+    public NestyHttpServer ioAcceptor(IoAcceptor asyncAcceptor) {
         this.ioAcceptor = asyncAcceptor;
         return this;
     }
