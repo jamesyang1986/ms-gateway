@@ -1,6 +1,6 @@
 package cn.ms.gateway.server.core.acceptor;
 
-public interface IOAcceptor {
+public interface IoAcceptor1 {
 
     void eventLoop();
 

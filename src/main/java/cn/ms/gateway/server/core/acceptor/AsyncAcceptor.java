@@ -9,7 +9,7 @@ import cn.ms.gateway.server.core.NestyOptionProvider;
 import cn.ms.gateway.server.core.NestyOptions;
 import cn.ms.gateway.server.core.NestyServer;
 
-public abstract class AsyncAcceptor implements IOAcceptor {
+public abstract class AsyncAcceptor implements IoAcceptor1 {
 
     private final String address;
     private final int port;
