@@ -14,47 +14,51 @@
  *    limitations under the License.
  */
 
-package cn.ms.gateway;
+package cn.ms.gateway.motan;
 
+import com.weibo.api.motan.common.MotanConstants;
 import com.weibo.api.motan.config.ProtocolConfig;
-import com.weibo.api.motan.config.RefererConfig;
 import com.weibo.api.motan.config.RegistryConfig;
+import com.weibo.api.motan.config.ServiceConfig;
+import com.weibo.api.motan.util.MotanSwitcherUtil;
 
-public class MotanApiClientDemo {
+public class MotanApiExportDemo {
 
-    public static void main(String[] args) {
-        RefererConfig<MotanDemoService> motanDemoServiceReferer = new RefererConfig<MotanDemoService>();
+    public static void main(String[] args) throws InterruptedException {
+        ServiceConfig<MotanDemoService> motanDemoService = new ServiceConfig<MotanDemoService>();
 
         // 设置接口及实现类
-        motanDemoServiceReferer.setInterface(MotanDemoService.class);
+        motanDemoService.setInterface(MotanDemoService.class);
+        motanDemoService.setRef(new MotanDemoServiceImpl());
 
         // 配置服务的group以及版本号
-        motanDemoServiceReferer.setGroup("motan-demo-rpc");
-        motanDemoServiceReferer.setVersion("1.0");
-        motanDemoServiceReferer.setRequestTimeout(300);
+        motanDemoService.setGroup("motan-demo-rpc");
+        motanDemoService.setVersion("1.0");
 
         // 配置注册中心直连调用
         // RegistryConfig directRegistry = new RegistryConfig();
         // directRegistry.setRegProtocol("local");
-        // motanDemoServiceReferer.setRegistry(directRegistry);
+        // directRegistry.setCheck("false"); //不检查是否注册成功
+        // motanDemoService.setRegistry(directRegistry);
 
         // 配置ZooKeeper注册中心
         RegistryConfig zookeeperRegistry = new RegistryConfig();
         zookeeperRegistry.setRegProtocol("zookeeper");
         zookeeperRegistry.setAddress("127.0.0.1:2181");
-        motanDemoServiceReferer.setRegistry(zookeeperRegistry);
+        motanDemoService.setRegistry(zookeeperRegistry);
 
         // 配置RPC协议
         ProtocolConfig protocol = new ProtocolConfig();
         protocol.setId("motan");
         protocol.setName("motan");
-        motanDemoServiceReferer.setProtocol(protocol);
-        // motanDemoServiceReferer.setDirectUrl("localhost:8002");  // 注册中心直连调用需添加此配置
+        motanDemoService.setProtocol(protocol);
 
-        // 使用服务
-        MotanDemoService service = motanDemoServiceReferer.getRef();
-        System.out.println(service.hello("motan"));
+        motanDemoService.setExport("motan:8002");
+        motanDemoService.export();
 
-        System.exit(0);
+        MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
+
+        System.out.println("server start...");
     }
+
 }

@@ -14,13 +14,9 @@
  *    limitations under the License.
  */
 
-package cn.ms.gateway;
+package cn.ms.gateway.motan;
 
-public class MotanDemoServiceImpl implements MotanDemoService {
-
-    public String hello(String name) {
-        System.out.println(name);
-        return "Hello " + name + "!";
-    }
+public interface MotanDemoService {
+	public String hello(String name);
 
 }
