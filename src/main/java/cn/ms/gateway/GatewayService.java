@@ -24,29 +24,30 @@ public class GatewayService {
 	}
 	
 	/**
-	 * 网关业务调用
-	 * 
-	 * @param channelId 渠道ID
-	 * @param tradeId 业务ID
-	 * @param callId 调用ID
-	 * @param serviceId 服务ID
-	 * @param context 请求报文
+	 * 网关业务调用<br>
+	 * <br>
+	 * 访问URL:[http/https]://[ip]:[port]/gateway/v1/biz/[serviceId]<br>
+	 * <br>
+	 * 请求头参数:<br>
+	 * @param channelId 渠道ID<br>
+	 * @param tradeId 业务ID<br>
+	 * @param callId 调用ID<br>
+	 * <br>
 	 * @return
 	 */
 	@RequestMapping(value = "/biz/{serviceId}", method = RequestMethod.POST)
-	public HttpResult biz(HttpSession httpContext, @PathVariable("serviceId") String serviceId) {
-
+	public HttpResult biz(HttpSession httpSession, @PathVariable("serviceId") String serviceId) {
 		//组装请求对象
 		Request req = new Request();
 		req.setServiceId(serviceId);
-		req.setHttpAttributes(httpContext.getHttpAttributes());
-		req.setHttpBody(httpContext.getHttpBody());
-		req.setHttpHeaders(httpContext.getHttpHeaders());
-		req.setHttpParams(httpContext.getHttpParams());
-		req.setRemoteAddress(httpContext.getRemoteAddress());
-		req.setRequestId(httpContext.getRequestId());
-		req.setTerms(httpContext.getTerms());
-		req.setUri(httpContext.getUri());
+		req.setHttpAttributes(httpSession.getHttpAttributes());
+		req.setHttpBody(httpSession.getHttpBody());
+		req.setHttpHeaders(httpSession.getHttpHeaders());
+		req.setHttpParams(httpSession.getHttpParams());
+		req.setRemoteAddress(httpSession.getRemoteAddress());
+		req.setRequestId(httpSession.getRequestId());
+		req.setTerms(httpSession.getTerms());
+		req.setUri(httpSession.getUri());
 		
 		Response res = Response.build();
 		try {

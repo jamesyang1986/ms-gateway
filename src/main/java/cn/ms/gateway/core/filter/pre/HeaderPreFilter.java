@@ -19,11 +19,11 @@ import com.weibo.api.motan.util.ConcurrentHashSet;
  * @author lry
  */
 @Filter(value = FilterType.PRE, order = 100)
-public class HeaderCheckPreFilter extends IFilter<Request, Response> {
+public class HeaderPreFilter extends IFilter<Request, Response> {
 
 	private ConcurrentHashSet<ParameterModel> headerParams = new ConcurrentHashSet<ParameterModel>();
 	
-	public HeaderCheckPreFilter() {
+	public HeaderPreFilter() {
 		try {
 			ref(Conf.CONF.getHeaders());
 		} catch (Exception e) {
@@ -48,23 +48,21 @@ public class HeaderCheckPreFilter extends IFilter<Request, Response> {
 		if (!headerParams.isEmpty()) {
 			for (ParameterModel attribute : headerParams) {// 遍历需要验证的参数
 				String headerVal = req.getHttpHeaders().get(attribute.getParamKey());
-				if (headerVal == null || headerVal.length() < 1) {// 第一步：参数有无的校验
-					//$NON-NLS-参数不存在$
+				// 第一步：参数有无的校验
+				if (headerVal == null || headerVal.length() < 1) {
 					res.setResponseType(ResponseType.HEADER_PARAM_NOTNULL.wrapper(attribute.getParamKey()));
-					System.out.println("KEY:"+attribute.getParamKey()+", "+res.getResponseType().getMsg());
 					return false;
 				} else {
-					if (attribute.getLength() > 0) {// 第二步：需要校验长度
+					// 第二步：需要校验长度
+					if (attribute.getLength() > 0) {
 						if (attribute.getLength() != headerVal.length()) {
-							//$NON-NLS-长度不相等$
 							res.setResponseType(ResponseType.HEADER_PARAM_LENGTH_NOTEQ.wrapper(attribute.getParamKey(), attribute.getLength()));
 							return false;
 						}
 					}
-
-					if (!(attribute.getType() == null || attribute.getType().length() < 1)) {// 第三步：需要校验类型
+					// 第三步：需要校验类型
+					if (!(attribute.getType() == null || attribute.getType().length() < 1)) {
 						if (!ParameterTypeCheck.checkType(attribute.getType(), headerVal)) {
-							// 校验类型失败
 							res.setResponseType(ResponseType.HEADER_PARAM_TYPE_ILLEGAL.wrapper(attribute.getParamKey(), attribute.getType()));
 							return false;
 						}
@@ -72,9 +70,6 @@ public class HeaderCheckPreFilter extends IFilter<Request, Response> {
 				}
 			}
 		}
-		
-		res.setHttpBody("响应报文体");
-		res.setResponseType(ResponseType.SUCCESS);
 		
 		return true;
 	}
