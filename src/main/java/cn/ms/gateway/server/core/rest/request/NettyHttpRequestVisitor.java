@@ -21,78 +21,83 @@ import com.google.common.collect.FluentIterable;
 
 public class NettyHttpRequestVisitor implements HttpRequestVisitor {
 
-    private final Channel channel;
-    private final FullHttpRequest request;
+	private final Channel channel;
+	private final FullHttpRequest request;
 
-    public NettyHttpRequestVisitor(Channel channel, FullHttpRequest request) {
-        this.channel = channel;
-        this.request = request;
-    }
+	public NettyHttpRequestVisitor(Channel channel, FullHttpRequest request) {
+		this.channel = channel;
+		this.request = request;
+	}
 
-    @Override
-    public String visitRemoteAddress() {
-        for (Map.Entry<String, String> entry : request.headers()) {
-            if (entry.getKey().equals(HttpConstants.HEADER_X_FORWARDED_FOR))
-                return entry.getValue();
-        }
-        return ((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress();
-    }
-
-    @Override
-    public RequestMethod visitHttpMethod() {
-        return HttpUtils.convertHttpMethodFromNetty(request);
-    }
-
-    @Override
-    public String visitHttpBody() {
-        return request.content().toString(CharsetUtil.UTF_8);
-    }
-
-    @SuppressWarnings("deprecation")
 	@Override
-    public Map<String, String> visitHttpParams() {
-        Map<String, String> params = new HashMap<>(32);
+	public String visitRemoteAddress() {
+		for (Map.Entry<String, String> entry : request.headers()) {
+			if (entry.getKey().equals(HttpConstants.HEADER_X_FORWARDED_FOR)) {
+				return entry.getValue();
+			}
+		}
+		return ((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress();
+	}
 
-        // from URL
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri(), Charset.forName("UTF-8"));
-        for (Map.Entry<String, List<String>> item : decoder.parameters().entrySet())
-            params.put(item.getKey(), item.getValue().get(0));
-
-        // query string and body
-        if (visitHttpMethod() != RequestMethod.GET) {
-            // from content body key-value
-            QueryStringDecoder kvDecoder = new QueryStringDecoder(visitHttpBody(), Charset.forName("UTF-8"), false);
-            for (Map.Entry<String, List<String>> item : kvDecoder.parameters().entrySet())
-                params.put(item.getKey(), item.getValue().get(0));
-        }
-
-        return params;
-    }
-
-    @Override
-    public Map<String, String> visitHttpHeaders() {
-        Map<String, String> headers = new HashMap<>(32);
-        for (Map.Entry<String, String> entry : request.headers())
-            headers.put(entry.getKey(), entry.getValue());
-        return headers;
-    }
-
-    @SuppressWarnings("deprecation")
 	@Override
-    public String visitURI() {
-        return request.getUri();
-    }
+	public RequestMethod visitHttpMethod() {
+		return HttpUtils.convertHttpMethodFromNetty(request);
+	}
 
-    @SuppressWarnings("deprecation")
 	@Override
-    public String[] visitTerms() {
-        String termsUrl = HttpUtils.truncateUrl(request.getUri());
-        return FluentIterable.from(Splitter.on('/').omitEmptyStrings().trimResults().split(termsUrl)).toArray(String.class);
-    }
+	public String visitHttpBody() {
+		return request.content().toString(CharsetUtil.UTF_8);
+	}
 
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	@Override
-    public HttpVersion visitHttpVersion() {
-        return request.getProtocolVersion();
-    }
+	public Map<String, String> visitHttpParams() {
+		Map<String, String> params = new HashMap<>(32);
+
+		// from URL
+		QueryStringDecoder decoder = new QueryStringDecoder(request.getUri(), Charset.forName("UTF-8"));
+		for (Map.Entry<String, List<String>> item : decoder.parameters().entrySet()) {
+			params.put(item.getKey(), item.getValue().get(0));
+		}
+
+		// query string and body
+		if (visitHttpMethod() != RequestMethod.GET) {
+			// from content body key-value
+			QueryStringDecoder kvDecoder = new QueryStringDecoder(visitHttpBody(), Charset.forName("UTF-8"), false);
+			for (Map.Entry<String, List<String>> item : kvDecoder.parameters().entrySet()) {
+				params.put(item.getKey(), item.getValue().get(0));
+			}
+		}
+
+		return params;
+	}
+
+	@Override
+	public Map<String, String> visitHttpHeaders() {
+		Map<String, String> headers = new HashMap<>(32);
+		for (Map.Entry<String, String> entry : request.headers()){
+			headers.put(entry.getKey(), entry.getValue());
+		}
+		
+		return headers;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public String visitURI() {
+		return request.getUri();
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public String[] visitTerms() {
+		String termsUrl = HttpUtils.truncateUrl(request.getUri());
+		return FluentIterable.from(Splitter.on('/').omitEmptyStrings().trimResults().split(termsUrl)).toArray(String.class);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public HttpVersion visitHttpVersion() {
+		return request.getProtocolVersion();
+	}
 }

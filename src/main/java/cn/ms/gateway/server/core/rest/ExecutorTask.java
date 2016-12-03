@@ -32,22 +32,22 @@ public class ExecutorTask implements Callable<DefaultFullHttpResponse> {
     public DefaultFullHttpResponse call() {
         // call interceptor chain of filter
         for (Interceptor every : interceptor) {
-            if (!every.filter(httpContext))
-                return HttpResponseBuilder.create(httpContext, HttpResponseStatus.FORBIDDEN);        // httpcode 403
+            if (!every.filter(httpContext)) {
+            	return HttpResponseBuilder.create(httpContext, HttpResponseStatus.FORBIDDEN);        // httpcode 403
+            }
         }
 
         // call controller method
         HttpResult result = handler.call(httpContext);
-
         DefaultFullHttpResponse response;
-
         switch (result.getHttpStatus()) {
         case SUCCESS:
             if (result.getHttpContent() != null) {
                 ByteBuf content = Unpooled.wrappedBuffer(SerializeUtils.encode(result.getHttpContent()));
                 response = HttpResponseBuilder.create(httpContext, content);                                              // httpcode 200
-            } else
-                response = HttpResponseBuilder.create(httpContext, HttpResponseStatus.NO_CONTENT);          // httpcode 204
+            } else {
+            	response = HttpResponseBuilder.create(httpContext, HttpResponseStatus.NO_CONTENT);          // httpcode 204
+            }
             break;
         case RESPONSE_NOT_VALID:
             response = HttpResponseBuilder.create(httpContext, HttpResponseStatus.BAD_GATEWAY);            // httpcode 502
@@ -68,8 +68,9 @@ public class ExecutorTask implements Callable<DefaultFullHttpResponse> {
         // will be replaced to original instance
         for (Interceptor every : interceptor) {
             DefaultFullHttpResponse newResponse = every.handler(httpContext, response);
-            if (newResponse != null)
-                response = newResponse;
+            if (newResponse != null) {
+            	response = newResponse;
+            }
         }
 
         return response;

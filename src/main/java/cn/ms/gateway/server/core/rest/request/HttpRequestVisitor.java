@@ -6,19 +6,19 @@ import cn.ms.gateway.server.common.RequestMethod;
 import java.util.Map;
 
 public interface HttpRequestVisitor {
-    String visitRemoteAddress();
+	String visitRemoteAddress();
 
-    String visitURI();
+	String visitURI();
 
-    String[] visitTerms();
+	String[] visitTerms();
 
-    RequestMethod visitHttpMethod();
+	RequestMethod visitHttpMethod();
 
-    String visitHttpBody();
+	String visitHttpBody();
 
-    Map<String, String> visitHttpParams();
+	Map<String, String> visitHttpParams();
 
-    Map<String, String> visitHttpHeaders();
+	Map<String, String> visitHttpHeaders();
 
-    HttpVersion visitHttpVersion();
+	HttpVersion visitHttpVersion();
 }

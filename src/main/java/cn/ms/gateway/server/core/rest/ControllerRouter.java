@@ -28,25 +28,30 @@ public class ControllerRouter {
         try {
             // we have checked the request method is supportted!. couldn't index overflow
             URLMapper slot = mapper[resource.requestMethod().ordinal()][resource.fragments().size()];
-            if (slot != null)
-                return slot.get(resource);
+            if (slot != null) {
+            	return slot.get(resource);
+            }
         } catch (ArrayIndexOutOfBoundsException ignored) {
             ignored.printStackTrace();
         }
+        
         return null;
     }
 
     public synchronized boolean register(URLResource resource, URLController controller) {
         Indexer indexer = new Indexer(resource);
-        if (mapper[indexer.HttpMethodIndex][indexer.TermsIndex] == null)
-            mapper[indexer.HttpMethodIndex][indexer.TermsIndex] = new URLMapper();
+        if (mapper[indexer.HttpMethodIndex][indexer.TermsIndex] == null) {
+        	mapper[indexer.HttpMethodIndex][indexer.TermsIndex] = new URLMapper();
+        }
+        
         return mapper[indexer.HttpMethodIndex][indexer.TermsIndex].register(resource, controller);
     }
 
     public synchronized void unregister(URLResource resource) {
         Indexer indexer = new Indexer(resource);
-        if (mapper[indexer.HttpMethodIndex][indexer.TermsIndex] != null)
-            mapper[indexer.HttpMethodIndex][indexer.TermsIndex].unregister(resource);
+        if (mapper[indexer.HttpMethodIndex][indexer.TermsIndex] != null) {
+        	mapper[indexer.HttpMethodIndex][indexer.TermsIndex].unregister(resource);
+        }
     }
 
     static class Indexer {

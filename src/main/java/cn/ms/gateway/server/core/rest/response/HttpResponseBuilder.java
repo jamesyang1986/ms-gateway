@@ -31,8 +31,9 @@ public class HttpResponseBuilder {
             resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, content);
             resp.headers().set(HttpConstants.HEADER_CONTENT_LENGTH, content.readableBytes());
             resp.headers().set(HttpConstants.HEADER_CONTENT_TYPE, HttpConstants.HEADER_CONTENT_TYPE_JSON);
-        } else
-            resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status);
+        } else {
+        	resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status);
+        }
 
         // fill nesty headers
         resp.headers().set(HttpConstants.HEADER_REQUEST_ID, httpContext.getRequestId());
