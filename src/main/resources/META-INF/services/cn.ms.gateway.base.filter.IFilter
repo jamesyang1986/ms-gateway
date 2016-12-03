@@ -1,4 +1,5 @@
 #PRE类过滤器
+cn.ms.gateway.core.filter.pre.HeaderCheckPreFilter
 
 #ROUTE类过滤器
 

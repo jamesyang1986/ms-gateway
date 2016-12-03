@@ -4,6 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+
+import cn.ms.gateway.Constants;
+
+import com.weibo.api.motan.util.ConcurrentHashSet;
 
 
 /**
@@ -12,6 +17,48 @@ import java.util.Map;
  * @author lry
  */
 public class ParameterContext {
+	
+	/**
+	 * 参数校验规则转换
+	 * 
+	 * @param headers
+	 * @return
+	 */
+	public static ConcurrentHashSet<ParameterModel> convert(String headers) {
+		ConcurrentHashSet<ParameterModel> headerParams = new ConcurrentHashSet<ParameterModel>();
+		if (headers != null) {
+			if (headers.length() > 0) {
+				String[] paramArray = headers.split(Constants.PARAM_SEQ);
+				for (String pm : paramArray) {
+					int fno = pm.indexOf("{");
+					ParameterModel paramAttribute = new ParameterModel();
+					paramAttribute.setParamKey((fno > 0) ? pm.substring(0, fno) : pm);
+
+					Matcher m = Constants.PARAM_PATTERN.matcher(pm);
+					if (m.find()) {
+						String paramstr = m.group(1).replace(",", "&");
+						Map<String, String> attributeMap = ParameterContext.getParamsMap(paramstr, Constants.DEFAULT_ENCODEY);
+						String length = attributeMap.get(Constants.PARAM_LENGTH_KEY);
+						if (length != null) {
+							if (length.length() > 0) {
+								paramAttribute.setLength(Integer.parseInt(length));
+							}
+						}
+						String type = attributeMap.get(Constants.PARAM_TYPE_KEY);
+						if (type != null) {
+							if (type.length() > 0) {
+								paramAttribute.setType(type);
+							}
+						}
+					}
+
+					headerParams.add(paramAttribute);
+				}
+			}
+		}
+		
+		return headerParams;
+	}
 	
 	/**
 	 * 将传入的“a=12&b=88”形式的字符串转换成map返回

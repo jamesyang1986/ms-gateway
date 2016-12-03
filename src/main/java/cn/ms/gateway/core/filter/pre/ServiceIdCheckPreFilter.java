@@ -1,5 +1,5 @@
 package cn.ms.gateway.core.filter.pre;
 
-public class ErrorFilter {
+public class ServiceIdCheckPreFilter {
 
 }

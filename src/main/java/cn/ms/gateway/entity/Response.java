@@ -47,7 +47,7 @@ public class Response {
 
 	@Override
 	public String toString() {
-		return "Response [responseType=" + responseType + ", httpBody=" + httpBody + "]";
+		return "Response [responseType=[code=" + responseType.getCode() + ", msg="+responseType.getMsg()+"], httpBody=" + httpBody + "]";
 	}
 
 }
