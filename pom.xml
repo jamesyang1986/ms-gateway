@@ -9,7 +9,8 @@
 
 	<properties>
 		<ms-netty>2.0.0-SNAPSHOT</ms-netty>
-		<motan-core>0.2.2</motan-core>
+		<motan-core>0.2.3-SNAPSHOT</motan-core>
+		<disruptor>3.3.6</disruptor>
 		<junit>4.12</junit>
 	</properties>
 
@@ -23,6 +24,21 @@
 			<groupId>com.weibo</groupId>
 			<artifactId>motan-core</artifactId>
 			<version>${motan-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.weibo</groupId>
+			<artifactId>motan-transport-netty</artifactId>
+			<version>${motan-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.weibo</groupId>
+			<artifactId>motan-registry-zookeeper</artifactId>
+			<version>${motan-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${disruptor}</version>
 		</dependency>
 
 		<!-- 单元测试 -->
