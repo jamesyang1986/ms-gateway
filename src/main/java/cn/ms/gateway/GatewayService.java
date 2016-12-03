@@ -37,8 +37,7 @@ public class GatewayService {
 			@RequestBody String context) {
 
 		String msg = "channelId:" + channelId + ", tradeId:" + tradeId
-				+ ", callId:" + callId + ", serviceId: " + serviceId
-				+ ", context: " + context;
+				+ ", callId:" + callId + ", serviceId: " + serviceId + ", context: " + context;
 		System.out.println(msg);
 
 		Request req = new Request();
