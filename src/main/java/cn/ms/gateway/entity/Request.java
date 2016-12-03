@@ -1,4 +1,4 @@
-package cn.ms.gateway.core.entity;
+package cn.ms.gateway.entity;
 
 public class Request {
 

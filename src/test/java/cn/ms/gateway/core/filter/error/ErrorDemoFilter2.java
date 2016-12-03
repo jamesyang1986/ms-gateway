@@ -3,8 +3,8 @@ package cn.ms.gateway.core.filter.error;
 import cn.ms.gateway.base.filter.Filter;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
-import cn.ms.gateway.core.entity.Request;
-import cn.ms.gateway.core.entity.Response;
+import cn.ms.gateway.entity.Request;
+import cn.ms.gateway.entity.Response;
 
 @Filter(value=FilterType.ERROR, order=100)
 public class ErrorDemoFilter2 extends IFilter<Request, Response>{
