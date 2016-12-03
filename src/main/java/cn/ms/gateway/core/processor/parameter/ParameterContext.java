@@ -25,8 +25,7 @@ public class ParameterContext {
 		Map<String, String[]> paramsMap = getParamsArrayMap(queryString, enc);
 		if (!paramsMap.isEmpty()) {
 			for (Map.Entry<String, String[]> entry : paramsMap.entrySet()) {
-				params.put(entry.getKey(),
-						entry.getValue()[entry.getValue().length - 1]);
+				params.put(entry.getKey(), entry.getValue()[entry.getValue().length - 1]);
 			}
 		}
 		return params;
