@@ -1,20 +1,53 @@
 package cn.ms.gateway.entity;
 
-public class Response {
-	
-	private String data;
+import java.util.HashMap;
+import java.util.Map;
 
-	public String getData() {
-		return data;
+import cn.ms.netty.server.core.rest.entity.HttpResult;
+
+public class Response {
+
+	// 响应类型
+	private ResponseType responseType=ResponseType.FAILURE;
+	// 响应报文体
+	private String httpBody="";
+
+	Response() {
 	}
 
-	public void setData(String data) {
-		this.data = data;
+	public ResponseType getResponseType() {
+		return responseType;
+	}
+
+	public void setResponseType(ResponseType responseType) {
+		this.responseType = responseType;
+	}
+
+	public String getHttpBody() {
+		return httpBody;
+	}
+
+	public void setHttpBody(String httpBody) {
+		this.httpBody = httpBody;
+	}
+
+	//$NON-NLS-建造方法$
+	public static final Response build() {
+		return new Response();
+	}
+
+	public HttpResult buildHttpResult() {
+		ResponseType responseType = this.getResponseType();
+		Map<String, String> httpHeaders = new HashMap<String, String>();
+		httpHeaders.put("Code", String.valueOf(responseType.getCode()));
+		httpHeaders.put("Msg", responseType.getMsg());
+
+		return new HttpResult(this.getHttpBody(), httpHeaders);
 	}
 
 	@Override
 	public String toString() {
-		return "Response [data=" + data + "]";
+		return "Response [responseType=" + responseType + ", httpBody=" + httpBody + "]";
 	}
-	
+
 }

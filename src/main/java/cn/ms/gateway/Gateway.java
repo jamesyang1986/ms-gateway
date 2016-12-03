@@ -11,7 +11,7 @@ public enum Gateway {
 	INSTANCE;
 
 	GatewayFilterContext gfc;
-	
+
 	/**
 	 * 初始化
 	 */
@@ -45,9 +45,9 @@ public enum Gateway {
 
 			// 4. start http server
 			if (server.start()) {
-				System.err.println("NestServer run successed.");
+				System.err.println("GatewayServer run successed.");
 			} else {
-				System.err.println("NestServer run failed.");
+				System.out.println("GatewayServer run failed.");
 			}
 
 			server.join();
@@ -64,6 +64,7 @@ public enum Gateway {
 	}
 
 	public static void main(String[] args) {
+		INSTANCE.init();
 		INSTANCE.startup();
 	}
 

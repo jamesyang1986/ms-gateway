@@ -10,4 +10,13 @@ public class GatewayFilterContext extends FilterContext<Request, Response> {
 		super();
 	}
 	
+	@Override
+	public void filterChain(Request req, Response res, Object... args) throws Throwable {
+		try {
+			super.filterChain(req, res, args);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

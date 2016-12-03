@@ -10,9 +10,9 @@ public class FilterTest {
 	public static void main(String[] args) throws Exception {
 		FilterContext<Request, Response> chanChain = new FilterContext<Request, Response>();
 		Request req = new Request();
-		req.setData("");
-		req.setMsg("");
-		Response res = new Response();
+		req.setHttpBody("");
+		req.setRequestId("");
+		Response res = Response.build();
 		try {
 			chanChain.filterChain(req, res);
 		} catch (Throwable t) {

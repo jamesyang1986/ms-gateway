@@ -49,7 +49,11 @@ public class FilterContext<REQ, RES> {
 
 		//$NON-NLS-排序$
 		for (FilterType filterType : FilterType.values()) {
-			addFilters(filterMap.get(filterType));
+			List<IFilter<REQ, RES>> filters=filterMap.get(filterType);
+			if (filters == null || filters.isEmpty() ) {
+				continue;
+			}
+			addFilters(filters);
 		}
 	}
 

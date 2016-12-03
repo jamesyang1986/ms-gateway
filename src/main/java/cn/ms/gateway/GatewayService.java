@@ -1,16 +1,11 @@
 package cn.ms.gateway;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.ms.gateway.entity.Request;
 import cn.ms.gateway.entity.Response;
 import cn.ms.netty.server.common.HttpConstants;
 import cn.ms.netty.server.common.RequestMethod;
 import cn.ms.netty.server.common.annotations.Controller;
-import cn.ms.netty.server.common.annotations.Header;
 import cn.ms.netty.server.common.annotations.PathVariable;
-import cn.ms.netty.server.common.annotations.RequestBody;
 import cn.ms.netty.server.common.annotations.RequestMapping;
 import cn.ms.netty.server.core.rest.HttpSession;
 import cn.ms.netty.server.core.rest.entity.HttpResult;
@@ -39,34 +34,28 @@ public class GatewayService {
 	 * @return
 	 */
 	@RequestMapping(value = "/biz/{serviceId}", method = RequestMethod.POST)
-	public HttpResult biz(HttpSession httpContext,
-			@Header(value = "channelId", required = false) String channelId,
-			@Header(value = "tradeId", required = false) String tradeId,
-			@Header(value = "callId", required = false) String callId,
-			@PathVariable("serviceId") String serviceId,
-			@RequestBody String context) {
+	public HttpResult biz(HttpSession httpContext, @PathVariable("serviceId") String serviceId) {
 
-		String content = "channelId:" + channelId + ", tradeId:" + tradeId
-				+ ", callId:" + callId + ", serviceId: " + serviceId + ", context: " + context;
-		System.out.println(content);
-		
-		System.out.println(httpContext.getHttpHeaders());
-		
+		//组装请求对象
 		Request req = new Request();
-		Response res = new Response();
-
+		req.setServiceId(serviceId);
+		req.setHttpAttributes(httpContext.getHttpAttributes());
+		req.setHttpBody(httpContext.getHttpBody());
+		req.setHttpHeaders(httpContext.getHttpHeaders());
+		req.setHttpParams(httpContext.getHttpParams());
+		req.setRemoteAddress(httpContext.getRemoteAddress());
+		req.setRequestId(httpContext.getRequestId());
+		req.setTerms(httpContext.getTerms());
+		req.setUri(httpContext.getUri());
+		
+		Response res = Response.build();
 		try {
-			//Gateway.INSTANCE.gfc.filterChain(req, res);
+			Gateway.INSTANCE.gfc.filterChain(req, res);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println(httpContext.getRequestId());
-		Map<String, String> httpHeaders=new HashMap<String, String>();
-		httpHeaders.put("Code", "1000");
-		httpHeaders.put("Msg", "成功了");
-
-		return new HttpResult(content, httpHeaders);
+		return res.buildHttpResult();
 	}
 
 }
