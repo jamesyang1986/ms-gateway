@@ -80,18 +80,17 @@ public abstract class NestyServer extends NestyOptionProvider implements Server 
             if (clazz.getAnnotation(cn.ms.gateway.server.common.annotations.Interceptor.class) != null) {
                 checkConstructor(clazz);
                 // must implements Interceptor
-                if (clazz.getSuperclass() != Interceptor.class)
-                    throw new ControllerRequestMappingException(String.format("%s must implements %s", clazz.getName(), Interceptor.class.getName()));
+                if (clazz.getSuperclass() != Interceptor.class){
+                	throw new ControllerRequestMappingException(String.format("%s must implements %s", clazz.getName(), Interceptor.class.getName()));
+                }
 
                 try {
 
                     /**
                      * we register interceptors with class-name natural sequence. may
-                     * be known as unordered. But make ensurance that call with registered
-                     * sequence.
+                     * be known as unordered. But make ensurance that call with registered sequence.
                      *
                      * TODO : may be we can indecate the previous {@link org.nesty.commons.annotations.Interceptor} manully
-                     *
                      */
                     interceptors.add((Interceptor) clazz.newInstance());
                 } catch (InstantiationException | IllegalAccessException e) {
@@ -108,21 +107,23 @@ public abstract class NestyServer extends NestyOptionProvider implements Server 
                 // find all annotationed method in class
                 Method[] methods = clazz.getMethods();
                 for (Method method : methods) {
-                    if (Modifier.isStatic(method.getModifiers()) || method.getAnnotations().length == 0)
-                        continue;
+                    if (Modifier.isStatic(method.getModifiers()) || method.getAnnotations().length == 0){
+                    	continue;
+                    }
 
                     // read @RequestMapping
                     cn.ms.gateway.server.common.annotations.RequestMapping requestMapping = method.getAnnotation(cn.ms.gateway.server.common.annotations.RequestMapping.class);
-                    if (requestMapping == null)
-                        continue;
+                    if (requestMapping == null){
+                    	continue;
+                    }
 
                     String uri = requestMapping.value();
-                    if (!uri.startsWith("/"))
-                        throw new ControllerRequestMappingException(String.format("%s.%s annotation must start with / ", clazz.getName(), method.getName()));
-
-                    if (clazzLevelRequestMapping != null)
-                        uri = clazzLevelRequestMapping.value() + uri;
-
+                    if (!uri.startsWith("/")){
+                    	throw new ControllerRequestMappingException(String.format("%s.%s annotation must start with / ", clazz.getName(), method.getName()));
+                    }
+                    if (clazzLevelRequestMapping != null){
+                    	uri = clazzLevelRequestMapping.value() + uri;
+                    }
 
                     // default is RequestMethod.GET if method annotation is not set
                     RequestMethod requestMethod = requestMapping.method();
@@ -139,8 +140,9 @@ public abstract class NestyServer extends NestyOptionProvider implements Server 
                      * TODO : we throw exception here. let users to know and decide what to do
                      *
                      */
-                    if (!routerTable.register(urlResource, urlController))
-                        throw new ControllerRequestMappingException(String.format("%s.%s annotation is duplicated", clazz.getName(), method.getName()));
+                    if (!routerTable.register(urlResource, urlController)){
+                    	throw new ControllerRequestMappingException(String.format("%s.%s annotation is duplicated", clazz.getName(), method.getName()));
+                    }
 
                     // add monitor
                     NestyServerMonitor.resourceMap.put(urlResource, urlController);
@@ -152,8 +154,9 @@ public abstract class NestyServer extends NestyOptionProvider implements Server 
     }
 
     private boolean checkConstructor(Class<?> clazz) throws ControllerRequestMappingException {
-        if (!ClassUtil.hasDefaultConstructor(clazz))
-            throw new ControllerRequestMappingException(String.format("%s dosn't have default constructor", clazz.getName()));
+        if (!ClassUtil.hasDefaultConstructor(clazz)){
+        	throw new ControllerRequestMappingException(String.format("%s dosn't have default constructor", clazz.getName()));
+        }
         return true;
     }
 

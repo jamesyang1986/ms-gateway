@@ -3,6 +3,7 @@ package cn.ms.gateway.server;
 import cn.ms.gateway.server.common.exception.ControllerRequestMappingException;
 import cn.ms.gateway.server.core.NestyOptions;
 import cn.ms.gateway.server.core.NestyServer;
+import cn.ms.gateway.server.core.NestyServerMonitor;
 import cn.ms.gateway.server.core.acceptor.AsyncServerProvider;
 import cn.ms.gateway.server.core.protocol.NestyProtocol;
 
@@ -14,7 +15,7 @@ public class SimpleHttpServer {
         NestyServer server = AsyncServerProvider.builder()
         		.address("127.0.0.1")
         		.port(8080)
-        		.service(NestyProtocol.HTTP2);
+        		.service(NestyProtocol.HTTP);
 
         // 2. choose http params. this is unnecessary
         server.option(NestyOptions.IO_THREADS, Runtime.getRuntime().availableProcessors())
@@ -32,7 +33,12 @@ public class SimpleHttpServer {
         	System.err.println("NestServer run failed.");
         }
 
-        server.join();
+        while (true) {
+        	Thread.sleep(1000);
+        	System.out.println(NestyServerMonitor.ToString());
+		}
+        
+        //server.join();
         // would not to reach here as usual ......
     }
 }
