@@ -8,6 +8,7 @@ import cn.ms.netty.server.common.annotations.Header;
 import cn.ms.netty.server.common.annotations.PathVariable;
 import cn.ms.netty.server.common.annotations.RequestBody;
 import cn.ms.netty.server.common.annotations.RequestMapping;
+import cn.ms.netty.server.core.rest.HttpSession;
 
 /**
  * 微服务控制器
@@ -29,7 +30,7 @@ public class GatewayService {
 	 * @return
 	 */
 	@RequestMapping(value = "/biz/{serviceId}", method = RequestMethod.POST)
-	public String biz(
+	public String biz(HttpSession httpContext,
 			@Header(value = "channelId", required = false) String channelId,
 			@Header(value = "tradeId", required = false) String tradeId,
 			@Header(value = "callId", required = false) String callId,
@@ -39,7 +40,9 @@ public class GatewayService {
 		String msg = "channelId:" + channelId + ", tradeId:" + tradeId
 				+ ", callId:" + callId + ", serviceId: " + serviceId + ", context: " + context;
 		System.out.println(msg);
-
+		
+		System.out.println(httpContext.getHttpHeaders());
+		
 		Request req = new Request();
 		Response res = new Response();
 
