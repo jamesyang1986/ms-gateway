@@ -4,13 +4,16 @@ import cn.ms.gateway.core.GatewayFilterContext;
 import cn.ms.netty.server.core.NestyOptions;
 import cn.ms.netty.server.core.NestyServer;
 import cn.ms.netty.server.core.acceptor.AsyncServerProvider;
+import cn.ms.netty.server.core.acceptor.AsyncServerProvider.Builder;
 import cn.ms.netty.server.core.protocol.NestyProtocol;
 
 public enum Gateway {
 
 	INSTANCE;
 
-	GatewayFilterContext gfc;
+	public Builder builder;
+	public NestyServer server;
+	public GatewayFilterContext gfc;
 
 	/**
 	 * 初始化
@@ -29,9 +32,8 @@ public enum Gateway {
 	public void startup() {
 		try {
 			// 1. create httpserver
-			NestyServer server = AsyncServerProvider.builder()
-					.address("127.0.0.1").port(8080)
-					.service(NestyProtocol.HTTP);
+			builder = AsyncServerProvider.builder().port(8080).protocol(NestyProtocol.HTTP);
+			server = builder.service();
 
 			// 2. choose http params. this is unnecessary
 			server.option(NestyOptions.IO_THREADS,
@@ -49,7 +51,7 @@ public enum Gateway {
 			} else {
 				System.out.println("GatewayServer run failed.");
 			}
-
+			
 			server.join();
 		} catch (Exception e) {
 			e.printStackTrace();
