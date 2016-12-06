@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-import cn.ms.gateway.Constants;
+import cn.ms.gateway.common.Constants;
 
 import com.weibo.api.motan.util.ConcurrentHashSet;
 

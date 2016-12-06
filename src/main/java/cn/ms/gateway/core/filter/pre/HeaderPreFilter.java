@@ -1,9 +1,9 @@
 package cn.ms.gateway.core.filter.pre;
 
-import cn.ms.gateway.Conf;
 import cn.ms.gateway.base.filter.Filter;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
+import cn.ms.gateway.common.Conf;
 import cn.ms.gateway.core.processor.parameter.ParameterContext;
 import cn.ms.gateway.core.processor.parameter.ParameterModel;
 import cn.ms.gateway.core.processor.parameter.ParameterTypeCheck;

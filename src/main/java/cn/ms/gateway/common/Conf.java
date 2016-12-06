@@ -1,4 +1,4 @@
-package cn.ms.gateway;
+package cn.ms.gateway.common;
 
 public enum Conf {
 
