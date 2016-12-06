@@ -35,15 +35,17 @@ public class FilterContext<REQ, RES> {
 		ServiceLoader<IFilter> serviceloader = ServiceLoader.load(IFilter.class);
 		for (IFilter<REQ, RES> filter : serviceloader) {
 			Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
-			if (filterAnnotation != null) {
-				//$NON-NLS-根据过滤器类型分组收集$
-				FilterType filterType = filterAnnotation.value();
-				List<IFilter<REQ, RES>> filterList = filterMap.get(filterType);
-				if (filterList == null) {
-					filterList = new ArrayList<IFilter<REQ, RES>>();
+			if (filterAnnotation != null) {//校验注解是否存在
+				if(filterAnnotation.enable()){//校验开关
+					//$NON-NLS-根据过滤器类型分组收集$
+					FilterType filterType = filterAnnotation.value();
+					List<IFilter<REQ, RES>> filterList = filterMap.get(filterType);
+					if (filterList == null) {
+						filterList = new ArrayList<IFilter<REQ, RES>>();
+					}
+					filterList.add(filter);
+					filterMap.put(filterType, filterList);					
 				}
-				filterList.add(filter);
-				filterMap.put(filterType, filterList);
 			}
 		}
 
