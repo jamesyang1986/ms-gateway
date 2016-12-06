@@ -1,6 +1,5 @@
 package cn.ms.gateway.base;
 
-
 /**
  * 配置参数
  * 
@@ -8,9 +7,8 @@ package cn.ms.gateway.base;
  */
 public enum ConfParam {
 
-
 	//$NON-NLS-基本常数$
-	DEFAULT_ENCODEY("checkHeader", "UTF-8", "请求头参数校验开关"),
+	DEF_ENCODE("defEncode", "UTF-8", "默认编码"),
 	
 	//$NON-NLS-请求头校验$
 	CHECK_HEADER("checkHeader", true, "请求头参数校验开关"), 
@@ -71,6 +69,11 @@ public enum ConfParam {
 
 	public String getStringValue() {
 		return String.valueOf(value);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getAutoValue() {
+		return (T)value;
 	}
 	
 	public void setStringValue(String value) {

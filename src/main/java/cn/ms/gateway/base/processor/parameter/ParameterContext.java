@@ -44,7 +44,7 @@ public class ParameterContext {
 					Matcher m = PARAM_PATTERN.matcher(pm);
 					if (m.find()) {
 						String paramstr = m.group(1).replace(",", "&");
-						Map<String, String> attributeMap = ParameterContext.getParamsMap(paramstr, ConfParam.DEFAULT_ENCODEY.getStringValue());
+						Map<String, String> attributeMap = ParameterContext.getParamsMap(paramstr, ConfParam.DEF_ENCODE.getStringValue());
 						String length = attributeMap.get(PARAM_LENGTH_KEY);
 						if (length != null) {
 							if (length.length() > 0) {
