@@ -1,5 +1,6 @@
 package cn.ms.gateway.common;
 
+
 /**
  * 配置参数
  * 
@@ -7,17 +8,24 @@ package cn.ms.gateway.common;
  */
 public enum ConfParam {
 
+
+	//$NON-NLS-基本常数$
+	DEFAULT_ENCODEY("checkHeader", "UTF-8", "请求头参数校验开关"),
+	
+	//$NON-NLS-请求头校验$
 	CHECK_HEADER("checkHeader", true, "请求头参数校验开关"), 
 	HEADER_RULE("headerRule", "channelId;tradeId{length=32};callId{length=32}", "请求头校验参数规则数据");
+	
 	;
-
+	
+	//$NON-NLS-内部属性$
 	private volatile String name;
 	private volatile Object value;
 	private volatile long longValue;
 	private volatile int intValue;
 	private volatile boolean boolValue;
 	private volatile String msg;
-
+	
 	ConfParam(String name, Object value, String msg) {
 		this.name = name;
 		this.value = value;

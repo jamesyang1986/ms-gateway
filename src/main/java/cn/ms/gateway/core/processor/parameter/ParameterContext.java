@@ -5,8 +5,9 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import cn.ms.gateway.common.Constants;
+import cn.ms.gateway.common.ConfParam;
 
 import com.weibo.api.motan.util.ConcurrentHashSet;
 
@@ -18,6 +19,12 @@ import com.weibo.api.motan.util.ConcurrentHashSet;
  */
 public class ParameterContext {
 	
+	public static final String PARAM_LENGTH_KEY="length";
+	public static final String PARAM_TYPE_KEY="type";
+	public static final Pattern PARAM_PATTERN = Pattern.compile("\\{(.*?)\\}");
+	public static final String PARAM_SEQ=";";
+	public static final String PARAM_MODEL_SEQ=",";
+	
 	/**
 	 * 参数校验规则转换
 	 * 
@@ -28,23 +35,23 @@ public class ParameterContext {
 		ConcurrentHashSet<ParameterModel> headerParams = new ConcurrentHashSet<ParameterModel>();
 		if (headers != null) {
 			if (headers.length() > 0) {
-				String[] paramArray = headers.split(Constants.PARAM_SEQ);
+				String[] paramArray = headers.split(PARAM_SEQ);
 				for (String pm : paramArray) {
 					int fno = pm.indexOf("{");
 					ParameterModel paramAttribute = new ParameterModel();
 					paramAttribute.setParamKey((fno > 0) ? pm.substring(0, fno) : pm);
 
-					Matcher m = Constants.PARAM_PATTERN.matcher(pm);
+					Matcher m = PARAM_PATTERN.matcher(pm);
 					if (m.find()) {
 						String paramstr = m.group(1).replace(",", "&");
-						Map<String, String> attributeMap = ParameterContext.getParamsMap(paramstr, Constants.DEFAULT_ENCODEY);
-						String length = attributeMap.get(Constants.PARAM_LENGTH_KEY);
+						Map<String, String> attributeMap = ParameterContext.getParamsMap(paramstr, ConfParam.DEFAULT_ENCODEY.getStringValue());
+						String length = attributeMap.get(PARAM_LENGTH_KEY);
 						if (length != null) {
 							if (length.length() > 0) {
 								paramAttribute.setLength(Integer.parseInt(length));
 							}
 						}
-						String type = attributeMap.get(Constants.PARAM_TYPE_KEY);
+						String type = attributeMap.get(PARAM_TYPE_KEY);
 						if (type != null) {
 							if (type.length() > 0) {
 								paramAttribute.setType(type);
