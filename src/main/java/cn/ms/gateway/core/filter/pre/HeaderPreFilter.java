@@ -3,7 +3,7 @@ package cn.ms.gateway.core.filter.pre;
 import cn.ms.gateway.base.filter.Filter;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
-import cn.ms.gateway.common.Conf;
+import cn.ms.gateway.common.ConfParam;
 import cn.ms.gateway.core.processor.parameter.ParameterContext;
 import cn.ms.gateway.core.processor.parameter.ParameterModel;
 import cn.ms.gateway.core.processor.parameter.ParameterTypeCheck;
@@ -25,7 +25,7 @@ public class HeaderPreFilter extends IFilter<Request, Response> {
 	
 	public HeaderPreFilter() {
 		try {
-			ref(Conf.CONF.getHeaders());
+			ref(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,11 +36,7 @@ public class HeaderPreFilter extends IFilter<Request, Response> {
 	 */
 	@Override
 	public <REF> void ref(REF ref) throws Exception {
-		if(ref instanceof String){
-			String headers=(String)ref;
-			Conf.CONF.setHeaders(headers);
-			headerParams = ParameterContext.convert(headers);
-		}
+		headerParams = ParameterContext.convert(ConfParam.HEADER_RULE.getStringValue());
 	}
 	
 	@Override
