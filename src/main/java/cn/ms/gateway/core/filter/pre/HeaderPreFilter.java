@@ -1,12 +1,12 @@
 package cn.ms.gateway.core.filter.pre;
 
+import cn.ms.gateway.base.ConfParam;
 import cn.ms.gateway.base.filter.Filter;
 import cn.ms.gateway.base.filter.FilterType;
 import cn.ms.gateway.base.filter.IFilter;
 import cn.ms.gateway.base.processor.parameter.ParameterContext;
 import cn.ms.gateway.base.processor.parameter.ParameterModel;
 import cn.ms.gateway.base.processor.parameter.ParameterTypeCheck;
-import cn.ms.gateway.common.ConfParam;
 import cn.ms.gateway.entity.Request;
 import cn.ms.gateway.entity.Response;
 import cn.ms.gateway.entity.ResponseType;

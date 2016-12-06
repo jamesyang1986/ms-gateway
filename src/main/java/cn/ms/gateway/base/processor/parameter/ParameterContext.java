@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.ms.gateway.common.ConfParam;
+import cn.ms.gateway.base.ConfParam;
 
 import com.weibo.api.motan.util.ConcurrentHashSet;
 
