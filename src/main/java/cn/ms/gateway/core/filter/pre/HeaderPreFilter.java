@@ -35,7 +35,7 @@ public class HeaderPreFilter extends IFilter<Request, Response> {
 	 * 将配置参数CONF中定义的对请求头的规范读取到set中
 	 */
 	@Override
-	public <REF> void ref(REF ref) throws Exception {
+	public void ref(Object ref) throws Exception {
 		headerParams = ParameterContext.convert(ConfParam.HEADER_RULE.getStringValue());
 	}
 	

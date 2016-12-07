@@ -70,13 +70,11 @@ public class FilterContext<REQ, RES> {
 			throw new RuntimeException("'filter'不能为空");
 		}
 		if (!(filter instanceof IFilter)) {
-			throw new RuntimeException("'" + filter.getClass().getName()
-					+ "'必须为'" + IFilter.class.getName() + "'的子类");
+			throw new RuntimeException("'" + filter.getClass().getName() + "'必须为'" + IFilter.class.getName() + "'的子类");
 		}
 		Filter filterAnnotation = filter.getClass().getAnnotation(Filter.class);
 		if (filterAnnotation == null) {
-			throw new RuntimeException("'" + filter.getClass().getName()
-					+ "'必须包含注解'" + Filter.class.getName() + "'");
+			throw new RuntimeException("'" + filter.getClass().getName() + "'必须包含注解'" + Filter.class.getName() + "'");
 		}
 
 		FilterType filterType = filterAnnotation.value();
@@ -91,8 +89,7 @@ public class FilterContext<REQ, RES> {
 		Collections.sort(filterList, new Comparator<IFilter<REQ, RES>>() {
 			@Override
 			public int compare(IFilter<REQ, RES> o1, IFilter<REQ, RES> o2) {
-				return o1.getClass().getAnnotation(Filter.class).order()
-						- o2.getClass().getAnnotation(Filter.class).order();
+				return o1.getClass().getAnnotation(Filter.class).order() - o2.getClass().getAnnotation(Filter.class).order();
 			}
 		});
 
@@ -171,8 +168,7 @@ public class FilterContext<REQ, RES> {
 	 * @return
 	 * @throws Throwable
 	 */
-	private boolean doFilterChain(FilterType filterType, REQ req,
-			RES res, Object... args) throws Throwable {
+	private boolean doFilterChain(FilterType filterType, REQ req, RES res, Object... args) throws Throwable {
 		ConcurrentHashMap<Integer, IFilter<REQ, RES>> filters = filterDatas.get(filterType);
 		if (filters == null || filters.isEmpty()) {
 			return true;

@@ -18,7 +18,8 @@ public abstract class IFilter<REQ, RES> {
 	 * @param ref
 	 * @throws Exception
 	 */
-	public <REF> void ref(REF ref) throws Exception {
+	public void ref(Object ref) throws Exception {
+		
 	}
 
 	/**
@@ -45,8 +46,7 @@ public abstract class IFilter<REQ, RES> {
 	 * @return
 	 * @throws Throwable
 	 */
-	public boolean doChain(AtomicInteger no, REQ req, RES res,
-			FilterChain<REQ, RES> filterChain, Object... args) throws Throwable {
+	public boolean doChain(AtomicInteger no, REQ req, RES res, FilterChain<REQ, RES> filterChain, Object... args) throws Throwable {
 		boolean tempFlag = true;
 		try {
 			tempFlag = doBefore(req, res, args);
@@ -69,8 +69,7 @@ public abstract class IFilter<REQ, RES> {
 	 * @return
 	 * @throws Throwable
 	 */
-	public abstract boolean doBefore(REQ req, RES res, Object... args)
-			throws Throwable;
+	public abstract boolean doBefore(REQ req, RES res, Object... args) throws Throwable;
 
 	/**
 	 * 响应执行
@@ -81,6 +80,7 @@ public abstract class IFilter<REQ, RES> {
 	 * @throws Throwable
 	 */
 	public void doAfter(REQ req, RES res, Object... args) throws Throwable {
+		
 	}
 
 }
