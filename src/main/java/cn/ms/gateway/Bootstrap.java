@@ -7,7 +7,7 @@ import cn.ms.netty.server.core.acceptor.AsyncServerProvider;
 import cn.ms.netty.server.core.acceptor.AsyncServerProvider.Builder;
 import cn.ms.netty.server.core.protocol.NestyProtocol;
 
-public enum Gateway {
+public enum Bootstrap {
 
 	INSTANCE;
 

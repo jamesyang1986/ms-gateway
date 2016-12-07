@@ -62,7 +62,7 @@ public class GatewayService {
 		
 		Response res = Response.build();
 		try {
-			Gateway.INSTANCE.gfc.filterChain(req, res);
+			Bootstrap.INSTANCE.gfc.filterChain(req, res);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -80,9 +80,9 @@ public class GatewayService {
 	public List<Map<String,String>> openapis() {
 		List<Map<String,String>> openapis=new ArrayList<Map<String,String>>();
 		
-		String protocol = Gateway.INSTANCE.builder.getProtocol().getCode();
+		String protocol = Bootstrap.INSTANCE.builder.getProtocol().getCode();
 		String host=NetUtils.getLocalAddress().getHostAddress();
-		int port = Gateway.INSTANCE.builder.getPort();
+		int port = Bootstrap.INSTANCE.builder.getPort();
 		
 		for (Map.Entry<URLResource, URLController> entry:NestyServerMonitor.getResourcesMap().entrySet()) {
 			Map<String,String> apiData=new HashMap<String, String>();
