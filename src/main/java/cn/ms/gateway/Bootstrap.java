@@ -7,6 +7,11 @@ import cn.ms.netty.server.core.acceptor.AsyncServerProvider;
 import cn.ms.netty.server.core.acceptor.AsyncServerProvider.Builder;
 import cn.ms.netty.server.core.protocol.NestyProtocol;
 
+/**
+ * 微服务网关启动入口
+ * 
+ * @author lry
+ */
 public enum Bootstrap {
 
 	INSTANCE;
@@ -62,12 +67,17 @@ public enum Bootstrap {
 	 * 关闭
 	 */
 	public void shutdown() {
-
+		if(server!=null){
+			server.shutdown();			
+		}
 	}
 
 	public static void main(String[] args) {
-		INSTANCE.init();
-		INSTANCE.startup();
+		// 初始化服务
+		Bootstrap.INSTANCE.init();
+		
+		// 启动服务
+		Bootstrap.INSTANCE.startup();
 	}
 
 }
