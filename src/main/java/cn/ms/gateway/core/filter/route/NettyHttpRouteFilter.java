@@ -8,7 +8,7 @@ import cn.ms.gateway.entity.Response;
 import cn.ms.netty.client.NettyClient;
 import cn.ms.netty.client.NettyClientFactory;
 import cn.ms.netty.client.entity.CRequest;
-import cn.ms.netty.client.entity.CRespone;
+import cn.ms.netty.client.entity.CResponse;
 import cn.ms.netty.client.support.CURL;
 
 /**
@@ -29,7 +29,7 @@ public class NettyHttpRouteFilter extends IFilter<Request, Response> {
 			NettyClient nettyClient = nettyClientFactory.getNettyClient(curl);
 			CRequest crequest=new CRequest();
 			crequest.setData(req.getHttpBody());
-			CRespone respone = nettyClient.request(crequest);
+			CResponse respone = nettyClient.request(crequest);
 			System.out.println("响应报文:"+respone.getData());
 		} catch (Exception e) {
 			throw new RuntimeException("远程路由异常");
