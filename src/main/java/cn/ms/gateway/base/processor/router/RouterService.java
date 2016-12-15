@@ -46,8 +46,7 @@ public class RouterService {
 
 	//$NON-NLS-扩展$
 	public String buildKey() {
-		return getServiceId() + RouterContext.SVS_SEQ + getVersion()
-				+ RouterContext.SVS_SEQ + getGroup();
+		return getServiceId() + RouterContext.SVG_SEQ + getVersion() + RouterContext.SVG_SEQ + getGroup();
 	}
 
 	public static RouterService build(String serviceId, String version,
