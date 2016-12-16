@@ -16,8 +16,8 @@ import com.weibo.api.motan.rpc.URL;
  * <br>
  * 使用方式:<br>
  * 第一步：void addOrUpRouteParamKeys(String routeParamKey)-->初始化路由规则参数KEYs(项目启动时统一规定好)<br>
- * 第二步：void addOrUpRouteRule(String routeRules, Set<String> serviceIdVersionGroupSet)-->添加一条路由规则(包括其允许消费的服务清单)<br>
- * 第三步：void addOrUpProviders(Set<URL> routeListSet)-->添加一组服务提供者清单<br>
+ * 第二步：void addOrUpRouteRule(String routeRules, Set<String> svgSet)-->添加一条路由规则(包括其允许消费的服务清单)<br>
+ * 第三步：void addOrUpProviders(Set<URL> providerURLs)-->添加一组服务提供者清单<br>
  * 第四步：RouterResult selectRouteList(String serviceId, Map<String, String> parameters)-->根据需要消费的服务ID和路由参数组,进行分组选择路由清单<br>
  * 第五步：boolean containsRouteProviderMapKey(String routeProviderMapKey)-->使用场景：判断是否需要重新订阅<br>
  * <br>
@@ -34,13 +34,13 @@ import com.weibo.api.motan.rpc.URL;
  */
 public class RouterContext {
 
-	// 规则分割、匹配符号
-	public static final String SEQ = "&";
+	/** 规则分割符 **/
+	public static final String RULE_SEQ = "&";
+	/** serviceId、version和group分割符 **/
 	public static final String SVG_SEQ = ":";
 	
 	/** 请求头中需要路由的参数KEY集合 **/
 	private ConcurrentSkipListSet<String> routeParamKeys = new ConcurrentSkipListSet<String>();
-
 	/** 数据结构：Map<规则串, Map< serviceId, serviceId:version:group >> **/
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> routeRuleMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, String>>();
 	/** 数据结构：Map< serviceId:version:group, Map< host:port, URL> >, 其中host:port的作用是用于对URL实例进去去重**/
@@ -49,11 +49,11 @@ public class RouterContext {
 	/**
 	 * 第一步：初始化路由规则参数KEYs(项目启动时统一规定好)
 	 * 
-	 * @param routeRuleParamKey eg-->areaId&channelId&consumerId
+	 * @param routeRuleParamKey eg：areaId&channelId&consumerId
 	 */
 	public void addOrUpRouteParamKey(String routeParamKey) {
 		ConcurrentSkipListSet<String> tempRouteParamKeys = new ConcurrentSkipListSet<String>();
-		String[] routeRuleParamArray=routeParamKey.split(SEQ);
+		String[] routeRuleParamArray=routeParamKey.split(RULE_SEQ);
 		for (String routeRuleParam:routeRuleParamArray) {
 			tempRouteParamKeys.add(routeRuleParam);
 		}
@@ -64,14 +64,14 @@ public class RouterContext {
 	 * 第二步：添加一条路由规则(包括其允许消费的服务清单)
 	 * 
 	 * @param routeRules 规则串全量
-	 * @param serviceIdVersionGroupSet Set{<serviceId:version:group>,<serviceId:version:group>,....}
+	 * @param svgSet Set{serviceId:version:group, serviceId:version:group,....}
 	 */
-	public void addOrUpRouteRule(String routeRules, Set<String> serviceIdVersionGroupSet) {
+	public void addOrUpRouteRule(String routeRules, Set<String> svgSet) {
 		if (routeRules == null || routeRules.isEmpty()) {
 			throw new RuntimeException("'routeRules'不能为空");
 		}
-		if (serviceIdVersionGroupSet == null || serviceIdVersionGroupSet.isEmpty()) {
-			throw new RuntimeException("'serviceIdVersionGroupSet'不能为空");
+		if (svgSet == null || svgSet.isEmpty()) {
+			throw new RuntimeException("'svgSet'不能为空");
 		}
 		
 		// 组装路由规则
@@ -81,18 +81,18 @@ public class RouterContext {
 		}
 		
 		Set<String> serviceIdSet=new HashSet<String>();
-		for (String serviceIdVersionGroup : serviceIdVersionGroupSet) {// routeData = serviceId:version:group
-			String[] serviceIdVersionArray=serviceIdVersionGroup.split(SVG_SEQ);
-			if(serviceIdVersionArray.length!=3){
+		for (String svg : svgSet) {// svg = serviceId:version:group
+			String[] svgArray=svg.split(SVG_SEQ);
+			if(svgArray.length!=3){
 				throw new RuntimeException("非法规则(路由服务的格式必须为:“serviceId:version:group”)");
 			}
 			
-			String serviceId=serviceIdVersionArray[0];
+			String serviceId=svgArray[0];
 			if(serviceIdSet.contains(serviceId)){//校验服务ID是否重复
 				throw new RuntimeException("单条规则内部的服务ID不能重复");
 			}
 			serviceIdSet.add(serviceId);//用于serviceId去重
-			routeDataMap.put(serviceId, serviceId + SVG_SEQ + serviceIdVersionArray[1] + SVG_SEQ + serviceIdVersionArray[2]);
+			routeDataMap.put(serviceId, serviceId + SVG_SEQ + svgArray[1] + SVG_SEQ + svgArray[2]);
 		}
 
 		//TODO 如何清理掉废弃后的路由规则记录?
@@ -102,7 +102,7 @@ public class RouterContext {
 	/**
 	 * 第三步：添加一组服务提供者清单
 	 * 
-	 * @param providerURLs
+	 * @param providerURLs 支持单、多组提供者注入
 	 */
 	public void addOrUpProviders(Set<URL> providerURLs) {
 		// 计算至临时空间
@@ -117,8 +117,10 @@ public class RouterContext {
 			tempRouteProviderMap.put(serviceIdVersionGroup, routeListDataMap);//缓存至临时空间
 		}
 		
-		// 直接覆盖式变更
-		this.routeProviderMap=tempRouteProviderMap;
+		// 针对同组进行(相同svg为同组)直接覆盖式变更
+		for (Map.Entry<String, ConcurrentHashMap<String, URL>> entry:tempRouteProviderMap.entrySet()) {
+			this.routeProviderMap.put(entry.getKey(), entry.getValue());
+		}
 	}
 
 	/**
@@ -144,12 +146,12 @@ public class RouterContext {
 			return RouterResult.build(ResultType.NOT_NULL_PARAM.wapper("serviceId", serviceId));// ResultType用法一:多个参数
 		} else if (parameters == null || parameters.isEmpty()) {
 			return RouterResult.build(ResultType.NOT_NULL_PARAM.wapper("parameters", parameters));
-		} else if (routeParamKeys.isEmpty()) {
+		} else if (routeParamKeys.isEmpty()) {// 没有初始化路由规则参数
 			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeParamKeys", routeParamKeys));
-		} else if (routeRuleMap.isEmpty()) {
-			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeRuleMap", routeRuleMap));
-		} else if (routeProviderMap.isEmpty()) {
-			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeProviderMap", routeProviderMap));
+		} else if (routeRuleMap.isEmpty()) {// 没有可用的路由规则
+			return RouterResult.build(ResultType.NO_AVA_RULE.wapper("routeRuleMap", routeRuleMap));
+		} else if (routeProviderMap.isEmpty()) {// 没有已订阅的服务
+			return RouterResult.build(ResultType.NO_SUBSCRIBE_PROVIDER.wapper("routeProviderMap", routeProviderMap));
 		}
 
 		//$NON-NLS-第二步：从parameters中获取参数值,实时组装路由待匹配KEY$
@@ -159,10 +161,10 @@ public class RouterContext {
 			if (tempVal == null || tempVal.length()<1) {
 				return RouterResult.build(ResultType.REQPARAM_NOT_NULL.wapper(routeDataKey));// ResultType用法二:单个参数
 			}
-			routeRuleRegex += tempVal + SEQ;
+			routeRuleRegex += tempVal + RULE_SEQ;
 		}
-		if (routeRuleRegex.endsWith(SEQ)) {// 去尾部的&
-			routeRuleRegex = routeRuleRegex.substring(0, routeRuleRegex.length() - SEQ.length());
+		if (routeRuleRegex.endsWith(RULE_SEQ)) {// 去尾部的&
+			routeRuleRegex = routeRuleRegex.substring(0, routeRuleRegex.length() - RULE_SEQ.length());
 		}
 		if (routeRuleRegex == null || routeRuleRegex.length() < 1) {// 路由值结果校验
 			return RouterResult.build(ResultType.ILLEGAL_REQ_ROUTERULE.wapper("routeRuleRegex==" + routeRuleRegex));

@@ -14,7 +14,11 @@ public enum ResultType {
 	NOT_NULL_PARAM("参数'%s' == '%s'不能为空"), 
 	
 	/** 没有初始化'%s' == '%s' **/
-	NO_INIT_PARAM("没有初始化'%s' == '%s'"), 
+	NO_INIT_PARAM("没有初始化'%s' == '%s'"),
+	/** 没有初始化'%s' == '%s' **/
+	NO_AVA_RULE("没有可用的路由规则'%s' == '%s'"),
+	/** 没有初始化'%s' == '%s' **/
+	NO_SUBSCRIBE_PROVIDER("没有已订阅的服务'%s' == '%s'"), 
 	
 	/** 路由参数'%s'不能为空 **/
 	REQPARAM_NOT_NULL("路由参数'%s'不能为空"), 
