@@ -1,7 +1,6 @@
 package cn.ms.gateway.base.processor.router;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,51 +40,10 @@ public class RouterContext {
 	/** 请求头中需要路由的参数KEY集合 **/
 	private ConcurrentSkipListSet<String> routeParamKeys = new ConcurrentSkipListSet<String>();
 
-	/** 数据结构：Map<规则串, Map< serviceId, RouterService{serviceId:version:group} >> **/
-	private ConcurrentHashMap<String, ConcurrentHashMap<String, RouterService>> routeRuleMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, RouterService>>();
+	/** 数据结构：Map<规则串, Map< serviceId, serviceId:version:group >> **/
+	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> routeRuleMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, String>>();
 	/** 数据结构：Map< serviceId:version:group, Map< host:port, URL> >, 其中host:port的作用是用于对URL实例进去去重**/
-	private ConcurrentHashMap<String, ConcurrentHashMap<String, URL>> routeListMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, URL>>();
-
-
-	public static void main(String[] args) {
-		RouterContext rc = new RouterContext();
-		// 第一步:设置路由匹配规则参数KEY
-		rc.addOrUpRouteParamKey("areaId&channelId&consumerId");// 地区ID&渠道ID&消费服务ID
-
-		// 第二步:管理端添加路由规则
-		Set<String> routeDataSet1 = new HashSet<String>();// 所有记录的serviceId不能重复
-		routeDataSet1.add("AtTran:1.0.0:S01");
-		rc.addOrUpRouteRule("(beijing)&(weixin0[1-5])&(AtTra.)", routeDataSet1);
-
-		Set<String> routeDataSet2 = new HashSet<String>();
-		routeDataSet2.add("atbillquery:1.0.0:S01");
-		rc.addOrUpRouteRule("((beijing|shenzheng))&(weixin0[6-9])&(atbill.*)", routeDataSet2);
-
-		// 第三步:网关根据路由规则中的服务ID进行订阅服务提供者,并自动添加至服务清单中
-		Set<URL> routeListSet = new HashSet<URL>();
-		routeListSet.add(URL.valueOf("http://10.24.1.62:29001/AtTran?version=1.0.0&group=S01"));// 服务AtTran
-		routeListSet.add(URL.valueOf("http://10.24.1.62:29002/AtTran?version=1.0.0&group=S01"));// 服务AtTran
-		routeListSet.add(URL.valueOf("http://10.24.1.63:29001/atbillquery?version=1.0.0&group=S01"));// 服务atbillquery
-		rc.addOrUpProviders(routeListSet);
-
-		// 查看当前数据
-		System.out.println("1>>>>>" + rc.routeParamKeys);
-		System.out.println("2>>>>>" + rc.routeRuleMap);
-		System.out.println("3>>>>>" + rc.routeListMap);
-
-		// 第四步:模拟请求
-		Map<String, String> parameters1 = new HashMap<String, String>();
-		parameters1.put("areaId", "beijing");
-		parameters1.put("channelId", "weixin04");
-		parameters1.put("consumerId", "AtTran");
-		System.out.println("路由选择结果清单:" + rc.selectRouteList("AtTran", parameters1));
-
-		Map<String, String> parameters2 = new HashMap<String, String>();
-		parameters2.put("areaId", "shenzheng");
-		parameters2.put("channelId", "weixin07");
-		parameters2.put("consumerId", "atbillquery");
-		System.out.println("路由选择结果清单:" + rc.selectRouteList("atbillquery", parameters2));
-	}
+	private ConcurrentHashMap<String, ConcurrentHashMap<String, URL>> routeProviderMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, URL>>();
 
 	/**
 	 * 第一步：初始化路由规则参数KEYs(项目启动时统一规定好)
@@ -116,14 +74,14 @@ public class RouterContext {
 		}
 		
 		// 组装路由规则
-		ConcurrentHashMap<String, RouterService> routeDataMap = routeRuleMap.get(routeRules);
+		ConcurrentHashMap<String, String> routeDataMap = routeRuleMap.get(routeRules);
 		if (routeDataMap == null) {
-			routeDataMap = new ConcurrentHashMap<String, RouterService>();
+			routeDataMap = new ConcurrentHashMap<String, String>();
 		}
 		
 		Set<String> serviceIdSet=new HashSet<String>();
 		for (String serviceIdVersionGroup : serviceIdVersionGroupSet) {// routeData = serviceId:version:group
-			String[] serviceIdVersionArray=serviceIdVersionGroup.split(":");
+			String[] serviceIdVersionArray=serviceIdVersionGroup.split(SVG_SEQ);
 			if(serviceIdVersionArray.length!=3){
 				throw new RuntimeException("非法规则(路由服务的格式必须为:“serviceId:version:group”)");
 			}
@@ -133,7 +91,7 @@ public class RouterContext {
 				throw new RuntimeException("单条规则内部的服务ID不能重复");
 			}
 			serviceIdSet.add(serviceId);//用于serviceId去重
-			routeDataMap.put(serviceId, RouterService.build(serviceId, serviceIdVersionArray[1], serviceIdVersionArray[2]));
+			routeDataMap.put(serviceId, serviceId + SVG_SEQ + serviceIdVersionArray[1] + SVG_SEQ + serviceIdVersionArray[2]);
 		}
 
 		//TODO 如何清理掉废弃后的路由规则记录?
@@ -146,21 +104,32 @@ public class RouterContext {
 	 * @param providerURLs
 	 */
 	public void addOrUpProviders(Set<URL> providerURLs) {
-		//计算至临时空间
-		ConcurrentHashMap<String, ConcurrentHashMap<String, URL>> tempRouteListMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, URL>>();
+		// 计算至临时空间
+		ConcurrentHashMap<String, ConcurrentHashMap<String, URL>> tempRouteProviderMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, URL>>();
 		for (URL url : providerURLs) {
 			String serviceIdVersionGroup=url.getPath()+SVG_SEQ+url.getVersion()+SVG_SEQ+url.getGroup();//serviceId:version:group
-			ConcurrentHashMap<String, URL> routeListDataMap = tempRouteListMap.get(serviceIdVersionGroup);
+			ConcurrentHashMap<String, URL> routeListDataMap = tempRouteProviderMap.get(serviceIdVersionGroup);
 			if (routeListDataMap == null) {
 				routeListDataMap = new ConcurrentHashMap<String, URL>();
 			}
 			routeListDataMap.put(url.getHost() + SVG_SEQ + url.getPort(), url);//添加至单个serviceId:version:group的组内
-			tempRouteListMap.put(serviceIdVersionGroup, routeListDataMap);//缓存至临时空间
+			tempRouteProviderMap.put(serviceIdVersionGroup, routeListDataMap);//缓存至临时空间
 		}
-		//直接覆盖式变更
-		this.routeListMap=tempRouteListMap;
+		
+		// 直接覆盖式变更
+		this.routeProviderMap=tempRouteProviderMap;
 	}
 
+	/**
+	 * 使用场景：判断是否需要重新订阅
+	 * 
+	 * @param routeProviderMapKey
+	 * @return
+	 */
+	public boolean containsRouteProviderMapKey(String routeProviderMapKey) {
+		return routeProviderMap.containsKey(routeProviderMapKey);
+	}
+	
 	/**
 	 * 根据需要消费的服务ID和路由参数组,进行分组选择路由清单
 	 * 
@@ -178,8 +147,8 @@ public class RouterContext {
 			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeParamKeys", routeParamKeys));
 		} else if (routeRuleMap.isEmpty()) {
 			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeRuleMap", routeRuleMap));
-		} else if (routeListMap.isEmpty()) {
-			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeListMap", routeListMap));
+		} else if (routeProviderMap.isEmpty()) {
+			return RouterResult.build(ResultType.NO_INIT_PARAM.wapper("routeProviderMap", routeProviderMap));
 		}
 
 		//$NON-NLS-第二步：从parameters中获取参数值,实时组装路由待匹配KEY$
@@ -200,22 +169,22 @@ public class RouterContext {
 
 		//$NON-NLS-第三步：路由KEY四重匹配$
 		List<URL> routeURLs = new ArrayList<URL>();
-		for (Map.Entry<String, ConcurrentHashMap<String, RouterService>> entry : routeRuleMap.entrySet()) {
+		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : routeRuleMap.entrySet()) {
 			if (matches(entry.getKey(), routeRuleRegex)) {// 进行路由KEY的匹配
 				if (entry.getValue() == null || entry.getValue().isEmpty()) {
 					return RouterResult.build(ResultType.ROUERULE_NOAVA_SERVICES.wapper(routeRuleRegex));
 				}
 
 				//$NON-NLS-第四步：根据服务ID查找serviceId:version:group$
-				RouterService routeService = entry.getValue().get(serviceId);
+				String routeService = entry.getValue().get(serviceId);
 				if (routeService == null) {
 					return RouterResult.build(ResultType.SVG_NOT_NULL.wapper());
 				}
 
 				//$NON-NLS-第五步：根据serviceId:version:group来查找可用的服务提供者清单$
-				ConcurrentHashMap<String, URL> routeListURLMap = routeListMap.get(routeService.buildKey());
+				ConcurrentHashMap<String, URL> routeListURLMap = routeProviderMap.get(routeService);
 				if (routeListURLMap == null || routeListURLMap.isEmpty()) {
-					return RouterResult.build(ResultType.NO_AVA_PROVIDER.wapper(routeService.buildKey(), routeListURLMap));
+					return RouterResult.build(ResultType.NO_AVA_PROVIDER.wapper(routeService, routeListURLMap));
 				}
 
 				//$NON-NLS-第六步：收集可用的服务提供者列表$

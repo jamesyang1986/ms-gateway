@@ -12,10 +12,12 @@ public enum ResultType {
 
 	/** 参数'%s' == '%s'不能为空 **/
 	NOT_NULL_PARAM("参数'%s' == '%s'不能为空"), 
+	
 	/** 没有初始化'%s' == '%s' **/
 	NO_INIT_PARAM("没有初始化'%s' == '%s'"), 
-	/** 请求参数'%s'不能为空 **/
-	REQPARAM_NOT_NULL("请求参数'%s'不能为空"), 
+	
+	/** 路由参数'%s'不能为空 **/
+	REQPARAM_NOT_NULL("路由参数'%s'不能为空"), 
 	/** 非法的路由请求规则'%s' **/
 	ILLEGAL_REQ_ROUTERULE("非法的路由请求规则'%s'"), 
 	/** 路由规则'%s'没有映射的服务清单 **/
