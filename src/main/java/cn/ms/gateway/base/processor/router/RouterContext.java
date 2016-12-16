@@ -19,6 +19,7 @@ import com.weibo.api.motan.rpc.URL;
  * 第二步：void addOrUpRouteRule(String routeRules, Set<String> serviceIdVersionGroupSet)-->添加一条路由规则(包括其允许消费的服务清单)<br>
  * 第三步：void addOrUpProviders(Set<URL> routeListSet)-->添加一组服务提供者清单<br>
  * 第四步：RouterResult selectRouteList(String serviceId, Map<String, String> parameters)-->根据需要消费的服务ID和路由参数组,进行分组选择路由清单<br>
+ * 第五步：boolean containsRouteProviderMapKey(String routeProviderMapKey)-->使用场景：判断是否需要重新订阅<br>
  * <br>
  * 常用匹配规则(支持全匹配和正则匹配):<br>
  * <b style="color:red">.</b>：匹配任意一个字符串<br>
