@@ -1,10 +1,18 @@
-# 微服务网关(ms-gateway)
+# 	微服务网关#(ms-gateway) 	
 
 **目录**
 [TOC]
 
-**QQ交流群：191958521(微服务基础设施)**
+	sssss
+	
+	
+    ddddddd
+    
+    
+`sssssssss`
 
+**QQ交流群：191958521(微服务基础设施)**
+![水珠](/Users/lry/Desktop/水珠.jpg)
 **微服务网关开源地址：**
 
 + **GitHub：**https://github.com/yu120/ms-gateway
@@ -32,6 +40,7 @@
 ####1.2.2 扩展功能
 + **超时控制：**整体处理超时控制
 
+# 	微服务网关#(ms-gateway) 	
 ##二、核心设计
 ###2.1 反向代理
 ####2.1.1 概念

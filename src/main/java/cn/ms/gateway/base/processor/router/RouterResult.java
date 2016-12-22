@@ -15,8 +15,15 @@ public class RouterResult {
 
 	/** 返回结果类型 **/
 	private ResultType resultType;
+	/** 访问ID:serviceId:version:group **/
+	private AccessId accessId;
 	/** 服务提供者清单 **/
 	private List<URL> urls;
+
+	RouterResult(ResultType resultType, AccessId accessId) {
+		this.resultType = resultType;
+		this.accessId = accessId;
+	}
 
 	RouterResult(ResultType resultType, List<URL> urls) {
 		this.resultType = resultType;
@@ -29,6 +36,14 @@ public class RouterResult {
 
 	public void setResultType(ResultType resultType) {
 		this.resultType = resultType;
+	}
+
+	public AccessId getAccessId() {
+		return accessId;
+	}
+
+	public void setAccessId(AccessId accessId) {
+		this.accessId = accessId;
 	}
 
 	public List<URL> getUrls() {
@@ -50,8 +65,8 @@ public class RouterResult {
 
 	@Override
 	public String toString() {
-		return "RouteResult [resultType=[resultType= " + resultType + ", msg="
-				+ resultType.getMsg() + "], urls=" + urls + "]";
+		return "RouterResult [resultType=" + resultType + ", accessId="
+				+ accessId + ", urls=" + urls + "]";
 	}
 
 }

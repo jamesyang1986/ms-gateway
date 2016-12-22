@@ -27,7 +27,9 @@ public enum ResultType {
 	/** 路由规则'%s'没有映射的服务清单 **/
 	ROUERULE_NOAVA_SERVICES("路由规则'%s'没有映射的服务清单"), 
 	/** serviceId:version:group的值不能为空 **/
-	SVG_NOT_NULL("serviceId:version:group的值不能为空"), 
+	SVG_NOT_NULL("serviceId:version:group的值不能为空"),
+	/** 非法的svg格式 **/
+	ILLEGAL_SVG_FROMART("路由清单的格式必须为：serviceId:version:group"),
 	/** 服务'%s'没有可用的提供者(provider-->%s) **/
 	NO_AVA_PROVIDER("服务'%s'没有可用的提供者(provider-->%s)"), 
 	/** 没有匹配到可用的路由规则 **/

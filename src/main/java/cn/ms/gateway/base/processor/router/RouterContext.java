@@ -171,6 +171,7 @@ public class RouterContext {
 		}
 
 		//$NON-NLS-第三步：路由KEY四重匹配$
+		AccessId accessId = null;
 		List<URL> routeURLs = new ArrayList<URL>();
 		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : routeRuleMap.entrySet()) {
 			if (matches(entry.getKey(), routeRuleRegex)) {// 进行路由KEY的匹配
@@ -179,25 +180,35 @@ public class RouterContext {
 				}
 
 				//$NON-NLS-第四步：根据服务ID查找serviceId:version:group$
-				String routeService = entry.getValue().get(serviceId);
-				if (routeService == null) {
+				String svgStr = entry.getValue().get(serviceId);
+				if (svgStr == null) {
 					return RouterResult.build(ResultType.SVG_NOT_NULL.wapper());
 				}
-
-				//$NON-NLS-第五步：根据serviceId:version:group来查找可用的服务提供者清单$
-				ConcurrentHashMap<String, URL> routeListURLMap = routeProviderMap.get(routeService);
-				if (routeListURLMap == null || routeListURLMap.isEmpty()) {
-					return RouterResult.build(ResultType.NO_AVA_PROVIDER.wapper(routeService, routeListURLMap));
+				
+				//$NON-NLS-路由服务格式校验$
+				String[] svgArray=svgStr.split(SVG_SEQ);
+				if(svgArray.length!=3){
+					return RouterResult.build(ResultType.ILLEGAL_SVG_FROMART.wapper());
 				}
+				accessId = new AccessId(svgArray[0], svgArray[1], svgArray[2]);
 
-				//$NON-NLS-第六步：收集可用的服务提供者列表$
-				routeURLs.addAll(routeListURLMap.values());
+				if(!routeProviderMap.isEmpty()){
+					//$NON-NLS-第五步：根据serviceId:version:group来查找可用的服务提供者清单$
+					ConcurrentHashMap<String, URL> routeListURLMap = routeProviderMap.get(svgStr);
+					if (routeListURLMap == null || routeListURLMap.isEmpty()) {
+						return RouterResult.build(ResultType.NO_AVA_PROVIDER.wapper(svgStr, routeListURLMap));
+					}
+
+					//$NON-NLS-第六步：收集可用的服务提供者列表$
+					routeURLs.addAll(routeListURLMap.values());					
+				}
+				
 				break;
 			}
 		}
 
 		// 最终结果校验
-		if (routeURLs.isEmpty()) {
+		if (accessId == null && routeURLs.isEmpty()) {
 			return RouterResult.build(ResultType.NOTFOUND_ROUTE_RULE);// ResultType用法三:没有参数
 		} else {
 			return RouterResult.build(ResultType.ROUTE_SELECT_OK, routeURLs);// 路由成功
@@ -232,4 +243,9 @@ public class RouterContext {
 		return false;
 	}
 
+	public static void main(String[] args) {
+		RouterContext rc = new RouterContext();
+		System.out.println(rc.matches("(?:weixin.*)", "weixin001"));
+	}
+	
 }

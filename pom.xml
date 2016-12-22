@@ -11,10 +11,16 @@
 		<ms-netty>2.0.0-SNAPSHOT</ms-netty>
 		<motan-core>0.2.3-SNAPSHOT</motan-core>
 		<disruptor>3.3.6</disruptor>
+		<hystrix>1.5.8</hystrix>
 		<junit>4.12</junit>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.markdownj</groupId>
+			<artifactId>markdownj-core</artifactId>
+			<version>0.4</version>
+		</dependency>
 		<dependency>
 			<groupId>cn.ms.netty</groupId>
 			<artifactId>ms-netty</artifactId>
@@ -39,6 +45,11 @@
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
 			<version>${disruptor}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.hystrix</groupId>
+			<artifactId>hystrix-core</artifactId>
+			<version>${hystrix}</version>
 		</dependency>
 
 		<!-- 单元测试 -->
