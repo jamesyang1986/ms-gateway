@@ -29,7 +29,7 @@ public class MarkDownRead {
 
 	public static void main(String[] args) {
 		try {
-			read("/Users/lry/Documents/workspace/microservice_work/ms-gateway/test.md", "UTF-8");
+			System.out.println(read("/Users/lry/Documents/workspace/microservice_work/ms-gateway/test.md", "UTF-8"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
